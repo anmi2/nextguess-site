@@ -1,0 +1,113 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 740" role="img" aria-labelledby="title desc">
+<title id="title">CSVからHEX探索へ</title>
+<desc id="desc">サンプルCSVの地点データを、将来ドライバー向けの地図上で宝石のように輝く六角形として表示し、探索する構想図。実装済みの画面ではありません。</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081c1a"/><stop offset=".6" stop-color="#07161c"/><stop offset="1" stop-color="#11232a"/></linearGradient>
+ <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#122b2a"/><stop offset="1" stop-color="#0b171e"/></linearGradient>
+ <linearGradient id="emerald" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#34b889"/><stop offset="1" stop-color="#86f5bd"/></linearGradient>
+ <linearGradient id="white" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#e8f1ec"/></linearGradient>
+ <filter id="glow" x="-70%" y="-70%" width="240%" height="240%"><feGaussianBlur stdDeviation="11" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="18" stdDeviation="20" flood-color="#000" flood-opacity=".55"/></filter>
+ <clipPath id="phoneClip"><rect x="813" y="151" rx="20" width="423" height="493"/></clipPath>
+ <style>
+ text{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",Arial,sans-serif}
+ .small{font-size:18px;fill:#c4e5d6}
+ .data{font-size:20px;fill:#28453c}
+ </style>
+</defs>
+<rect width="1440" height="740" rx="30" fill="url(#bg)"/>
+<g opacity=".25">
+ <circle cx="1315" cy="67" r="380" fill="#184d41"/>
+ <circle cx="106" cy="710" r="420" fill="#0b5e41"/>
+</g>
+<path d="M0 635 Q300 574 550 662 T1050 650 T1440 632" stroke="#0bb777" opacity=".22" stroke-width="2" fill="none"/>
+<text x="68" y="73" fill="#86efc0" font-size="21" font-weight="700" letter-spacing="5">NEXTGUESS / FUTURE VISION</text>
+<text x="68" y="144" fill="#fff" font-size="51" font-weight="850">CSVデータを、次の探索へ。</text>
+<text x="72" y="181" fill="#accbc1" font-size="21">過去の記録や地点データを活かす。HEXは次に向かうエリアの手がかり。</text>
+<g filter="url(#shadow)">
+ <rect x="66" y="221" width="578" height="365" rx="19" fill="url(#white)"/>
+ <rect x="66" y="221" width="578" height="71" rx="19" fill="#ddefe5"/>
+ <rect x="66" y="270" width="578" height="22" fill="#ddefe5"/>
+ <rect x="88" y="242" width="42" height="40" rx="9" fill="#168755"/>
+ <text x="102" y="267" font-weight="900" font-size="17" fill="#fff">↓</text>
+ <text x="145" y="265" fill="#1a503c" font-size="26" font-weight="800">CSVを読み込む</text>
+ <text x="91" y="313" fill="#507466" font-size="15">サンプルデータ（日時・種類・地点）</text>
+ <rect x="88" y="321" width="535" height="256" rx="11" fill="#fff"/>
+ <rect x="88" y="326" width="535" height="51" fill="#fff"/><text x="106" y="358" class="data">08/22 18:00</text><text x="258" y="358" class="data">イベント</text><text x="374" y="358" class="data">コンサート</text><text x="533" y="358" class="data">梅田</text>
+<rect x="88" y="377" width="535" height="51" fill="#f3f8f5"/><text x="106" y="409" class="data">08/23 19:00</text><text x="258" y="409" class="data">イベント</text><text x="374" y="409" class="data">大型公演</text><text x="533" y="409" class="data">難波</text>
+<rect x="88" y="428" width="535" height="51" fill="#fff"/><text x="106" y="460" class="data">08/24 17:30</text><text x="258" y="460" class="data">施設</text><text x="374" y="460" class="data">展示会</text><text x="533" y="460" class="data">本町</text>
+<rect x="88" y="479" width="535" height="51" fill="#f3f8f5"/><text x="106" y="511" class="data">08/25 15:00</text><text x="258" y="511" class="data">施設</text><text x="374" y="511" class="data">催事</text><text x="533" y="511" class="data">天王寺</text>
+ <path d="M246 322V527 M360 322V527 M521 322V527" stroke="#d8e7dd" stroke-width="1.4"/>
+ <text x="94" y="565" font-size="15" fill="#6b8c7c">※データは説明用の架空サンプルです</text>
+</g>
+<g filter="url(#glow)">
+ <path d="M666 394 H750" fill="none" stroke="url(#emerald)" stroke-width="8" stroke-linecap="round"/>
+ <path d="M751 394 l-26 -19 v38 z" fill="#74f4b5"/>
+</g>
+<g filter="url(#shadow)">
+ <rect x="797" y="115" width="456" height="548" rx="41" fill="#050e13" stroke="#476e65" stroke-width="5"/>
+ <rect x="813" y="151" width="423" height="493" rx="20" fill="url(#screen)"/>
+ <g clip-path="url(#phoneClip)">
+  <path d="M798 177 L915 640" stroke="#36534e" stroke-opacity=".55" stroke-width="8" />
+<path d="M869 177 L976 640" stroke="#36534e" stroke-opacity=".55" stroke-width="3" />
+<path d="M940 177 L1037 640" stroke="#36534e" stroke-opacity=".55" stroke-width="3" />
+<path d="M1011 177 L1098 640" stroke="#36534e" stroke-opacity=".55" stroke-width="8" />
+<path d="M1082 177 L1159 640" stroke="#36534e" stroke-opacity=".55" stroke-width="3" />
+<path d="M1153 177 L1220 640" stroke="#36534e" stroke-opacity=".55" stroke-width="3" />
+<path d="M1224 177 L1281 640" stroke="#36534e" stroke-opacity=".55" stroke-width="8" />
+<path d="M1295 177 L1342 640" stroke="#36534e" stroke-opacity=".55" stroke-width="3" /><path d="M807 218 L1240 193" stroke="#344a48" stroke-opacity=".55" stroke-width="3" />
+<path d="M807 280 L1240 258" stroke="#344a48" stroke-opacity=".55" stroke-width="7" />
+<path d="M807 342 L1240 323" stroke="#344a48" stroke-opacity=".55" stroke-width="3" />
+<path d="M807 404 L1240 388" stroke="#344a48" stroke-opacity=".55" stroke-width="3" />
+<path d="M807 466 L1240 453" stroke="#344a48" stroke-opacity=".55" stroke-width="7" />
+<path d="M807 528 L1240 518" stroke="#344a48" stroke-opacity=".55" stroke-width="3" />
+<path d="M807 590 L1240 583" stroke="#344a48" stroke-opacity=".55" stroke-width="3" />
+  <g stroke="#336354" opacity=".35"><path d="M780 540 L1295 240"/><path d="M826 634 L1246 341"/></g>
+  <g filter="url(#glow)"><polygon points="951.7,240.5 930.0,253.0 908.3,240.5 908.3,215.5 930.0,203.0 951.7,215.5" fill="#40e9ae" fill-opacity="0.65" stroke="#40e9ae" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1017.2,236.0 993.0,250.0 968.8,236.0 968.8,208.0 993.0,194.0 1017.2,208.0" fill="#68ffd0" fill-opacity="0.68" stroke="#68ffd0" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1085.1,254.5 1060.0,269.0 1034.9,254.5 1034.9,225.5 1060.0,211.0 1085.1,225.5" fill="#57d9a8" fill-opacity="0.35" stroke="#57d9a8" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="918.2,306.0 894.0,320.0 869.8,306.0 869.8,278.0 894.0,264.0 918.2,278.0" fill="#2dbb91" fill-opacity="0.55" stroke="#2dbb91" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="987.4,311.0 958.0,328.0 928.6,311.0 928.6,277.0 958.0,260.0 987.4,277.0" fill="#f6ca65" fill-opacity="0.96" stroke="#f6ca65" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1055.4,323.0 1026.0,340.0 996.6,323.0 996.6,289.0 1026.0,272.0 1055.4,289.0" fill="#ffe4a1" fill-opacity="1" stroke="#ffe4a1" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1121.0,325.0 1095.0,340.0 1069.0,325.0 1069.0,295.0 1095.0,280.0 1121.0,295.0" fill="#f0ab4a" fill-opacity="0.92" stroke="#f0ab4a" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1191.4,313.5 1168.0,327.0 1144.6,313.5 1144.6,286.5 1168.0,273.0 1191.4,286.5" fill="#39d7a8" fill-opacity="0.66" stroke="#39d7a8" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="952.1,381.5 927.0,396.0 901.9,381.5 901.9,352.5 927.0,338.0 952.1,352.5" fill="#6beeb4" fill-opacity="0.55" stroke="#6beeb4" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1024.3,382.5 994.0,400.0 963.7,382.5 963.7,347.5 994.0,330.0 1024.3,347.5" fill="#e8c35b" fill-opacity="0.94" stroke="#e8c35b" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1087.0,395.0 1061.0,410.0 1035.0,395.0 1035.0,365.0 1061.0,350.0 1087.0,365.0" fill="#ffbc56" fill-opacity="0.88" stroke="#ffbc56" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1154.2,384.0 1130.0,398.0 1105.8,384.0 1105.8,356.0 1130.0,342.0 1154.2,356.0" fill="#4bd5a7" fill-opacity="0.7" stroke="#4bd5a7" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="914.0,449.0 888.0,464.0 862.0,449.0 862.0,419.0 888.0,404.0 914.0,419.0" fill="#3dd7a6" fill-opacity="0.46" stroke="#3dd7a6" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="981.6,462.5 953.0,479.0 924.4,462.5 924.4,429.5 953.0,413.0 981.6,429.5" fill="#63e3af" fill-opacity="0.5" stroke="#63e3af" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1046.0,469.0 1020.0,484.0 994.0,469.0 994.0,439.0 1020.0,424.0 1046.0,439.0" fill="#ffe09d" fill-opacity="0.92" stroke="#ffe09d" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1112.0,461.0 1086.0,476.0 1060.0,461.0 1060.0,431.0 1086.0,416.0 1112.0,431.0" fill="#d4ad57" fill-opacity="0.82" stroke="#d4ad57" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1179.7,462.0 1152.0,478.0 1124.3,462.0 1124.3,430.0 1152.0,414.0 1179.7,430.0" fill="#43d7a4" fill-opacity="0.6" stroke="#43d7a4" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="963.0,531.0 937.0,546.0 911.0,531.0 911.0,501.0 937.0,486.0 963.0,501.0" fill="#2ac5a3" fill-opacity="0.43" stroke="#2ac5a3" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1028.2,544.0 1004.0,558.0 979.8,544.0 979.8,516.0 1004.0,502.0 1028.2,516.0" fill="#49d4af" fill-opacity="0.64" stroke="#49d4af" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1096.0,534.0 1070.0,549.0 1044.0,534.0 1044.0,504.0 1070.0,489.0 1096.0,504.0" fill="#f4bf63" fill-opacity="0.89" stroke="#f4bf63" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1161.4,531.5 1138.0,545.0 1114.6,531.5 1114.6,504.5 1138.0,491.0 1161.4,504.5" fill="#f7c065" fill-opacity="0.92" stroke="#f7c065" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="997.2,596.0 973.0,610.0 948.8,596.0 948.8,568.0 973.0,554.0 997.2,568.0" fill="#47e6b9" fill-opacity="0.4" stroke="#47e6b9" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1066.0,603.0 1040.0,618.0 1014.0,603.0 1014.0,573.0 1040.0,558.0 1066.0,573.0" fill="#4dcfab" fill-opacity="0.47" stroke="#4dcfab" stroke-width="2.5" stroke-opacity=".85"/>
+<polygon points="1132.1,591.5 1107.0,606.0 1081.9,591.5 1081.9,562.5 1107.0,548.0 1132.1,562.5" fill="#e8b95b" fill-opacity="0.82" stroke="#e8b95b" stroke-width="2.5" stroke-opacity=".85"/></g>
+  <path d="M879 556 Q901 468 967 453 T1064 382 T1150 329" stroke="#74ffcb" stroke-width="5" fill="none" stroke-linecap="round" stroke-dasharray="1 1" opacity=".9" filter="url(#glow)"/>
+  <circle cx="879" cy="556" r="12" fill="#fff" stroke="#54dba9" stroke-width="6"/>
+  <path d="M879 548 L873 561 L879 558 L886 561z" fill="#0b5943"/>
+  <circle cx="967" cy="453" r="5" fill="#fff"/>
+  <circle cx="1064" cy="382" r="5" fill="#fff"/>
+  <circle cx="1150" cy="329" r="5" fill="#fff"/>
+  <g font-weight="750" font-size="17" fill="#e1f9ed">
+   <text x="1040" y="264">梅田</text><text x="1102" y="478">難波</text><text x="897" y="610">天王寺</text>
+  </g>
+  <rect x="827" y="165" width="396" height="56" rx="15" fill="#10251f" fill-opacity=".96"/>
+  <text x="853" y="203" font-size="24" font-weight="900" fill="#fff">Next<tspan fill="#64dba1">Guess</tspan></text>
+  <rect x="1083" y="177" rx="15" width="122" height="32" fill="#1d7353"/>
+  <text x="1096" y="198" font-size="13" font-weight="800" fill="#fff">ドライバーMAP</text>
+  <rect x="835" y="614" width="362" height="25" rx="11" fill="#10271f"/>
+  <text x="852" y="633" font-size="14" fill="#abf6d6">◆ 光るHEXで注目エリアを探索</text>
+ </g>
+</g>
+<g filter="url(#glow)">
+ <polygon points="1339.6,304.0 1305.0,324.0 1270.4,304.0 1270.4,264.0 1305.0,244.0 1339.6,264.0" fill="#dbad45" fill-opacity=".75" stroke="#f4d97d" stroke-width="3"/>
+ <polygon points="1331.0,409.0 1305.0,424.0 1279.0,409.0 1279.0,379.0 1305.0,364.0 1331.0,379.0" fill="#39c89d" fill-opacity=".65" stroke="#9efbce" stroke-width="3"/>
+</g>
+<text x="68" y="658" font-size="21" font-weight="800" fill="#acfad4">CSV読込 → HEX探索</text>
+<text x="68" y="692" font-size="17" fill="#9cc7b5">※将来構想のイメージです。現在のテスト版には未搭載です。</text>
+</svg>
