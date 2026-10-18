@@ -6,11 +6,22 @@
   <meta name="description" content="NextGuessは、イベント情報や勤務記録をひとつにまとめるドライバー向けアプリ。開発状況と判断の理由を公開しています。" />
   <meta name="theme-color" content="#f7faf8" />
   <title>NextGuess | 使う人と、育てていく。</title>
-  <link rel="stylesheet" href="style.css?v=20261018-features-first" />
+  <link rel="stylesheet" href="style.css?v=20261018-hero-uncropped" />
 </head>
 <body>
 <header class="site-header"><div class="wrap nav"><a class="brand" href="#top" aria-label="NextGuess ホーム"><span class="brand-mark">N<span>✦</span></span><span>NextGuess<small>BETA DEVELOPMENT</small></span></a><nav aria-label="メインメニュー"><a href="#features">機能</a><a href="#ideas">アイデア募集</a><a href="#updates">進捗</a><a href="#voices">開発ログ</a><a href="#tips">使い方</a><a href="#join" class="nav-join">参加案内 ↗</a></nav></div></header>
 <main id="top">
+<section class="section future-section future-hero" id="future" aria-label="将来構想：CSVからHEX探索">
+  <div class="wrap">
+    <figure class="future-figure">
+      <a href="assets/future-hex.svg" target="_blank" rel="noopener noreferrer" aria-label="大阪を舞台にしたCSVからHEX探索の将来構想図を拡大して見る">
+        <img src="assets/future-hex.svg" alt="将来構想の大阪版イメージ。サンプルCSVから地点を読み込み、大阪のMAPに透明感のあるHEXを表示して探索する。未実装の機能です。" width="1440" height="740" fetchpriority="high" />
+      </a>
+      <figcaption>将来構想：CSV読込 → HEX探索　／　※未実装・サンプルデータを使用したイメージです。画像をタップすると拡大できます。</figcaption>
+    </figure>
+    <div class="future-quickline"><p>過去のデータを、次に向かう場所の判断材料へ。</p><a href="#features">今できることを見る ↓</a></div>
+  </div>
+</section>
 <section class="section current-section" id="features" aria-label="今できること">
   <div class="wrap">
     <div class="current-intro">
@@ -27,16 +38,6 @@
   </div>
 </section>
 <section class="status-section"><div class="wrap"><div class="status-strip"><div><small>PROJECT STATUS</small><strong>テスト配布準備中</strong></div><div><small>ANDROID</small><strong>APK 準備済み</strong></div><div><small>iPHONE</small><strong>TestFlight 審査待ち</strong></div><div><small>FEEDBACK</small><strong>募集開始後に掲載</strong></div></div></div></section>
-<section class="section future-section" id="future">
-<div class="wrap">
- <div class="future-head"><div><span class="kicker">NEXT STEP / FUTURE CONCEPT</span><h2>その先は、CSVからHEX探索へ。</h2></div><p>これから作りたいのは、集めたデータを「次に向かう場所」の判断材料にする機能です。</p></div>
- <figure class="future-figure">
-  <img src="assets/future-hex.svg" alt="将来構想の模式図。架空のCSVを読み込み、大阪の地図イメージ上で需要を探る六角形のHEXを表示して探索する構想。現在のアプリの実画面ではありません。" loading="lazy" width="1440" height="740" />
-  <figcaption>※将来構想のイメージ画像です。CSV取込・HEX探索はまだ実装されていません。図の数値や地点データはサンプルです。</figcaption>
- </figure>
- <div class="future-notes"><p><strong>CSVを取り込む</strong><span>イベントや利用許可のある自分の記録などを、分析の材料に。</span></p><p><strong>HEXで可視化</strong><span>地図上の注目エリアを、宝石のような六角形で見つけやすく。</span></p><p><strong>探索につなげる</strong><span>現在地から周辺の候補を見て、営業中の判断を補助する構想。</span></p></div>
- <a class="future-idea-link" href="#ideas">この将来像についても意見を聞かせてください <span aria-hidden="true">↗</span></a>
-</div></section>
 <section class="section idea-section tinted" id="ideas"><div class="wrap"><div class="section-head"><div><span class="kicker">02 / IDEAS OPEN</span><h2>今、みんなで考えたいこと。</h2></div><p>選択肢はたたき台。「それ以外」の案も歓迎です。まだ決めていないことが、参加するきっかけになる。</p></div><div class="idea-intro"><span class="idea-intro-dot"></span><div><strong>アイデア募集中</strong><p>このサイトには話のきっかけだけ置いています。ABCから選んでも、別の案でも、いつも見ているサイトの紹介でもOK。話す場所はLINEオープンチャット。以下の選択は送信されないデモです。</p></div></div><div class="idea-list-heading" id="idea-list-heading"><strong>募集中のテーマ一覧</strong><span>タップして詳しく見る</span></div><button type="button" id="idea-back" class="idea-back" hidden>← 議題一覧にもどる</button><div class="idea-tabs" id="idea-tabs" role="tablist" aria-label="議題を選ぶ"></div><div id="idea-detail" class="idea-detail" aria-live="polite"><p class="muted">議題を読み込み中…</p></div></div></section><section class="section tinted" id="updates"><div class="wrap"><div class="section-head"><div><span class="kicker">03 / PROGRESS</span><h2>今、どこまで進んでいるか。</h2></div><p>完成を装わず、準備中のものは準備中として伝えます。</p></div><div class="two-col"><div class="panel"><div class="panel-top"><h3>開発・配布の状況</h3><span class="pill">随時更新</span></div><div id="timeline" class="timeline"><p class="muted">読み込み中…</p></div></div><div class="panel aside"><h3>数字で見る NextGuess</h3><p class="muted small">公開できる実数が揃ってから掲載します。推測値や架空の参加者数は表示しません。</p><div class="metric"><strong>—</strong><span>テスター参加者</span></div><div class="metric"><strong>—</strong><span>意見・不具合報告</span></div><div class="metric"><strong>—</strong><span>公開した判断記録</span></div><p class="data-note">集計値のみ公開。個人の営収・位置情報・LINEでの発言全文は掲載しません。</p></div></div></div></section>
 <section class="section" id="voices"><div class="wrap"><div class="section-head"><div><span class="kicker">04 / DECISION LOG</span><h2>意見と、判断の理由を残す。</h2></div><p>出た意見を、無理に全部実装する必要はありません。今の考えと理由、変わった経緯を残します。</p></div><div class="log-controls" role="group" aria-label="ログ絞り込み"><button class="filter active" data-filter="all" type="button">すべて</button><button class="filter" data-filter="adopted" type="button">採用</button><button class="filter" data-filter="reviewing" type="button">検討中</button><button class="filter" data-filter="deferred" type="button">保留・見送り</button></div><div id="decisions" class="log-list"><p class="muted">読み込み中…</p></div><p class="note-line">LINEの発言は無断転載しません。公開するのは確認済みの要点のみ。個別の乗客・勤務先・営業収入・具体的な乗車習慣は掲載しません。</p></div></section>
 <section class="section" id="screens"><div class="wrap"><div class="section-head"><div><span class="kicker">ACTUAL APP SCREENS</span><h2>いま動いている画面。</h2></div><p>こちらはシミュレータで撮影した実際のNextGuessです。議題の比較画像は構想図であり、未実装です。</p></div><div class="shots"><figure><img loading="lazy" src="assets/map-light.webp" alt="通常MAP画面"><figcaption>通常MAP</figcaption></figure><figure><img loading="lazy" src="assets/events.webp" alt="本日のイベント一覧"><figcaption>本日のイベント</figcaption></figure><figure><img loading="lazy" src="assets/myarea.webp" alt="My Areaの一覧"><figcaption>My Area</figcaption></figure><figure><img loading="lazy" src="assets/map-dark.webp" alt="ドライバーモードのダークMAP"><figcaption>ドライバーMAP</figcaption></figure><figure><img loading="lazy" src="assets/calendar.webp" alt="勤務カレンダー"><figcaption>勤務カレンダー</figcaption></figure><figure><img loading="lazy" src="assets/earnings.webp" alt="日別実績の入力"><figcaption>日別実績</figcaption></figure></div></div></section><section class="section tinted" id="tips"><div class="wrap"><div class="section-head"><div><span class="kicker">05 / TIPS</span><h2>まず触るところから。</h2></div><p>初めて使う人にも分かるよう、基本操作をまとめていきます。</p></div><div id="tips-list" class="tip-grid"><p class="muted">読み込み中…</p></div></div></section>
@@ -44,6 +45,6 @@
 <section class="section final-section"><div class="wrap"><div class="section-head"><div><span class="kicker">SUPPORT</span><h2>旧ツールをご利用の方へ</h2></div></div><div class="old-tool"><div><h3>以前の勤務・営収管理ツールからの移行について</h3><p>旧ツールに端末保存されているデータは、NextGuessに自動で移行されません。移行手順と個別対応の窓口を準備しています。</p><p class="warning-text">移行が完了するまでは、ブラウザのサイトデータ削除・旧ツールのデータ削除をしないでください。</p></div><span class="pill subdued">移行方法 準備中</span></div></div></section>
 </main>
 <footer class="footer"><div class="wrap footer-inner"><div><strong>NextGuess</strong><p>使う人と、育てていく。</p></div><div><span>Developed by KUFU HIVE</span><small>利用規約・プライバシーポリシー・問い合わせ先は公開時に正式なURLへ接続します。</small></div></div></footer>
-<nav class="mobile-bottom-nav" aria-label="スマホ用ナビゲーション"><a href="#ideas"><span>◇</span>アイデア</a><a href="#updates"><span>↻</span>更新状況</a><a href="#tips"><span>▤</span>Tips</a><a href="#join"><span>↗</span>参加案内</a></nav><script src="app.js"></script><script src="ideas.js?v=20261018-idea-line"></script>
+<nav class="mobile-bottom-nav" aria-label="スマホ用ナビゲーション"><a href="#features"><span>▦</span>現行機能</a><a href="#ideas"><span>◇</span>アイデア</a><a href="#updates"><span>↻</span>更新状況</a><a href="#join"><span>↗</span>参加案内</a></nav><script src="app.js"></script><script src="ideas.js?v=20261018-idea-line"></script>
 </body>
 </html>
