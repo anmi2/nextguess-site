@@ -43,7 +43,11 @@
  .idea-list-heading span{font-size:.72rem;color:#698274}
  .idea-tabs{display:grid!important;grid-template-columns:1fr!important;gap:9px!important;margin:0!important}
  .idea-tab{display:flex!important;align-items:center;gap:11px;text-align:left;width:100%;padding:15px 13px!important;border:1px solid #d9e9de!important;border-radius:14px!important;background:white!important;min-height:73px!important;box-shadow:0 2px 5px #134e2f08}
- .idea-tab.active{border-color:#8bc1a1!important}
+ .idea-tab.active{border-color:#438e67!important;background:#eaf6ee!important;box-shadow:inset 4px 0 0 #438e67,0 2px 5px #134e2f08}
+ .idea-tab.active .idea-index{background:#d3eedd;color:#24583a}
+ .idea-tab.active .idea-tab-text{color:#214d36}
+ .idea-tab.active .idea-tab-text small{color:#527562}
+ .idea-tab.active .idea-chevron{color:#397b54}
  .idea-index{flex:0 0 auto;background:#edf7ef;border-radius:8px;color:#25804f;padding:8px;font-size:.78rem;font-weight:800}
  .idea-tab-text{font-size:.9rem;font-weight:750;line-height:1.4;flex:1}
  .idea-tab-text small{display:block;color:#739181;margin-top:5px;font-size:.68rem;font-weight:500}
