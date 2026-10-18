@@ -152,3 +152,26 @@
  .future-idea-link{font-size:12px;margin-top:17px}
 }
 @media(max-width:365px){.current-card-head{min-height:145px}.current-grid .feature-card h2{font-size:12px}.current-shot{height:110px}}
+
+
+/* Full-bleed Osaka roadmap image first; show the ENTIRE original app screenshots. */
+.future-hero{padding:17px 0 16px;background:linear-gradient(180deg,#f5faf6,#fff)}
+.future-hero .wrap{width:min(1320px,calc(100% - 32px))}
+.future-hero .future-figure>a{display:block;border-radius:17px;overflow:hidden}
+.future-hero .future-figure img{display:block;width:100%;height:auto;object-fit:contain;border-radius:17px}
+.future-hero .future-figure figcaption{font-size:11px}
+.future-quickline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:8px 3px 0}
+.future-quickline p{margin:0;color:#4d7561;font-size:13px;font-weight:650}
+.future-quickline a{color:#177c4b;font-size:12px;font-weight:850;border-bottom:1px solid #8dbf9e}
+.current-grid .current-shot{height:auto!important;max-height:none!important;aspect-ratio:auto!important;object-fit:contain!important;object-position:center top!important;flex:none}
+.current-grid .feature-card{justify-content:flex-start}
+@media(max-width:650px){
+ .future-hero{padding:9px 0 12px}
+ .future-hero .wrap{width:calc(100% - 16px)}
+ .future-hero .future-figure>a,.future-hero .future-figure img{border-radius:9px}
+ .future-hero .future-figure figcaption{font-size:10px;line-height:1.55;margin:8px 5px 3px}
+ .future-quickline{padding:5px 5px 0;gap:3px}
+ .future-quickline p{font-size:11px}
+ .future-quickline a{font-size:11px}
+ .current-section{padding-top:18px}
+}
