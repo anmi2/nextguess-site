@@ -12,6 +12,9 @@ function setCompactDetail(on){
 }
 
 const visual=(type)=>{
+ if(type==='ride-map')return `<div class="concept-area info-concept"><div class="area-row">過去の乗車地点 <span>⌖</span></div><div class="area-row">自分の履歴をMAPで見る <span>↗</span></div><div class="area-row">期間を選んで振り返る <span>↗</span></div><div class="area-foot">本人だけの記録 / 構想イメージ</div></div>`;
+ if(type==='ride-summary')return `<div class="concept-area info-concept"><div class="area-row">日ごとの記録 <span>▤</span></div><div class="area-row">曜日や時間帯の傾向 <span>↗</span></div><div class="area-row">自分だけの集計 <span>↗</span></div><div class="area-foot">個別の乗客情報は表示しない想定 / 構想イメージ</div></div>`;
+ if(type==='ride-no')return `<div class="concept-area info-concept"><div class="area-row">いまは必要ない <span>—</span></div><div class="area-row">現在の機能を優先 <span>✓</span></div><div class="area-foot">「いらない」も大事な意見</div></div>`;
  if(['darkpins','hex','darkdots','colorskind','colorstime','colorsscale'].includes(type)){
   const kinds=['colorskind','colorstime','colorsscale'].includes(type);
   return `<div class="concept-map darkmock ${type}" aria-label="ダークMAPの未実装構想イメージ"><span class="street s1"></span><span class="street s2"></span><span class="street s3"></span><i class="map-pin pin1"></i><i class="map-pin pin2"></i><i class="map-pin pin3"></i><span class="map-dot">${kinds?'色分けの意味を比較':'アイコン形状を比較'} / 模式図</span></div>`;
