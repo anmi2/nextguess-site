@@ -90,3 +90,8 @@
  .crystal-node2{top:31%}
  .crystal-node3{top:33%}
 }
+
+/* Idea-detail actions: copy topic or open community. */
+.idea-actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-end}
+.idea-actions .btn{display:inline-flex;align-items:center;justify-content:center;text-align:center;text-decoration:none;min-height:44px}
+@media(max-width:720px){.idea-actions{width:100%;flex-direction:column;align-items:stretch}.idea-actions .btn{width:100%;white-space:normal}}
