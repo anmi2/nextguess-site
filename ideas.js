@@ -15,7 +15,14 @@ const visual=(type)=>{
  if(type==='ride-map')return `<div class="concept-area info-concept"><div class="area-row">過去の乗車地点 <span>⌖</span></div><div class="area-row">自分の履歴をMAPで見る <span>↗</span></div><div class="area-row">期間を選んで振り返る <span>↗</span></div><div class="area-foot">本人だけの記録 / 構想イメージ</div></div>`;
  if(type==='ride-summary')return `<div class="concept-area info-concept"><div class="area-row">日ごとの記録 <span>▤</span></div><div class="area-row">曜日や時間帯の傾向 <span>↗</span></div><div class="area-row">自分だけの集計 <span>↗</span></div><div class="area-foot">個別の乗客情報は表示しない想定 / 構想イメージ</div></div>`;
  if(type==='ride-no')return `<div class="concept-area info-concept"><div class="area-row">いまは必要ない <span>—</span></div><div class="area-row">現在の機能を優先 <span>✓</span></div><div class="area-foot">「いらない」も大事な意見</div></div>`;
- if(['darkpins','hex','darkdots','colorskind','colorstime','colorsscale'].includes(type)){
+ if(type==='crystal'){
+  const shard="<svg viewBox=\"0 0 64 100\" role=\"img\" aria-label=\"光るクリスタル\"><path d=\"M32 3 58 41 32 95 6 41Z\" fill=\"#f9c84e\"/><path d=\"M32 12 51 42 32 84 13 42Z\" fill=\"#e8f6fc\"/><path d=\"M32 12 13 42 30 36Z\" fill=\"#fff8d6\"/><path d=\"M32 12 51 42 30 36Z\" fill=\"#76b2c8\"/><path d=\"M13 42 30 36 32 84Z\" fill=\"#a9ddea\"/><path d=\"M51 42 30 36 32 84Z\" fill=\"#49768a\"/><path d=\"M13 42 51 42 32 84Z\" fill=\"#bad9dc\" fill-opacity=\".26\"/><path d=\"M32 3 58 41 32 95 6 41Z\" fill=\"none\" stroke=\"#f6d875\" stroke-width=\"2.5\"/></svg>";
+  return `<div class="concept-map darkmock crystal-scene" aria-label="クリスタル型イベントアイコンの構想イメージ"><span class="street s1"></span><span class="street s2"></span><span class="street s3"></span><span class="crystal-node crystal-node1">${shard}</span><span class="crystal-node crystal-node2">${shard}</span><span class="crystal-node crystal-node3">${shard}</span><span class="map-dot">クリスタル / 模式図</span></div>`;
+ }
+ if(type==='lightpillar'){
+  return `<div class="concept-map darkmock pillar-scene" aria-label="色が変わる光の柱の構想イメージ"><span class="street s1"></span><span class="street s2"></span><span class="street s3"></span><span class="light-pillar pillar1"><i class="pillar-ray"></i><i class="pillar-foot"></i></span><span class="light-pillar pillar2"><i class="pillar-ray"></i><i class="pillar-foot"></i></span><span class="light-pillar pillar3"><i class="pillar-ray"></i><i class="pillar-foot"></i></span><span class="map-dot">色は時間・注目度に連動できる案 / 模式図</span></div>`;
+ }
+ if(['darkpins','colorskind','colorstime','colorsscale'].includes(type)){
   const kinds=['colorskind','colorstime','colorsscale'].includes(type);
   return `<div class="concept-map darkmock ${type}" aria-label="ダークMAPの未実装構想イメージ"><span class="street s1"></span><span class="street s2"></span><span class="street s3"></span><i class="map-pin pin1"></i><i class="map-pin pin2"></i><i class="map-pin pin3"></i><span class="map-dot">${kinds?'色分けの意味を比較':'アイコン形状を比較'} / 模式図</span></div>`;
  }
