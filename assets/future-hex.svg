@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 740" role="img" aria-labelledby="title desc">
 <title id="title">CSVからHEX探索へ</title>
-<desc id="desc">サンプルCSVの地点データを、将来ドライバー向けの地図上で宝石のように輝く六角形として表示し、探索する構想図。実装済みの画面ではありません。</desc>
+<desc id="desc">大阪エリアを想定した将来構想のイメージ。サンプルCSVの地点データをドライバー向けの地図上で宝石のように輝く六角形として表示し、探索する模式図。実装済みの画面ではありません。</desc>
 <defs>
  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081c1a"/><stop offset=".6" stop-color="#07161c"/><stop offset="1" stop-color="#11232a"/></linearGradient>
  <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#122b2a"/><stop offset="1" stop-color="#0b171e"/></linearGradient>
@@ -21,7 +21,7 @@
  <circle cx="106" cy="710" r="420" fill="#0b5e41"/>
 </g>
 <path d="M0 635 Q300 574 550 662 T1050 650 T1440 632" stroke="#0bb777" opacity=".22" stroke-width="2" fill="none"/>
-<text x="68" y="73" fill="#86efc0" font-size="21" font-weight="700" letter-spacing="5">NEXTGUESS / FUTURE VISION</text>
+<text x="68" y="73" fill="#86efc0" font-size="21" font-weight="700" letter-spacing="5">NEXTGUESS / OSAKA FUTURE VISION</text>
 <text x="68" y="144" fill="#fff" font-size="51" font-weight="850">CSVデータを、次の探索へ。</text>
 <text x="72" y="181" fill="#accbc1" font-size="21">過去の記録や地点データを活かす。HEXは次に向かうエリアの手がかり。</text>
 <g filter="url(#shadow)">
