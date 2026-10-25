@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1119">
+  <meta name="description" content="Quiz Raid — a playable local combat prototype.">
+  <title>Quiz Raid — Combat Prototype</title>
+  <style>
+    :root{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f1f5f9;background:#0b1119;font-synthesis:none}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0,#173044 0,transparent 42%),radial-gradient(ellipse at 100% 75%,#1a2435 0,transparent 40%),#0b1119;min-height:100vh;color:#edf2f7}
+    button,input{font:inherit}button{cursor:pointer}button:focus-visible,summary:focus-visible,input:focus-visible{outline:3px solid #7cc9db;outline-offset:3px}
+    [hidden]{display:none!important}.wrap{max-width:1140px;padding:25px 20px 50px;margin:0 auto}
+    .top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:27px}.brand{display:flex;gap:12px;align-items:center}.emblem{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:#203b47;color:#8ee0c4;font-size:24px;font-weight:900;box-shadow:0 0 0 1px #40616b inset}.brand h1{font-size:17px;letter-spacing:.15em;margin:0;font-weight:800}.overline{letter-spacing:.18em;text-transform:uppercase;font-size:10px;color:#9ab0c1;font-weight:800}.build{color:#9ab0c1;font-size:12px;border:1px solid #385062;border-radius:100px;padding:8px 11px;white-space:nowrap}
+    .head{margin:0 0 24px}.head h2{font-size:clamp(26px,4vw,41px);letter-spacing:-.045em;margin:6px 0 8px;line-height:1.1}.head p{color:#a1b1bf;font-size:14px;line-height:1.6;margin:0}
+    .layout{display:grid;grid-template-columns:1fr 1.07fr;gap:18px}.panel{background:rgba(20,31,44,.96);border:1px solid #293e4e;border-radius:18px;box-shadow:0 18px 55px rgba(0,0,0,.13);overflow:hidden}.panel-padding{padding:23px}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:17px}.panel-title{font-size:12px;font-weight:850;letter-spacing:.16em;color:#bacbd6}.status-chip{font-size:10px;letter-spacing:.1em;border-radius:100px;padding:7px 11px;font-weight:900;background:#2d394c;color:#d6e0ed}.status-chip.playing{background:#234e46;color:#a5eed2}.status-chip.won{background:#3b5b37;color:#c3f0a0}.status-chip.lost{background:#673e42;color:#fac1ba}
+    .fighter{position:relative;border:1px solid #364353;border-radius:14px;padding:18px;background:#182535;margin-bottom:12px;isolation:isolate}.fighter.enemy{background:radial-gradient(ellipse at right,#392a2c,#1a2635 65%)}.fighter.hero{background:radial-gradient(ellipse at right,#1c3c3a,#182535 65%)}.fighter-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.fighter-icon{display:grid;place-items:center;font-weight:900;font-size:22px;border:1px solid #5a5c61;border-radius:11px;width:47px;height:47px;color:#f3bd9b;background:#473432}.hero .fighter-icon{background:#204d48;color:#98e8ca;border-color:#39796b}.fighter h3{font-size:20px;letter-spacing:-.035em;margin:8px 0 2px}.fighter .sub{color:#9baebd;font-size:12px}.fighter .hp{font-weight:800;color:#dce8f2;font-size:13px;font-variant-numeric:tabular-nums}.fighter .hp strong{font-size:22px}.meter{height:11px;background:#0c1722;border-radius:100px;margin-top:16px;overflow:hidden;box-shadow:0 0 0 1px #2f3c48 inset}.fill{height:100%;width:100%;transition:width .32s ease;background:linear-gradient(90deg,#d15f64,#f2a07a);border-radius:inherit}.hero .fill{background:linear-gradient(90deg,#459b87,#81e7b8)}.damage-float{pointer-events:none;position:absolute;right:24px;top:18px;opacity:0;color:#ffb0a6;font-size:31px;font-weight:900;text-shadow:0 3px 8px #000}.burst{animation:float .7s ease-out forwards}@keyframes float{0%{opacity:1;transform:translateY(12px) scale(.8)}35%{opacity:1;transform:translateY(-10px) scale(1.1)}100%{opacity:0;transform:translateY(-43px) scale(1)}}.hit{animation:hit .38s linear}@keyframes hit{0%,100%{translate:0}20%,60%{translate:-4px}40%,80%{translate:4px}}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:15px 0}.stat{border-radius:12px;background:#111e2a;border:1px solid #2a3e4e;padding:13px 12px}.stat .small{display:block;font-size:10px;letter-spacing:.06em;font-weight:700;color:#9fb4c0}.stat .number{font-weight:800;font-size:25px;margin-top:6px;font-variant-numeric:tabular-nums;display:block}.stat .number.urgent{color:#faad96}.timer-track{height:4px;background:#243441;border-radius:10px;overflow:hidden;margin-top:8px}.timer-track>div{height:100%;background:#e3ae74;transition:width .45s linear}
+    .feed-heading{font-size:11px;letter-spacing:.13em;color:#9eb4c3;font-weight:800;margin:20px 0 10px}.combat-feed{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;min-height:98px}.feed-item{display:flex;gap:11px;font-size:12px;line-height:1.45;color:#bdcfda}.feed-item .feed-time{font-size:11px;color:#7593a4;font-variant-numeric:tabular-nums}.feed-item.success{color:#9ee0b8}.feed-item.danger{color:#f1afa1}.feed-item.muted{color:#96a9b6}
+    .quiz-panel{display:flex;flex-direction:column;min-height:500px}.quiz-heading{display:flex;gap:8px;justify-content:space-between;align-items:center}.question-top{display:flex;gap:10px;align-items:center;justify-content:space-between;margin-bottom:20px}.topic{color:#a9dacb;background:#254a46;border-radius:7px;padding:6px 9px;font-size:10px;font-weight:900;letter-spacing:.12em}.number-tag{font-size:11px;color:#93a9b8;font-weight:700}.question{font-size:clamp(22px,2.4vw,29px);font-weight:770;letter-spacing:-.035em;line-height:1.3;margin:0 0 24px;min-height:79px}.choices{display:grid;gap:10px}.choice{border-radius:11px;display:flex;align-items:center;text-align:left;gap:14px;padding:12px 14px;min-height:59px;color:#e4edf4;border:1px solid #3a5061;background:#1c2c3b;font-size:15px;font-weight:600;transition:background .13s,border-color .13s}.choice:hover:not(:disabled){background:#2b4352;border-color:#6c9aa2}.choice:disabled{cursor:default}.choice-key{display:grid;place-items:center;min-width:29px;height:29px;background:#2c4353;border-radius:7px;font-size:12px;font-weight:800;color:#afcad4}.choice.correct{background:#1b4d3c;border-color:#6abd97}.choice.correct .choice-key{background:#317a5a;color:white}.choice.incorrect{background:#4e2932;border-color:#b9696a}.choice.incorrect .choice-key{background:#8e3e47;color:white}.answer-feedback{font-size:12px;color:#9db4c1;min-height:32px;padding-top:15px;line-height:1.5}.answer-feedback.good{color:#a6e8bb}.answer-feedback.bad{color:#f6b3a4}.action-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:auto;padding-top:17px;border-top:1px solid #2b4250}.small-note{color:#92a9b9;font-size:11px;line-height:1.4}.btn{border:0;border-radius:11px;padding:14px 22px;min-height:48px;font-weight:900;letter-spacing:.04em;background:#8ad9c0;color:#09232a}.btn:hover{background:#a8edda}.btn:disabled{opacity:.35;cursor:not-allowed}.btn.secondary{border:1px solid #415568;background:#243447;color:#d9e6ed}.btn.secondary:hover:not(:disabled){background:#344b5d}
+    .intro,.result{text-align:center;margin:auto;padding:48px 18px}.mark{font-size:13px;font-weight:900;letter-spacing:.2em;color:#8bd7bf;border:1px solid #477c72;border-radius:100px;padding:9px 14px;display:inline-block;margin-bottom:25px}.intro h3,.result h3{font-size:30px;line-height:1.12;letter-spacing:-.05em;margin:0 0 14px}.intro p,.result p{color:#b3c1cb;font-size:14px;line-height:1.7;max-width:340px;margin:0 auto 24px}.result .win-title{color:#a9e9bf}.result .loss-title{color:#f8b5a2}.intro .btn,.result .btn{width:100%;max-width:260px}
+    .settings-wrap{margin-top:19px}.settings{border:1px solid #324759;border-radius:13px;padding:0 16px;background:#111e2b}.settings summary{padding:15px 0;font-size:12px;font-weight:800;color:#d7e3ec;cursor:pointer}.settings-body{padding:0 0 16px}.settings-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.settings label{display:flex;flex-direction:column;gap:6px;color:#99b0bf;font-size:11px}.settings input{color:#e7f3f6;background:#1e3040;border:1px solid #425c6b;border-radius:8px;width:100%;padding:10px 8px;min-width:0}.settings p{font-size:11px;color:#88a2b3;line-height:1.5;margin:10px 0 0}.footer{text-align:center;font-size:11px;color:#6f8799;padding:20px 0 0}
+    @media(max-width:760px){.wrap{padding:18px 12px 28px}.top{margin-bottom:24px}.head{margin-bottom:18px}.layout{grid-template-columns:1fr;gap:14px}.panel-padding{padding:17px}.fighter{padding:13px}.fighter h3{font-size:17px}.fighter .hp strong{font-size:19px}.stat{padding:12px 10px}.stat .number{font-size:22px}.quiz-panel{min-height:390px}.question{min-height:0;margin-bottom:17px}.intro,.result{padding:35px 10px}.question-top{margin-bottom:14px}.head p{font-size:12px}}
+    @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <header class="top">
+      <div class="brand"><div class="emblem" aria-hidden="true">Q</div><div><span class="overline">KUFU HIVE / EXPERIMENTS</span><h1>QUIZ RAID</h1></div></div>
+      <span class="build">PROTOTYPE 0.1</span>
+    </header>
+    <section class="head">
+      <span class="overline">COMBAT SYSTEM TEST</span>
+      <h2>Answer. Attack. Survive.</h2>
+      <p>Correct answers damage the boss. Wrong answers and the passage of time cost HP. Land enough hits to win.</p>
+    </section>
+    <div class="layout">
+      <section class="panel panel-padding" aria-label="Battle status">
+        <div class="panel-head"><span class="panel-title">BATTLE STATUS</span><span id="state" class="status-chip">READY</span></div>
+        <div class="fighter enemy" id="enemy-card">
+          <div class="fighter-top"><div><span class="overline">ENEMY · TEST BOSS</span><h3>Training Guardian</h3><span class="sub">Receives damage on correct answers</span></div><div class="fighter-icon" aria-hidden="true">B</div></div>
+          <div class="fighter-top" style="margin-top:9px"><span class="overline">HEALTH</span><span class="hp"><strong id="boss-hp">100</strong> / <span id="boss-max">100</span></span></div>
+          <div class="meter" role="progressbar" aria-label="Boss HP"><div id="boss-bar" class="fill"></div></div><div id="damage-enemy" class="damage-float" aria-hidden="true"></div>
+        </div>
+        <div class="fighter hero" id="hero-card">
+          <div class="fighter-top"><div><span class="overline">PLAYER · GUEST</span><h3>Challenger</h3><span class="sub">Survive until all questions are solved</span></div><div class="fighter-icon" aria-hidden="true">P</div></div>
+          <div class="fighter-top" style="margin-top:9px"><span class="overline">HEALTH</span><span class="hp"><strong id="player-hp">100</strong> / <span id="player-max">100</span></span></div>
+          <div class="meter" role="progressbar" aria-label="Player HP"><div id="player-bar" class="fill"></div></div><div id="damage-player" class="damage-float" aria-hidden="true"></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><span class="small">CORRECT</span><span class="number"><span id="solved">0</span> / <span id="goal">5</span></span></div>
+          <div class="stat"><span class="small">NEXT ATTACK</span><span id="timer" class="number">12s</span><div class="timer-track"><div id="timer-bar" style="width:100%"></div></div></div>
+          <div class="stat"><span class="small">MISTAKES</span><span class="number" id="wrong">0</span></div>
+        </div>
+        <div class="feed-heading">COMBAT LOG</div><ul id="combat-feed" class="combat-feed" aria-live="polite"><li class="feed-item muted"><span class="feed-time">00:00</span><span>Ready to begin.</span></li></ul>
+      </section>
+      <section class="panel panel-padding quiz-panel" aria-label="Quiz battle">
+        <div class="panel-head"><span class="panel-title">CHALLENGE</span><span class="overline">SINGLE PLAYER DEMO</span></div>
+        <div id="intro" class="intro">
+          <span class="mark">READY TO FIGHT?</span>
+          <h3>Defeat the<br>Training Guardian.</h3>
+          <p>Get 5 questions right to defeat the boss. The enemy attacks every 12 seconds. Wrong answers hurt, but passing is free.</p>
+          <button type="button" class="btn" id="start-button">START CHALLENGE</button>
+          <p id="script-warning" style="color:#f3ba95;font-size:12px;max-width:320px;margin:14px auto 0">If this button does nothing, this file is being displayed in a preview that blocks JavaScript. The game must be opened in a JavaScript-enabled browser or a hosted webpage.</p>
+        </div>
+        <div id="quiz" hidden>
+          <div class="question-top"><span id="topic" class="topic">GENERAL</span><span id="question-number" class="number-tag">CORRECT: 0 / 5</span></div>
+          <h3 class="question" id="question">Question appears here.</h3>
+          <div class="choices" id="choices" role="group" aria-label="Answer choices"></div>
+          <p class="answer-feedback" id="feedback" aria-live="polite"></p>
+        </div>
+        <div id="result" class="result" hidden>
+          <span class="mark">BATTLE COMPLETE</span><h3 id="result-title">CHALLENGE SUCCESS</h3><p id="result-desc"></p>
+          <button type="button" class="btn" onclick="document.getElementById('start-button').click()">TRY AGAIN</button>
+        </div>
+        <div class="action-row" id="controls"><span class="small-note">KEYS: 1–4 to answer · P to pass</span><button type="button" id="pass-button" class="btn secondary" disabled>PASS QUESTION</button></div>
+      </section>
+    </div>
+    <div class="settings-wrap">
+      <details id="settings" class="settings"><summary>Challenge settings · adjust before playing</summary>
+        <div class="settings-body"><div class="settings-grid">
+          <label>Required correct answers<input id="setting-goal" type="number" min="1" max="12" value="5"></label>
+          <label>Enemy attack interval (sec)<input id="setting-timer" type="number" min="3" max="60" value="12"></label>
+          <label>Damage on wrong answer<input id="setting-wrong" type="number" min="1" max="100" value="20"></label>
+        </div><p>Settings apply when a challenge begins. Enemy attack deals 12 damage; each correct answer deals 20. Player starts at 100 HP. All values are demo-only.</p></div>
+      </details>
+    </div>
+    <footer class="footer">Local browser prototype — no server, accounts, saving, Paragon PT, or multiplayer yet.</footer>
+  </main>
+  <script>
+/* Quiz Raid — self-contained local gameplay prototype. No network, accounts or persistence. */
+(function (root) {
+  'use strict';
+
+  const QUESTIONS = [
+    { text: 'Which planet is closest to the Sun?', options: ['Venus', 'Mars', 'Mercury', 'Earth'], answer: 2, topic: 'SPACE' },
+    { text: 'How many sides does a hexagon have?', options: ['Five', 'Six', 'Seven', 'Eight'], answer: 1, topic: 'MATH' },
+    { text: 'What gas do plants absorb during photosynthesis?', options: ['Oxygen', 'Nitrogen', 'Hydrogen', 'Carbon dioxide'], answer: 3, topic: 'SCIENCE' },
+    { text: 'Which country is home to the city of Cusco?', options: ['Peru', 'Chile', 'Bolivia', 'Ecuador'], answer: 0, topic: 'GEOGRAPHY' },
+    { text: 'Which instrument typically has 88 keys?', options: ['Violin', 'Piano', 'Flute', 'Trumpet'], answer: 1, topic: 'MUSIC' },
+    { text: 'What is the chemical symbol for gold?', options: ['Ag', 'Au', 'Fe', 'Pb'], answer: 1, topic: 'SCIENCE' },
+    { text: 'In what year did humans first land on the Moon?', options: ['1959', '1965', '1969', '1975'], answer: 2, topic: 'HISTORY' },
+    { text: 'Which ocean is the largest by surface area?', options: ['Atlantic', 'Indian', 'Arctic', 'Pacific'], answer: 3, topic: 'GEOGRAPHY' },
+    { text: 'How many minutes are in 2.5 hours?', options: ['120', '135', '150', '180'], answer: 2, topic: 'MATH' },
+    { text: 'Which artist painted The Starry Night?', options: ['Claude Monet', 'Vincent van Gogh', 'Pablo Picasso', 'Salvador Dalí'], answer: 1, topic: 'ART' },
+    { text: 'What does the Roman numeral L represent?', options: ['10', '50', '100', '500'], answer: 1, topic: 'HISTORY' },
+    { text: 'What is the hardest natural mineral on the Mohs scale?', options: ['Quartz', 'Topaz', 'Diamond', 'Corundum'], answer: 2, topic: 'SCIENCE' },
+    { text: 'Which of these is a prime number?', options: ['21', '33', '37', '39'], answer: 2, topic: 'MATH' },
+    { text: 'Who wrote the play Hamlet?', options: ['Christopher Marlowe', 'William Shakespeare', 'Ben Jonson', 'John Milton'], answer: 1, topic: 'LITERATURE' },
+    { text: 'Which continent is the Sahara Desert mainly in?', options: ['Asia', 'Australia', 'Africa', 'South America'], answer: 2, topic: 'GEOGRAPHY' },
+    { text: 'What is the freezing point of pure water at standard atmospheric pressure?', options: ['0°C', '10°C', '32°C', '100°C'], answer: 0, topic: 'SCIENCE' },
+    { text: 'Which animal is a marsupial?', options: ['Otter', 'Kangaroo', 'Penguin', 'Badger'], answer: 1, topic: 'NATURE' },
+    { text: 'What is 12 × 8?', options: ['84', '92', '96', '108'], answer: 2, topic: 'MATH' },
+    { text: 'Which language is primarily spoken in Brazil?', options: ['Spanish', 'French', 'English', 'Portuguese'], answer: 3, topic: 'LANGUAGE' },
+    { text: 'Which composer wrote the Ninth Symphony with “Ode to Joy”?', options: ['Mozart', 'Bach', 'Beethoven', 'Chopin'], answer: 2, topic: 'MUSIC' },
+    { text: 'In which game would you find a “checkmate”?', options: ['Go', 'Chess', 'Shogi', 'Backgammon'], answer: 1, topic: 'GAMES' },
+    { text: 'How many degrees are in a right angle?', options: ['45', '60', '90', '180'], answer: 2, topic: 'MATH' },
+    { text: 'Which organ pumps blood around the human body?', options: ['Liver', 'Lungs', 'Heart', 'Kidneys'], answer: 2, topic: 'BIOLOGY' },
+    { text: 'What is the capital city of Canada?', options: ['Toronto', 'Ottawa', 'Vancouver', 'Montréal'], answer: 1, topic: 'GEOGRAPHY' }
+  ];
+
+  const DEFAULT_SETTINGS = Object.freeze({ goal: 5, timer: 12, wrongDamage: 20, timerDamage: 12, maxHp: 100, hitDamage: 20 });
+
+  function normalizeSettings(settings) {
+    const s = Object.assign({}, DEFAULT_SETTINGS, settings || {});
+    for (const key of ['goal', 'timer', 'wrongDamage', 'timerDamage', 'maxHp', 'hitDamage']) {
+      if (!Number.isFinite(Number(s[key]))) s[key] = DEFAULT_SETTINGS[key];
+      s[key] = Math.round(Number(s[key]));
+    }
+    s.goal = Math.max(1, Math.min(12, s.goal));
+    s.timer = Math.max(3, Math.min(60, s.timer));
+    s.wrongDamage = Math.max(1, Math.min(100, s.wrongDamage));
+    s.timerDamage = Math.max(1, Math.min(100, s.timerDamage));
+    s.maxHp = Math.max(10, Math.min(500, s.maxHp));
+    s.hitDamage = 20;
+    return s;
+  }
+
+  function createGame(settings) {
+    const cfg = normalizeSettings(settings);
+    return { cfg, phase: 'playing', playerHp: cfg.maxHp, bossHp: cfg.goal * cfg.hitDamage,
+      correct: 0, wrong: 0, elapsed: 0, remaining: cfg.timer, lastEvent: 'The challenge begins.' };
+  }
+
+  function answerGame(game, isCorrect) {
+    if (game.phase !== 'playing') return game;
+    const next = Object.assign({}, game);
+    if (isCorrect) {
+      next.correct += 1;
+      next.bossHp = Math.max(0, next.bossHp - game.cfg.hitDamage);
+      next.lastEvent = `Correct! Boss takes ${game.cfg.hitDamage} damage.`;
+      if (next.correct >= game.cfg.goal) { next.phase = 'won'; next.lastEvent = 'Challenge complete! The boss has been defeated.'; }
+    } else {
+      next.wrong += 1;
+      next.playerHp = Math.max(0, next.playerHp - game.cfg.wrongDamage);
+      next.lastEvent = `Wrong answer! Player takes ${game.cfg.wrongDamage} damage.`;
+      if (next.playerHp === 0) { next.phase = 'lost'; next.lastEvent = 'Challenge failed. Player HP reached zero.'; }
+    }
+    return next;
+  }
+
+  function tickGame(game) {
+    if (game.phase !== 'playing') return game;
+    const next = Object.assign({}, game, { elapsed: game.elapsed + 1, remaining: game.remaining - 1 });
+    if (next.remaining <= 0) {
+      next.playerHp = Math.max(0, next.playerHp - game.cfg.timerDamage);
+      next.remaining = game.cfg.timer;
+      next.lastEvent = `Enemy attacks! Player takes ${game.cfg.timerDamage} damage.`;
+      if (next.playerHp === 0) { next.phase = 'lost'; next.lastEvent = 'Challenge failed. The enemy overwhelmed you.'; }
+    } else {
+      next.lastEvent = '';
+    }
+    return next;
+  }
+
+  function shuffledDeck(count) {
+    const deck = Array.from({ length: count }, (_, i) => i);
+    for (let i = deck.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [deck[i], deck[j]] = [deck[j], deck[i]];
+    }
+    return deck;
+  }
+
+  const core = { QUESTIONS, DEFAULT_SETTINGS, normalizeSettings, createGame, answerGame, tickGame, shuffledDeck };
+  if (typeof module !== 'undefined' && module.exports) module.exports = core;
+  root.QuizRaidCore = core;
+  if (typeof document === 'undefined') return;
+
+  const $ = id => document.getElementById(id);
+  const ui = {
+    bossHp: $('boss-hp'), bossMax: $('boss-max'), bossBar: $('boss-bar'), playerHp: $('player-hp'), playerMax: $('player-max'), playerBar: $('player-bar'),
+    solved: $('solved'), goal: $('goal'), timer: $('timer'), timerBar: $('timer-bar'), wrong: $('wrong'),
+    state: $('state'), quiz: $('quiz'), question: $('question'), choices: $('choices'), topic: $('topic'), questionNumber: $('question-number'),
+    feedback: $('feedback'), action: $('start-button'), pass: $('pass-button'), feed: $('combat-feed'), settings: $('settings'),
+    settingGoal: $('setting-goal'), settingTimer: $('setting-timer'), settingWrong: $('setting-wrong'),
+    hero: $('hero-card'), enemy: $('enemy-card'), overlay: $('result'), resultTitle: $('result-title'), resultDesc: $('result-desc'),
+    intro: $('intro'), controls: $('controls'), damageEnemy: $('damage-enemy'), damagePlayer: $('damage-player')
+  };
+
+  let game = null;
+  let currentQuestion = null;
+  let deck = [];
+  let busy = false;
+  let intervalId = null;
+  let nextQuestionId = null;
+  let animationTimeout = null;
+
+  function log(message, kind) {
+    const item = document.createElement('li');
+    item.className = `feed-item ${kind || ''}`;
+    const time = document.createElement('span');
+    time.className = 'feed-time';
+    time.textContent = `${Math.floor((game?.elapsed || 0) / 60).toString().padStart(2, '0')}:${((game?.elapsed || 0) % 60).toString().padStart(2, '0')}`;
+    const content = document.createElement('span');
+    content.textContent = message;
+    item.append(time, content);
+    ui.feed.prepend(item);
+    while (ui.feed.children.length > 5) ui.feed.lastElementChild.remove();
+  }
+
+  function shake(el) {
+    el.classList.remove('hit');
+    void el.offsetWidth;
+    el.classList.add('hit');
+    clearTimeout(animationTimeout);
+    animationTimeout = setTimeout(() => el.classList.remove('hit'), 460);
+  }
+
+  function floatDamage(el, amount) {
+    el.textContent = `−${amount}`;
+    el.classList.remove('burst');
+    void el.offsetWidth;
+    el.classList.add('burst');
+  }
+
+  function render() {
+    const g = game;
+    if (!g) return;
+    ui.playerHp.textContent = g.playerHp;
+    ui.playerMax.textContent = g.cfg.maxHp;
+    ui.bossHp.textContent = g.bossHp;
+    ui.bossMax.textContent = g.cfg.goal * g.cfg.hitDamage;
+    ui.playerBar.style.width = `${(g.playerHp / g.cfg.maxHp) * 100}%`;
+    ui.bossBar.style.width = `${(g.bossHp / (g.cfg.goal * g.cfg.hitDamage)) * 100}%`;
+    ui.solved.textContent = g.correct;
+    ui.goal.textContent = g.cfg.goal;
+    ui.wrong.textContent = g.wrong;
+    ui.timer.textContent = `${g.remaining}s`;
+    ui.timerBar.style.width = `${(g.remaining / g.cfg.timer) * 100}%`;
+    ui.timer.classList.toggle('urgent', g.remaining <= 3);
+    ui.state.textContent = g.phase === 'playing' ? 'IN BATTLE' : (g.phase === 'won' ? 'VICTORY' : 'DEFEAT');
+    ui.state.className = `status-chip ${g.phase}`;
+    ui.pass.disabled = g.phase !== 'playing' || busy;
+    if (g.phase !== 'playing') finish();
+  }
+
+  function nextQuestion() {
+    if (!game || game.phase !== 'playing') return;
+    busy = false;
+    if (!deck.length) deck = core.shuffledDeck(core.QUESTIONS.length);
+    currentQuestion = core.QUESTIONS[deck.pop()];
+    ui.topic.textContent = currentQuestion.topic;
+    ui.questionNumber.textContent = `CORRECT: ${game.correct} / ${game.cfg.goal}`;
+    ui.question.textContent = currentQuestion.text;
+    ui.choices.replaceChildren();
+    currentQuestion.options.forEach((choice, i) => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'choice';
+      const key = document.createElement('span');
+      key.className = 'choice-key'; key.textContent = String(i + 1);
+      const label = document.createElement('span'); label.textContent = choice;
+      btn.append(key, label);
+      btn.addEventListener('click', () => choose(i));
+      ui.choices.append(btn);
+    });
+    ui.feedback.textContent = 'Choose one answer, or pass without a penalty.';
+    ui.feedback.className = 'answer-feedback';
+    ui.pass.disabled = false;
+  }
+
+  function choose(i) {
+    if (!game || game.phase !== 'playing' || busy || !currentQuestion) return;
+    busy = true;
+    const correct = i === currentQuestion.answer;
+    const before = game;
+    game = core.answerGame(game, correct);
+    const buttons = [...ui.choices.children];
+    for (const b of buttons) b.disabled = true;
+    buttons[currentQuestion.answer].classList.add('correct');
+    if (!correct) buttons[i].classList.add('incorrect');
+    ui.feedback.textContent = correct ? `Correct! +${game.cfg.hitDamage} damage dealt.` : `Incorrect. −${game.cfg.wrongDamage} HP. Correct answer: ${currentQuestion.options[currentQuestion.answer]}.`;
+    ui.feedback.className = `answer-feedback ${correct ? 'good' : 'bad'}`;
+    log(correct ? `Boss lost ${game.cfg.hitDamage} HP. (${game.correct}/${game.cfg.goal} solved)` : `Wrong answer — ${game.cfg.wrongDamage} HP lost.`, correct ? 'success' : 'danger');
+    if (correct) { shake(ui.enemy); floatDamage(ui.damageEnemy, game.cfg.hitDamage); }
+    else { shake(ui.hero); floatDamage(ui.damagePlayer, game.cfg.wrongDamage); }
+    render();
+    if (game.phase === 'playing') nextQuestionId = setTimeout(nextQuestion, 900);
+  }
+
+  function pass() {
+    if (!game || game.phase !== 'playing' || busy) return;
+    log('Question passed — no penalty.', 'muted');
+    nextQuestion();
+  }
+
+  function finish() {
+    clearInterval(intervalId);
+    clearTimeout(nextQuestionId);
+    busy = true;
+    ui.pass.disabled = true;
+    ui.overlay.hidden = false;
+    ui.quiz.hidden = true;
+    ui.resultTitle.textContent = game.phase === 'won' ? 'CHALLENGE SUCCESS' : 'CHALLENGE FAILED';
+    ui.resultTitle.className = game.phase === 'won' ? 'win-title' : 'loss-title';
+    ui.resultDesc.textContent = game.phase === 'won'
+      ? `You answered ${game.correct} questions correctly and defeated the boss with ${game.playerHp} HP remaining.`
+      : `You solved ${game.correct} / ${game.cfg.goal} questions before losing your HP.`;
+    ui.action.textContent = 'PLAY AGAIN';
+    ui.action.hidden = false;
+  }
+
+  function start() {
+    clearInterval(intervalId);
+    clearTimeout(nextQuestionId);
+    clearTimeout(animationTimeout);
+    const cfg = core.normalizeSettings({
+      goal: ui.settingGoal.value,
+      timer: ui.settingTimer.value,
+      wrongDamage: ui.settingWrong.value
+    });
+    game = core.createGame(cfg);
+    deck = core.shuffledDeck(core.QUESTIONS.length);
+    busy = false;
+    ui.feed.replaceChildren();
+    ui.intro.hidden = true;
+    ui.overlay.hidden = true;
+    ui.quiz.hidden = false;
+    ui.controls.hidden = false;
+    ui.action.hidden = true;
+    ui.settings.open = false;
+    log('A new challenge begins!', 'muted');
+    render();
+    nextQuestion();
+    intervalId = setInterval(() => {
+      if (!game || game.phase !== 'playing') return;
+      const old = game;
+      game = core.tickGame(old);
+      if (game.playerHp < old.playerHp) {
+        log(`Enemy attack — ${game.cfg.timerDamage} HP lost.`, 'danger');
+        shake(ui.hero);
+        floatDamage(ui.damagePlayer, game.cfg.timerDamage);
+      }
+      render();
+    }, 1000);
+  }
+
+  document.getElementById('script-warning').hidden = true;
+  ui.action.addEventListener('click', start);
+  ui.pass.addEventListener('click', pass);
+  window.addEventListener('keydown', ev => {
+    if (['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+    if (game?.phase === 'playing') {
+      if (ev.key.toLowerCase() === 'p') pass();
+      if (/^[1-4]$/.test(ev.key)) choose(Number(ev.key) - 1);
+    } else if (ev.key === 'Enter') start();
+  });
+} (typeof globalThis !== 'undefined' ? globalThis : this));
+
+</script>
+</body>
+</html>
