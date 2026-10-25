@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QUIZ RAID — Zombie Training v0.2</title>
+<style>
+:root{font-family:system-ui,Arial,sans-serif;color:#f0f4ef;background:#10151b}*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(#111923,#14141e);min-height:100vh}button,select,input{font:inherit}
+button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid #e3c57c;outline-offset:2px}
+.page{max-width:1050px;margin:auto;padding:16px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+h1{font-size:22px;margin:4px 0}small,.sub{color:#a9b6bf}.badge{font-size:11px;letter-spacing:1px;background:#323b49;padding:6px 10px;border-radius:20px}
+.panel{background:#1c2631;border:1px solid #425063;border-radius:14px;padding:15px;margin-top:13px;box-shadow:0 12px 30px #080b1160}
+.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(290px,.8fr);gap:13px}
+.enemy{text-align:center;position:relative;overflow:hidden;min-height:295px;background:radial-gradient(ellipse at 50% 80%,#354536 0,transparent 59%),linear-gradient(#1b2731,#181d21)}
+.zombie{width:160px;height:180px;margin:3px auto 8px;image-rendering:pixelated;display:block;filter:drop-shadow(0 13px 4px #0008)}
+#zombie.hit{animation:hit .3s linear}#zombie.attack{animation:attack .3s linear}@keyframes hit{50%{filter:brightness(3);transform:translateX(9px)}}@keyframes attack{50%{transform:translateY(10px) scale(1.07)}}
+.bars{background:#0a111b;border-radius:9px;overflow:hidden;height:14px}.fill{height:100%;background:#6cba82;transition:width .18s linear}.hpEnemy{background:#bd6658}.enemyHeader{display:flex;justify-content:space-between;align-items:baseline}
+#float{font-weight:900;min-height:24px;color:#f2cc70}.timer{font-size:13px;color:#c3cbd4}
+.partygrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.seat{border:1px solid #3e5160;background:#19202b;padding:10px;border-radius:10px}
+.seat header{display:flex;justify-content:space-between;gap:6px;font-size:12px;align-items:center}.seat strong{font-size:14px}.kind{font-size:10px;color:#111b25;background:#b1bdc9;border-radius:4px;padding:2px 5px}
+.kind.human{background:#e6c57e}.gauge{height:12px;border-radius:5px;background:#111820;overflow:hidden;border:1px solid #475261;margin:8px 0 5px}
+.gauge>div{height:100%;width:0%;background:var(--bar);transition:width .12s linear}.skill{color:#bcc7d2;font-size:12px}.details{font-size:12px;color:#98abc0}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.controls label{font-size:13px;color:#d1d9df}
+select,input{color:#f2f5f6;border:1px solid #566475;background:#111923;border-radius:7px;padding:7px}
+button{border:1px solid #5b6b7d;color:#f6f6f4;background:#304253;border-radius:8px;padding:10px 14px;font-weight:650}
+button.primary{color:#1b1b17;background:#e9c879;border-color:#e9c879}button:disabled{opacity:.43;cursor:not-allowed}
+.question{font-weight:700;font-size:18px;min-height:55px}.answers{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.answers button{text-align:left;min-height:58px}.notice{font-size:13px;color:#d0d6dd;min-height:21px}
+.log{max-height:180px;overflow:auto;font-size:12px;color:#b9cbd6;line-height:1.8}.log p{margin:2px 0;border-bottom:1px solid #34414d}
+.settinggrid{display:grid;grid-template-columns:repeat(4,minmax(90px,1fr));gap:10px}.settinggrid label{display:flex;flex-direction:column;gap:4px;font-size:12px}
+.settinggrid input{max-width:100%}.muted{font-size:12px;color:#afbac5}.hidden{display:none}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.partygrid{grid-template-columns:1fr 1fr}.settinggrid{grid-template-columns:1fr 1fr}.page{padding:10px}.enemy{min-height:275px}h1{font-size:19px}.answers{grid-template-columns:1fr}}
+</style></head><body><main class="page">
+<div class="top"><div><small>KUFU HIVE / COMBAT LAB</small><h1>QUIZ RAID <span class="badge">v0.2 · LOCAL SIM</span></h1></div><small>Zombie Training</small></div>
+<p class="sub">One human + three NPCs. Choose any class. Allies cast skills automatically; NPCs never answer. No online matchmaking yet.</p>
+<div class="controls panel"><label for="role">YOUR CLASS</label><select id="role"><option value="0">Warrior</option><option value="1">Mage</option><option value="2">Cleric</option><option value="3">Bard</option></select><button id="start" class="primary">START BATTLE</button><button id="pass" disabled>PASS QUESTION</button><span id="notice" class="notice" aria-live="polite">Choose a class to begin.</span></div>
+<div class="layout"><section>
+<div class="panel enemy"><div class="enemyHeader"><strong>ZOMBIE · TRAINING TARGET</strong><span id="ehp">1000 / 1000 HP</span></div><div class="bars"><div id="ebar" class="fill hpEnemy" style="width:100%"></div></div>
+<canvas id="zombie" class="zombie" width="64" height="72" role="img" aria-label="Pixel art zombie, green skin and torn brown clothing"></canvas>
+<div id="float" aria-live="polite"></div><div class="timer">Next zombie strike: <strong id="enemytime">12.0s</strong></div></div>
+<div class="panel"><div class="enemyHeader"><strong>SHARED PARTY HP</strong><strong id="php">100 / 100</strong></div><div class="bars" style="margin-top:7px"><div id="pbar" class="fill" style="width:100%"></div></div>
+<p class="muted">Wrong answers damage shared HP and set back only your class's skill gauge. Time-based enemy attacks also damage shared HP.</p>
+<div class="partygrid" id="party"></div></div></section>
+<section><div class="panel"><small>QUESTION · ANSWER TO ATTACK</small><p id="question" class="question">Press START BATTLE to begin.</p><div id="answers" class="answers"></div></div>
+<div class="panel"><strong>COMBAT LOG</strong><div id="log" class="log" role="log" aria-live="polite"></div></div></section></div>
+<details class="panel"><summary>TEST BALANCE SETTINGS (applied on restart)</summary><p class="muted">Provisional numbers only. Tune during playtest. Zombie HP defaults to 1000 to allow repeated skill activations.</p><div class="settinggrid">
+<label>Zombie max HP<input id="zmax" type="number" min="100" max="99999" value="1000"></label>
+<label>Party max HP<input id="pmax" type="number" min="20" max="10000" value="100"></label>
+<label>Correct damage<input id="correct" type="number" min="1" max="500" value="20"></label>
+<label>Wrong damage<input id="wrong" type="number" min="0" max="100" value="8"></label>
+<label>Enemy strike damage<input id="strike" type="number" min="0" max="100" value="10"></label>
+<label>Enemy strike interval (s)<input id="enemycd" type="number" min="2" max="120" value="12"></label>
+<label>Wrong gauge penalty (%)<input id="penalty" type="number" min="0" max="100" value="30"></label>
+<label>Freeze delay (s)<input id="freeze" type="number" min="0" max="60" value="5"></label>
+<label>Haste bonus speed (%)<input id="haste" type="number" min="0" max="200" value="40"></label>
+<label>Haste duration (s)<input id="hastedur" type="number" min="1" max="120" value="12"></label>
+<label>Warrior cooldown (s)<input id="cd0" type="number" min="2" max="120" value="15"></label>
+<label>Mage cooldown (s)<input id="cd1" type="number" min="2" max="120" value="21"></label>
+<label>Cleric cooldown (s)<input id="cd2" type="number" min="2" max="120" value="26"></label>
+<label>Bard cooldown (s)<input id="cd3" type="number" min="2" max="120" value="32"></label>
+</div></details><p class="muted">This is a static, offline-capable rules demonstration. No player accounts, live rooms, persistent Paragon PT or server-side scoring. Original zombie pixel artwork is rendered directly by code.</p>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id);
+const classes=[{name:'WARRIOR',skill:'BASH',color:'#d6a062'},{name:'MAGE',skill:'FREEZE',color:'#7da9e8'},{name:'CLERIC',skill:'HEAL',color:'#79c799'},{name:'BARD',skill:'HASTE',color:'#c499e1'}];
+const qs=[
+['Which planet is known as the Red Planet?',['Venus','Mars','Jupiter','Saturn'],1],
+['What is 9 × 7?',['54','56','63','72'],2],
+['What gas do plants absorb for photosynthesis?',['Oxygen','Helium','Carbon dioxide','Nitrogen'],2],
+['Which ocean is the largest?',['Atlantic','Indian','Arctic','Pacific'],3],
+['How many sides does a hexagon have?',['5','6','7','8'],1],
+['Which metal has chemical symbol Fe?',['Gold','Iron','Copper','Silver'],1],
+['What is the capital of Canada?',['Toronto','Ottawa','Vancouver','Montreal'],1],
+['What is the square root of 144?',['11','12','14','16'],1],
+['What is the smallest prime number?',['0','1','2','3'],2],
+['Which animal is a mammal?',['Shark','Frog','Dolphin','Salmon'],2],
+['How many minutes are in two hours?',['100','110','120','140'],2],
+['Which instrument commonly has 88 keys?',['Piano','Violin','Trumpet','Flute'],0],
+['In which continent is Kenya?',['Europe','South America','Africa','Asia'],2],
+['What is 15 + 28?',['41','43','45','47'],1],
+['Which language is primarily spoken in Brazil?',['Spanish','French','Portuguese','Italian'],2],
+['What is H2O?',['Salt','Water','Oxygen','Hydrogen'],1],
+['Which shape has three sides?',['Square','Circle','Triangle','Pentagon'],2],
+['Which is the largest terrestrial planet?',['Mercury','Earth','Mars','Venus'],1]
+];
+let state=null,last=0,raf=0,qindex=-1;
+function num(id,def){const v=Number($(id).value);return Number.isFinite(v)?v:def;}
+function conf(){return {zmax:num('zmax',1000),pmax:num('pmax',100),correct:num('correct',20),wrong:num('wrong',8),strike:num('strike',10),enemycd:num('enemycd',12),penalty:num('penalty',30),freeze:num('freeze',5),haste:num('haste',40)/100,hastedur:num('hastedur',12),cd:classes.map((_,i)=>num('cd'+i,[15,21,26,32][i]))};}
+function log(message){const p=document.createElement('p');p.textContent=message;$('log').prepend(p);while($('log').children.length>35)$('log').lastChild.remove();}
+function float(text){$('float').textContent=text;const z=$('zombie');z.classList.remove('hit','attack');void z.offsetWidth;z.classList.add(text.startsWith('ZOMBIE')?'attack':'hit');}
+function draw(){const c=$('zombie'),x=c.getContext('2d');x.clearRect(0,0,64,72);x.imageSmoothingEnabled=false;
+const art=[
+'......................kkkkkk......................',
+'...................kkggggggkk....................',
+'.................kkggggggggggkk..................',
+'................kkggggggggggggkk.................',
+'................kggggggggggggggk.................',
+'................kggwwggggwwggggk.................',
+'................kggddggggddggggk.................',
+'................kggggggnnggggggk.................',
+'.................kggggggggggggk..................',
+'..................kggttttttggk...................',
+'...................kkggggggkk....................',
+'.................kkbbkkkkbbkk....................',
+'...............kkbbbbbbbbbbbbbbkk.................',
+'..............kbbbbbbbbbbbbbbbbbbk................',
+'............kkggbbbbbbbbbbbbbbggkk...............',
+'...........kggggbbbbbbbbbbbbbbggggk..............',
+'...........kggggbbbbbbrrbbbbbbggggk..............',
+'...........kkgggbrbbbbbbbrbbbbgggkk..............',
+'............kgggbbbbbbbbbbbbbbgggk...............',
+'............kgggbbbbbbbbbbbbbbgggk...............',
+'...........kkgggbbbbbbbbbbbbbbgggkk..............',
+'...........kggggbbbbbbbbbbbbbbggggk..............',
+'...........kggkkbbbbbbbbbbbbbbkkggk..............',
+'...........kkkk.kbbbbbbbbbbbbk.kkkk..............',
+'................kbbbbkkkkbbbbk...................',
+'................kbbbbk..kbbbbk...................',
+'................kbbbbk..kbbbbk...................',
+'................kbbbbk..kbbbbk...................',
+'................kbbbbk..kbbbbk...................',
+'...............kkbbbbk..kbbbbkk..................',
+'..............kkdddddkk..kkddddkk.................'
+];const col={k:'#26322c',g:'#8ea76d',w:'#dfd9a6',d:'#4d4f38',n:'#6c8150',t:'#b7b3a0',b:'#776b56',r:'#ad6655'};
+const width=Math.max(...art.map(s=>s.length)),sc=1.2,ox=(64-width*sc)/2,oy=8;x.save();x.translate(ox,oy);x.scale(sc,sc);art.forEach((line,y)=>[...line].forEach((v,i)=>{if(col[v]){x.fillStyle=col[v];x.fillRect(i,y,1,1);}}));x.restore();}
+function newQuestion(){if(!state?.active)return;const next=(qindex+1)%qs.length;qindex=next;const q=qs[next];$('question').textContent=q[0];$('answers').replaceChildren();q[1].forEach((answer,i)=>{const b=document.createElement('button');b.textContent=String.fromCharCode(65+i)+'. '+answer;b.onclick=()=>respond(i);$('answers').append(b);});}
+function end(win){state.active=false;$('pass').disabled=true;$('start').textContent='RESTART BATTLE';$('answers').querySelectorAll('button').forEach(b=>b.disabled=true);$('notice').textContent=win?'VICTORY — Zombie defeated!':'DEFEAT — Party HP depleted.';log(win?'Victory!':'Defeat.');}
+function render(){if(!state)return;const s=state,c=s.c;$('ehp').textContent=Math.ceil(s.enemyHp)+' / '+c.zmax+' HP';$('ebar').style.width=Math.max(0,100*s.enemyHp/c.zmax)+'%';$('php').textContent=Math.ceil(s.partyHp)+' / '+c.pmax;$('pbar').style.width=Math.max(0,100*s.partyHp/c.pmax)+'%';$('enemytime').textContent=Math.max(0,s.attackRemaining).toFixed(1)+'s';s.charge.forEach((v,i)=>{$('g'+i).style.width=Math.min(100,v*100)+'%';$('pct'+i).textContent=Math.round(v*100)+'%';});$('hasteState').textContent=s.hasteRemaining>0?'HASTE '+Math.ceil(s.hasteRemaining)+'s':'Normal speed';}
+function makeSeats(){const root=$('party');root.replaceChildren();classes.forEach((c,i)=>{const card=document.createElement('div');card.className='seat';card.style.setProperty('--bar',c.color);card.innerHTML='<header><strong>'+c.name+'</strong><span class="kind '+(i===state.human?'human':'')+'">'+(i===state.human?'YOU':'NPC')+'</span></header><div class="gauge"><div id="g'+i+'"></div></div><div class="skill">'+c.skill+' · '+state.c.cd[i]+'s <span id="pct'+i+'" style="float:right">0%</span></div>';root.append(card);});const p=document.createElement('p');p.className='details';p.innerHTML='Charge speed: <strong id="hasteState">Normal speed</strong>';root.append(p);}
+function start(){cancelAnimationFrame(raf);const c=conf();state={c,human:Number($('role').value),enemyHp:c.zmax,partyHp:c.pmax,attackRemaining:c.enemycd,charge:[0,0,0,0],hasteRemaining:0,active:true};$('start').textContent='RESTART BATTLE';$('pass').disabled=false;$('notice').textContent='Answer questions to deal damage.';$('log').replaceChildren();$('float').textContent='';qindex=-1;makeSeats();newQuestion();render();last=performance.now();raf=requestAnimationFrame(tick);log('Training started. Shared party HP: '+c.pmax);}
+function skill(i){const s=state,c=s.c;if(i===0){const dmg=Math.round(c.correct*1.5);s.enemyHp=Math.max(0,s.enemyHp-dmg);float('BASH −'+dmg);log('Warrior uses Bash: '+dmg+' damage.');}
+if(i===1){s.attackRemaining+=c.freeze;float('FREEZE +'+c.freeze+'s');log('Mage uses Freeze: zombie attack delayed.');}
+if(i===2){const heal=Math.round(c.pmax*.20),before=s.partyHp;s.partyHp=Math.min(c.pmax,s.partyHp+heal);float('HEAL +'+Math.round(s.partyHp-before));log('Cleric heals '+Math.round(s.partyHp-before)+' shared HP.');}
+if(i===3){s.hasteRemaining=c.hastedur;float('HASTE ACTIVE');log('Bard uses Haste: ATB charge accelerated.');}
+if(s.enemyHp<=0)end(true);}
+function tick(now){if(!state?.active)return;const s=state,c=s.c,dt=Math.min((now-last)/1000,.2);last=now;
+const activeHaste=s.hasteRemaining>0;if(activeHaste)s.hasteRemaining=Math.max(0,s.hasteRemaining-dt);
+s.attackRemaining-=dt;let strikes=0;while(s.attackRemaining<=0 && strikes++<5 && s.active){s.attackRemaining+=c.enemycd;s.partyHp=Math.max(0,s.partyHp-c.strike);float('ZOMBIE STRIKE −'+c.strike);log('Zombie strike: party loses '+c.strike+' HP.');if(s.partyHp<=0)end(false);}
+for(let i=0;i<4&&s.active;i++){s.charge[i]+=dt*(activeHaste?1+c.haste:1)/c.cd[i];if(s.charge[i]>=1){s.charge[i]-=1;skill(i);}}
+render();if(s.active)raf=requestAnimationFrame(tick);}
+function respond(idx){if(!state?.active)return;const s=state,q=qs[qindex];if(idx===q[2]){s.enemyHp=Math.max(0,s.enemyHp-s.c.correct);float('CORRECT −'+s.c.correct);log('Correct: '+s.c.correct+' damage to zombie.');if(s.enemyHp<=0)end(true);}else{s.partyHp=Math.max(0,s.partyHp-s.c.wrong);s.charge[s.human]=Math.max(0,s.charge[s.human]-s.c.penalty/100);float('WRONG −'+s.c.wrong+' HP');log('Wrong: −'+s.c.wrong+' shared HP, −'+s.c.penalty+'% '+classes[s.human].name+' gauge.');if(s.partyHp<=0)end(false);}render();if(s.active)newQuestion();}
+$('start').addEventListener('click',start);$('pass').addEventListener('click',()=>{if(state?.active){log('Question passed.');newQuestion();}});
+draw();</script></body></html>
