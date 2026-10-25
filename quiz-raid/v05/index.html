@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QUIZ RAID — Tutorial v0.5</title><meta name="theme-color" content="#131a23">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#eff3f5;background:#131a23}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 0 0,#243944 0,transparent 36%),#131a23}
+a{color:#e8c788}button,select{font:inherit}button{cursor:pointer;background:#324555;border:1px solid #587082;color:#f4f4f1;border-radius:9px;padding:11px 15px;font-weight:650}button.primary{background:#e7c57c;color:#20231f;border-color:#e7c57c}button:disabled{opacity:.43;cursor:not-allowed}
+button:focus-visible{outline:3px solid #ffe4a8;outline-offset:2px}
+.wrap{max-width:980px;padding:15px;margin:auto}.top,.row{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.top{margin-bottom:10px}.brand{font-size:12px;color:#b8cbd6;letter-spacing:.13em}h1{font-size:24px;margin:3px 0 0}h2{margin:0 0 7px;font-size:21px}h3{font-size:16px;margin:0 0 8px}.muted{color:#aebfc9;font-size:13px;line-height:1.55}
+.pill{border:1px solid #86734f;background:#4b3f2e;color:#e8d0a4;padding:5px 9px;border-radius:20px;font-size:10px}
+.panel{background:#1e2935;border:1px solid #455464;border-radius:15px;padding:17px;margin:12px 0}
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:11px 0}
+.step{font-size:12px;text-align:center;padding:10px 2px;border-radius:7px;background:#202f39;color:#9badb9;border:1px solid #394b59}
+.step.active{background:#ad8750;color:#101a1b;border-color:#e3bd78;font-weight:700}.step.done{color:#d3ead6;background:#2d443a}
+.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.choice{border:1px solid #526676;border-radius:11px;padding:15px;background:#18232e;text-align:left;min-height:94px}
+.choice.selected{border:2px solid #e7c67f;background:#35382e}.choice strong{display:block;font-size:18px}.choice span{display:block;color:#a6b9c7;font-size:12px;margin-top:7px}.choice.selected span{color:#e7d6b0}
+.locked{filter:grayscale(1);opacity:.5;pointer-events:none}.skillbox{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.skillitem{background:#18232e;border:1px solid #556675;border-radius:10px;padding:12px}.skillitem.active{border:2px solid #d4b777;background:#2e372f}.skillitem strong{display:block}.skillitem small{color:#a9bbca}
+.tip{background:#34372e;border:1px solid #88744a;color:#f2e2b9;padding:9px 12px;font-size:12px;border-radius:9px;margin:12px 0}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:16px}
+.enemy{background:radial-gradient(ellipse at 50% 90%,#364b3d 0,transparent 56%),#17242e;border:1px solid #4b5a66;border-radius:12px;text-align:center;padding:12px;margin:11px 0}
+.enemy canvas{image-rendering:pixelated;width:140px;height:140px;display:block;margin:3px auto}
+.bar{height:12px;border-radius:7px;background:#101922;overflow:hidden}.bar>div{height:100%;background:#75b994;transition:width .15s linear}.bar.enemybar>div{background:#ca7565}
+.answerbar{margin:8px 0 14px}.answerbar>div{background:#dec078}
+.question{font-size:clamp(21px,4vw,28px);font-weight:740;margin:15px 0;line-height:1.35}
+.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.answers button{min-height:65px;text-align:left;font-size:17px;padding:13px}
+.party{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.seat{background:#14222d;border:1px solid #415666;border-radius:9px;padding:9px}
+.seat strong{display:block;font-size:12px}.seat small{color:#abbbc5;font-size:10px}.gauge{height:9px;border-radius:5px;background:#0b121b;overflow:hidden;margin-top:8px}.gauge>div{height:100%;background:var(--g);width:0;transition:width .1s linear}
+.feedback{min-height:23px;font-size:13px;font-weight:700;color:#e9d096}.status{font-size:12px;color:#aec1ce}
+.resultgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.metric{padding:17px;background:#13212b;border-radius:10px}.metric b{display:block;font-size:26px;color:#edcf88}.metric span{font-size:12px;color:#bdced8}
+.lobbygrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.lobbycard{padding:14px;border-radius:11px;background:#14222c;border:1px solid #455965}
+.small{font-size:11px;color:#abc0ca}.notice{padding:10px 12px;background:#2c392c;border:1px solid #63734f;border-radius:8px;font-size:12px}
+.hidden{display:none!important}.compact{margin-top:8px}#fx{height:24px;font-weight:850;color:#f6cd7c}#sprite.hit{animation:hit .25s}#sprite.attack{animation:attack .28s}
+@keyframes hit{50%{filter:brightness(2.3);transform:translateX(7px)}}@keyframes attack{50%{transform:scale(1.1)}}
+@media(max-width:640px){.wrap{padding:10px}.panel{padding:12px}.steps .step{font-size:10px}.cards,.lobbygrid{grid-template-columns:1fr}.party{grid-template-columns:1fr 1fr}.skillbox{grid-template-columns:1fr}.answers button{min-height:73px;font-size:16px}.enemy canvas{height:112px;width:112px}h1{font-size:19px}}
+</style></head><body><main class="wrap">
+<header class="top"><div><div class="brand">KUFU HIVE / QUIZ RAID</div><h1 id="headtitle">TUTORIAL <span class="pill">v0.5 · DEMO</span></h1></div><div><button id="language" type="button">日本語 / EN</button></div></header>
+<div class="steps" id="steps"></div>
+<section id="pageClass" class="panel"><h2 id="classTitle"></h2><p id="classDesc" class="muted"></p><div id="classes" class="cards"></div><div class="tip" id="classTip"></div><div class="actions"><span class="small" id="guestNote"></span><button class="primary" id="toSkill"></button></div></section>
+<section id="pageSkill" class="panel hidden"><h2 id="skillTitle"></h2><p class="muted" id="skillDesc"></p><div class="skillbox" id="skills"></div><div class="tip" id="skillTip"></div><div class="actions"><button id="backClass"></button><button class="primary" id="toQuest"></button></div></section>
+<section id="pageQuest" class="panel hidden"><h2 id="questTitle"></h2><p class="muted" id="questDesc"></p><div class="cards" id="quests"></div><div class="tip" id="questTip"></div><div class="actions"><button id="backSkill"></button><button class="primary" id="toBattle"></button></div></section>
+<section id="pageBattle" class="panel hidden">
+<div class="row"><h2 id="battleTitle"></h2><span id="wave" class="pill"></span></div>
+<div class="enemy"><div class="row"><strong id="enemyName"></strong><strong id="enemyHP"></strong></div><div class="bar enemybar"><div id="enemyBar" style="width:100%"></div></div><canvas width="48" height="48" id="sprite" aria-label="Original pixel monster"></canvas><div id="fx"></div><div class="status" id="enemyTimer"></div></div>
+<div class="row"><strong id="hpLabel"></strong><strong id="partyHP"></strong></div><div class="bar"><div id="hpBar" style="width:100%"></div></div>
+<div class="party compact" id="party"></div>
+<div class="row" style="margin-top:15px"><small id="questionLabel"></small><strong id="questionTime"></strong></div>
+<div class="bar answerbar"><div id="questionBar" style="width:100%"></div></div>
+<div class="question" id="question"></div><div class="answers" id="answers"></div><p class="feedback" id="feedback" aria-live="polite"></p>
+<div class="tip" id="battleTip"></div><div class="actions"><button id="pass"></button><button id="restart"></button></div>
+</section>
+<section id="pageBetween" class="panel hidden"><h2 id="betweenTitle"></h2><p id="betweenDesc" class="muted"></p><div class="tip" id="betweenTip"></div><div class="actions"><button class="primary" id="nextEnemy"></button></div></section>
+<section id="pageResult" class="panel hidden"><h2 id="resultTitle"></h2><p class="muted" id="resultDesc"></p><div class="resultgrid"><div class="metric"><b id="rDamage">0</b><span id="rDamageLabel"></span></div><div class="metric"><b id="rTime">00:00</b><span id="rTimeLabel"></span></div><div class="metric"><b id="rCorrect">0</b><span id="rCorrectLabel"></span></div><div class="metric"><b id="rPt">0</b><span id="rPtLabel"></span></div></div>
+<div class="tip" id="resultTip"></div><div class="actions"><button id="playAgain"></button><button class="primary" id="toLobby"></button></div></section>
+<section id="pageLobby" class="panel hidden"><h2 id="lobbyTitle"></h2><p id="lobbyDesc" class="muted"></p><div class="resultgrid"><div class="metric"><b id="lPt">0</b><span id="lPtLabel"></span></div><div class="metric"><b id="lClears">0</b><span id="lClearsLabel"></span></div></div>
+<div id="dailyBox" class="lobbycard" style="margin-top:12px"><h3 id="dailyTitle"></h3><p id="dailyText" class="muted"></p><button class="primary" id="claim"></button><p id="dailyStatus" class="small"></p></div>
+<div class="lobbygrid" style="margin-top:12px"><div class="lobbycard"><h3 id="coopTitle"></h3><p id="coopText" class="muted"></p><button disabled id="coopButton"></button></div><div class="lobbycard"><h3 id="registerTitle"></h3><p id="registerText" class="muted"></p><button disabled id="registerButton"></button></div></div>
+<div class="tip" id="lobbyTip"></div>
+<div class="actions"><button id="newTutorial"></button><a id="lobbyLink" href="https://anmi2.github.io/nextguess-site/quiz-raid/v04/"></a></div>
+</section>
+<p class="small" id="disclaimer"></p></main><script>
+'use strict';
+const $=id=>document.getElementById(id);
+const languageKey='qr_v05_lang',progressKey='qr_v05_guest';
+let language=(localStorage.getItem(languageKey)||((navigator.language||'').startsWith('ja')?'ja':'en'));
+const words={
+ja:{
+steps:['職業','スキル','クエスト','戦闘','リザルト'],classTitle:'1. 職業を選ぶ',classDesc:'好きな職業を1つ選んでください。残り3職はNPCが担当します。',classTip:'TIP：どの職でも回答できます。違うのは自動発動するスキルです。',guestNote:'ID登録はまだ必要ありません。',toSkill:'次へ：スキル',
+skillTitle:'2. スキルを選ぶ',skillDesc:'今は各職1つのスキルだけ使用できます。残りの候補は今後の成長要素です。',skillTip:'TIP：スキルは自動発動します。ATBゲージが満タンになるのを見てみよう。',available:'使用可能・装備中',locked:'未解放',lockedName:'未解放スキル',back:'戻る',toQuest:'次へ：クエスト',
+questTitle:'3. クエストを選択',questDesc:'初心者向けの短いクエストを用意しました。連戦をクリアすると仮パラゴンPTを獲得します。',questTip:'TIP：難易度★1の練習戦です。どちらも登録不要で繰り返し挑戦できます。',toBattle:'クエスト開始',two:'草原の巡回',twoDesc:'スライム → ウルフ（2戦）',three:'森の小道',threeDesc:'スライム → ジェリー → ウルフ（3戦）',
+battleTitle:'4. モンスターと戦う',hpLabel:'PT共通HP',questionLabel:'問題の残り時間',battleTip:'TIP：正解すると攻撃。時間経過で敵が攻撃し、スキルも自動発動します。',pass:'問題をパス',restart:'クエストをやり直す',enemyStrike:'敵の次の攻撃',correct:'正解',wrong:'不正解',timeOut:'時間切れ：次の問題へ',skillReady:'スキル発動',
+betweenTitle:'敵を撃破！',betweenDesc:'次の敵へ進みます。共通HPを回復してから次の戦闘を始めます。',betweenTip:'TIP：次の敵でも同じ職業・装備スキルで戦います。',nextEnemy:'次の敵へ',
+resultTitle:'5. クエストクリア',resultFail:'クエスト失敗',resultDesc:'戦績を確認しよう。PTはデモ用の仮ポイントです。',failDesc:'HPが尽きました。登録せずに何度でも再挑戦できます。',rDamageLabel:'自分の与ダメージ',rTimeLabel:'クリアタイム',rCorrectLabel:'正解数',rPtLabel:'今回の仮PT',resultTip:'TIP：PTは今後、職業スキルや回復・防御系の限定アイテム、クエスト解放に使う構想です。',playAgain:'もう一度挑戦',toLobby:'ロビーへ戻る',
+lobbyTitle:'ロビー — 冒険の拠点',lobbyDesc:'チュートリアルお疲れさまでした。まずは無料で遊んでから、記録を保存できるようにする方針です。',lPtLabel:'仮パラゴンPT（ブラウザ保存）',lClearsLabel:'クエストクリア回数',dailyTitle:'クエストクリア報酬',dailyText:'救援ルームがなくても、クエストクリア後にボタンで受け取れる報酬。デモでは1日1回、仮PTを10付与します。',claim:'報酬を受け取る (+10 PT)',claimed:'本日は受け取り済み',notEligible:'今日のクエストをクリアすると受け取れます',claimedNow:'+10 仮PTを受け取りました',coopTitle:'救援・共闘ボーナス',coopText:'他プレイヤーのルームに救援参加してクリアすると追加PTを獲得できる予定。オンライン実装後に利用できます。',coopButton:'救援ルーム（準備中）',registerTitle:'ID・パスワード登録',registerMore:'数プレイクリア後に記録保存の登録を案内します。まだ登録不要です。',registerReady:'3回のチュートリアルクリア達成！ ここでIDとPASSの登録導線を出す予定です。',registerButton:'登録機能（未実装）',lobbyTip:'TIP：PTで攻撃力を無制限に上げる予定はありません。クイズに答える力が戦闘の中心です。',newTutorial:'別の職業で遊ぶ',lobbyLink:'ミニゲーム・ランキングのロビーデモへ',disclaimer:'v0.5 ローカルデモ：ポイント・報酬はブラウザ内の仮記録です。オンライン対戦、アカウント登録、救援、公式ランキングには接続していません。',victory:'勝利',defeat:'敗北',player:'あなた',npc:'NPC'
+},
+en:{
+steps:['CLASS','SKILL','QUEST','BATTLE','RESULT'],classTitle:'1. Choose a class',classDesc:'Choose your class. NPCs fill the three remaining seats.',classTip:'TIP: Every class can answer. Only the automatic skill changes.',guestNote:'No account is needed yet.',toSkill:'Next: Skill',
+skillTitle:'2. Equip a skill',skillDesc:'Each class has one starter skill for now. Future choices are visible but locked.',skillTip:'TIP: Skills trigger automatically when their ATB gauges fill.',available:'Equipped · available',locked:'Locked',lockedName:'Future skill',back:'Back',toQuest:'Next: Quest',
+questTitle:'3. Pick a quest',questDesc:'Start with a few easy enemies. Clear them to earn demo Paragon PT.',questTip:'TIP: These are ★1 training quests. Replay freely without signup.',toBattle:'START QUEST',two:'Meadow Patrol',twoDesc:'Slime → Wolf (2 fights)',three:'Forest Path',threeDesc:'Slime → Jelly → Wolf (3 fights)',
+battleTitle:'4. Fight monsters',hpLabel:'SHARED PARTY HP',questionLabel:'ANSWER TIME',battleTip:'TIP: Correct answers attack. Enemy strikes and ally skills both run on timers.',pass:'PASS QUESTION',restart:'RESTART QUEST',enemyStrike:'Next enemy strike',correct:'Correct',wrong:'Wrong',timeOut:'Time expired: next question',skillReady:'Skill activated',
+betweenTitle:'ENEMY DEFEATED!',betweenDesc:'Prepare for the next encounter. Shared HP refreshes before the next fight.',betweenTip:'TIP: Your class and equipped skill remain the same throughout the quest.',nextEnemy:'NEXT ENEMY',
+resultTitle:'5. QUEST COMPLETE',resultFail:'QUEST FAILED',resultDesc:'Check your results. All Paragon PT values here are local demo points.',failDesc:'Shared HP ran out. You can retry without signing up.',rDamageLabel:'Your damage dealt',rTimeLabel:'Clear time',rCorrectLabel:'Correct answers',rPtLabel:'Demo PT earned',resultTip:'TIP: Future PT sinks may include class skills, limited defensive items, healing supplies, and quest unlocks.',playAgain:'TRY AGAIN',toLobby:'RETURN TO LOBBY',
+lobbyTitle:'LOBBY — ADVENTURE HUB',lobbyDesc:'Play first, then decide whether to create an account to preserve your progress.',lPtLabel:'Demo Paragon PT (this browser)',lClearsLabel:'Completed quests',dailyTitle:'Quest Clear Claim Bonus',dailyText:'No SOS rooms open? Claim a small reward after a quest clear. Demo: +10 PT once per local day.',claim:'CLAIM +10 DEMO PT',claimed:'Already claimed today',notEligible:'Clear a quest today to unlock the claim',claimedNow:'+10 demo PT claimed',coopTitle:'SOS / Co-op Bonus',coopText:'In the future, helping finish another player’s room will earn bonus PT. Online rooms are not connected yet.',coopButton:'SOS ROOMS (COMING LATER)',registerTitle:'ID / Password Registration',registerMore:'Finish a few training quests before creating an account to preserve progress.',registerReady:'Three tutorial clears complete! An ID/password registration flow will appear here in a future version.',registerButton:'REGISTRATION NOT BUILT',lobbyTip:'TIP: Paragon PT will not give unlimited attack power. Quiz skill is still the main factor.',newTutorial:'PLAY WITH ANOTHER CLASS',lobbyLink:'Open mini-games & rankings lobby demo',disclaimer:'v0.5 LOCAL DEMO: PT and claims are browser-only samples. No live rooms, registration, SOS, official rankings or server-verified rewards.',victory:'VICTORY',defeat:'DEFEAT',player:'YOU',npc:'NPC'
+}};
+const classes=[{name:{en:'WARRIOR',ja:'戦士'},skill:'BASH',desc:{en:'1.5× a correct hit',ja:'正解ダメージの1.5倍'},color:'#d6a062',cd:15},
+{name:{en:'MAGE',ja:'魔導士'},skill:'FREEZE',desc:{en:'Delay enemy attack',ja:'敵の攻撃を遅らせる'},color:'#80b0e6',cd:21},
+{name:{en:'CLERIC',ja:'僧侶'},skill:'HEAL',desc:{en:'Restore 20% shared HP',ja:'共通HPを20%回復'},color:'#8dce9e',cd:26},
+{name:{en:'BARD',ja:'吟遊詩人'},skill:'HASTE',desc:{en:'Faster skill charging',ja:'スキルの充填を加速'},color:'#c6a0e9',cd:32}];
+const enemies={slime:{name:{en:'Slime',ja:'スライム'},hp:64,strike:7,attack:15,kind:0},jelly:{name:{en:'Jelly',ja:'ジェリー'},hp:78,strike:8,attack:14,kind:1},wolf:{name:{en:'Wolf',ja:'ウルフ'},hp:96,strike:10,attack:13,kind:2}};
+const quests=[{id:'meadow',en:'Meadow Patrol',ja:'草原の巡回',desc:'two',list:['slime','wolf']},{id:'forest',en:'Forest Path',ja:'森の小道',desc:'three',list:['slime','jelly','wolf']}];
+const quiz=[
+{ja:'7 ＋ 8 は？',en:'What is 7 + 8?',jaA:['14','15','16','17'],enA:['14','15','16','17'],a:1},
+{ja:'6角形の辺は何本？',en:'How many sides has a hexagon?',jaA:['5','6','7','8'],enA:['5','6','7','8'],a:1},
+{ja:'12 × 3 は？',en:'What is 12 × 3?',jaA:['24','32','36','42'],enA:['24','32','36','42'],a:2},
+{ja:'太陽系で赤い惑星と呼ばれるのは？',en:'Which is called the Red Planet?',jaA:['火星','金星','土星','木星'],enA:['Mars','Venus','Saturn','Jupiter'],a:0},
+{ja:'1時間は何分？',en:'How many minutes are in an hour?',jaA:['30','45','60','90'],enA:['30','45','60','90'],a:2},
+{ja:'日本の首都は？',en:'What is the capital of Japan?',jaA:['大阪','京都','東京','名古屋'],enA:['Osaka','Kyoto','Tokyo','Nagoya'],a:2},
+{ja:'9 × 9 は？',en:'What is 9 × 9?',jaA:['72','81','90','99'],enA:['72','81','90','99'],a:1},
+{ja:'水の化学式は？',en:'What is the chemical formula of water?',jaA:['CO₂','O₂','H₂O','NaCl'],enA:['CO₂','O₂','H₂O','NaCl'],a:2},
+{ja:'英語の「Wolf」は何の動物？',en:'Which animal is a wolf?',jaA:['狼','狐','犬','猫'],enA:['Wolf','Fox','Dog','Cat'],a:0},
+{ja:'正方形の角はいくつ？',en:'How many corners does a square have?',jaA:['3','4','5','6'],enA:['3','4','5','6'],a:1},
+{ja:'20 − 7 は？',en:'What is 20 − 7?',jaA:['11','12','13','14'],enA:['11','12','13','14'],a:2},
+{ja:'2の5乗は？',en:'What is 2 to the power of 5?',jaA:['16','24','32','64'],enA:['16','24','32','64'],a:2}];
+function t(k){return (words[language][k]||k)}
+function set(id,txt){$(id).textContent=txt}
+let stored;
+try{stored=JSON.parse(localStorage.getItem(progressKey)||'{}')}catch{stored={}}
+let progress={pt:Number(stored.pt)||0,clears:Number(stored.clears)||0,lastClear:stored.lastClear||'',claimed:stored.claimed||''};
+function save(){localStorage.setItem(progressKey,JSON.stringify(progress));}
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+let page='Class',selectedClass=0,selectedQuest=0,battle=null,last=0,raf=0,qCursor=-1,questionNo=0;
+const pages=['Class','Skill','Quest','Battle','Between','Result','Lobby'];
+function show(p){page=p;pages.forEach(n=>{$('page'+n).classList.toggle('hidden',n!==p)});renderSteps();if(p==='Skill')renderSkills();if(p==='Quest')renderQuests();if(p==='Lobby')renderLobby();window.scrollTo(0,0);}
+function renderSteps(){const step={Class:0,Skill:1,Quest:2,Battle:3,Between:3,Result:4,Lobby:5}[page];$('steps').replaceChildren();words[language].steps.forEach((s,i)=>{const a=document.createElement('div');a.textContent=(i+1)+'. '+s;a.className='step '+(i<step?'done':i===step?'active':'');$('steps').append(a);});}
+function renderClasses(){$('classes').replaceChildren();classes.forEach((c,i)=>{const b=document.createElement('button');b.className='choice'+(i===selectedClass?' selected':'');const title=document.createElement('strong');title.textContent=c.name[language];const sub=document.createElement('span');sub.textContent=c.skill+' — '+c.desc[language];b.append(title,sub);b.onclick=()=>{selectedClass=i;renderClasses();};$('classes').append(b);});}
+function renderSkills(){$('skills').replaceChildren();const c=classes[selectedClass];for(let i=0;i<3;i++){const el=document.createElement('div');el.className='skillitem'+(i===0?' active':' locked');const h=document.createElement('strong');h.textContent=i===0?c.skill:t('lockedName')+' '+i;const p=document.createElement('small');p.textContent=i===0?c.desc[language]+' · '+t('available'):t('locked');el.append(h,p);$('skills').append(el);}}
+function renderQuests(){$('quests').replaceChildren();quests.forEach((q,i)=>{const b=document.createElement('button');b.className='choice'+(i===selectedQuest?' selected':'');const h=document.createElement('strong');h.textContent='★☆☆☆☆ '+q[language];const sub=document.createElement('span');sub.textContent=t(q.desc);b.append(h,sub);b.onclick=()=>{selectedQuest=i;renderQuests();};$('quests').append(b);});}
+function clock(n){n=Math.max(0,Math.floor(n));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+function drawMonster(kind){const canvas=$('sprite'),c=canvas.getContext('2d');c.clearRect(0,0,48,48);c.imageSmoothingEnabled=false;
+const r=(x,y,w,h,color)=>{c.fillStyle=color;c.fillRect(x,y,w,h);};
+if(kind===0||kind===1){
+const base=kind===0?'#72c9a3':'#bca5d9',shade=kind===0?'#468a76':'#8169a4',light=kind===0?'#9be5c1':'#e5d7f6';
+r(10,28,28,12,shade);r(13,18,22,22,base);r(17,13,14,26,base);r(20,9,8,32,base);r(14,25,20,8,light);r(17,25,4,5,'#23383f');r(27,25,4,5,'#23383f');r(21,34,6,2,'#34515b');r(12,38,24,4,'#335b58');}
+else {r(9,7,9,12,'#5c655f');r(30,7,9,12,'#5c655f');r(12,13,24,25,'#717c76');r(8,19,32,14,'#717c76');r(17,22,4,5,'#f4dbaa');r(27,22,4,5,'#f4dbaa');r(18,24,3,3,'#313639');r(28,24,3,3,'#313639');r(21,30,6,5,'#443d3d');r(13,37,9,5,'#4a5250');r(26,37,9,5,'#4a5250');r(18,10,12,7,'#87918b');}
+}
+function effect(txt,attack){set('fx',txt);const node=$('sprite');node.classList.remove('hit','attack');void node.offsetWidth;node.classList.add(attack?'attack':'hit');}
+function makeParty(){$('party').replaceChildren();classes.forEach((c,i)=>{const box=document.createElement('div');box.className='seat';box.style.setProperty('--g',c.color);const name=document.createElement('strong');name.textContent=c.name[language];const note=document.createElement('small');note.textContent=(i===selectedClass?t('player'):t('npc'))+' · '+c.skill;const gauge=document.createElement('div');gauge.className='gauge';const fill=document.createElement('div');fill.id='atb'+i;gauge.append(fill);box.append(name,note,gauge);$('party').append(box);});}
+function startQuest(){cancelAnimationFrame(raf);battle={quest:quests[selectedQuest],enemyIndex:0,enemyHp:0,enemyMax:0,partyHp:100,attackLeft:12,qLeft:22,charges:[0,0,0,0],haste:0,elapsed:0,damage:0,partyDamage:0,correct:0,mistakes:0,phase:'idle',resultPt:0};questionNo=0;qCursor=Math.floor(Math.random()*quiz.length);makeParty();beginEnemy();}
+function beginEnemy(){const b=battle,e=enemies[b.quest.list[b.enemyIndex]];b.enemyHp=e.hp;b.enemyMax=e.hp;b.attackLeft=e.attack;b.qLeft=22;b.phase='battle';drawMonster(e.kind);set('enemyName',e.name[language]);set('fx','');nextQuestion();show('Battle');last=performance.now();raf=requestAnimationFrame(tick);renderBattle();}
+function nextQuestion(){const b=battle;if(!b||b.phase!=='battle')return;qCursor=(qCursor+1)%quiz.length;const q=quiz[qCursor];b.qLeft=22;set('question',q[language]);$('answers').replaceChildren();q[language+'A'].forEach((value,i)=>{const btn=document.createElement('button');btn.textContent=String.fromCharCode(65+i)+'. '+value;btn.onclick=()=>answer(i);$('answers').append(btn);});questionNo++;}
+function stageWin(){const b=battle;b.phase='between';cancelAnimationFrame(raf);if(b.enemyIndex+1<b.quest.list.length){show('Between');set('betweenDesc',t('betweenDesc'));}else finish(true);}
+function finish(success){const b=battle;b.phase='done';cancelAnimationFrame(raf);b.resultPt=success?(12*b.quest.list.length+3*b.correct):0;if(success){progress.pt+=b.resultPt;progress.clears++;progress.lastClear=today();save();}
+set('resultTitle',success?t('resultTitle'):t('resultFail'));set('resultDesc',success?t('resultDesc'):t('failDesc'));set('rDamage',b.damage);set('rTime',clock(b.elapsed));set('rCorrect',b.correct);set('rPt','+'+b.resultPt);show('Result');}
+function nextStage(){battle.enemyIndex++;battle.partyHp=100;beginEnemy();}
+function hurt(n){battle.partyHp=Math.max(0,battle.partyHp-n);if(battle.partyHp<=0)finish(false);}
+function skill(i){const b=battle;if(i===0){const dmg=30;b.enemyHp=Math.max(0,b.enemyHp-dmg);b.partyDamage+=dmg;if(i===selectedClass)b.damage+=dmg;effect('BASH −'+dmg,false);}
+if(i===1){b.attackLeft+=5;effect('FREEZE +5s',false);}
+if(i===2){const recovered=Math.min(100-b.partyHp,20);b.partyHp+=recovered;effect('HEAL +'+recovered,false);}
+if(i===3){b.haste=12;effect('HASTE +40%',false);}
+if(b.enemyHp<=0)stageWin();}
+function answer(i){const b=battle;if(!b||b.phase!=='battle')return;const q=quiz[qCursor];
+if(i===q.a){const d=20;b.enemyHp=Math.max(0,b.enemyHp-d);b.damage+=d;b.partyDamage+=d;b.correct++;effect(t('correct')+' −'+d,false);if(b.enemyHp<=0){stageWin();renderBattle();return;}}
+else{hurt(8);b.mistakes++;b.charges[selectedClass]=Math.max(0,b.charges[selectedClass]-.3);effect(t('wrong')+' −8 HP',true);if(b.phase!=='battle')return;}
+nextQuestion();renderBattle();}
+function tick(now){const b=battle;if(!b||b.phase!=='battle')return;const dt=Math.min((now-last)/1000,.15);last=now;b.elapsed+=dt;b.qLeft-=dt;b.attackLeft-=dt;const boosted=b.haste>0;b.haste=Math.max(0,b.haste-dt);
+if(b.qLeft<=0){set('feedback',t('timeOut'));nextQuestion();}
+if(b.attackLeft<=0){const e=enemies[b.quest.list[b.enemyIndex]];b.attackLeft+=e.attack;hurt(e.strike);effect('−'+e.strike+' HP',true);if(b.phase!=='battle'){renderBattle();return;}}
+for(let i=0;i<4;i++){if(b.phase!=='battle')break;b.charges[i]+=dt*(boosted?1.4:1)/classes[i].cd;if(b.charges[i]>=1){b.charges[i]-=1;skill(i);}}
+renderBattle();if(b.phase==='battle')raf=requestAnimationFrame(tick);}
+function renderBattle(){const b=battle;if(!b)return;set('wave',(b.enemyIndex+1)+' / '+b.quest.list.length);set('enemyHP',Math.ceil(b.enemyHp)+' / '+b.enemyMax);
+$('enemyBar').style.width=Math.max(0,100*b.enemyHp/b.enemyMax)+'%';set('partyHP',Math.ceil(b.partyHp)+' / 100');$('hpBar').style.width=Math.max(0,b.partyHp)+'%';
+$('questionBar').style.width=Math.max(0,100*b.qLeft/22)+'%';set('questionTime',Math.max(0,b.qLeft).toFixed(1)+'s');
+set('enemyTimer',t('enemyStrike')+': '+Math.max(0,b.attackLeft).toFixed(1)+'s');
+for(let i=0;i<4;i++){const atb=$('atb'+i);if(atb)atb.style.width=Math.max(0,Math.min(100,b.charges[i]*100))+'%';}}
+function renderLobby(){set('lPt',progress.pt);set('lClears',progress.clears);const eligible=progress.lastClear===today(),already=progress.claimed===today();$('claim').disabled=!eligible||already;set('claim',already?t('claimed'):!eligible?t('notEligible'):t('claim'));set('dailyStatus',already?t('claimed'):'');set('registerText',progress.clears>=3?t('registerReady'):t('registerMore'));}
+function claimBonus(){if(progress.lastClear!==today()||progress.claimed===today())return;progress.pt+=10;progress.claimed=today();save();renderLobby();set('dailyStatus',t('claimedNow'));}
+function translate(){
+document.documentElement.lang=language;localStorage.setItem(languageKey,language);
+const simple=['classTitle','classDesc','classTip','guestNote','toSkill','skillTitle','skillDesc','skillTip','toQuest','questTitle','questDesc','questTip','toBattle','battleTitle','hpLabel','questionLabel','battleTip','pass','restart','betweenTitle','betweenDesc','betweenTip','nextEnemy','rDamageLabel','rTimeLabel','rCorrectLabel','rPtLabel','resultTip','playAgain','toLobby','lobbyTitle','lobbyDesc','lPtLabel','lClearsLabel','dailyTitle','dailyText','coopTitle','coopText','coopButton','registerTitle','registerButton','lobbyTip','newTutorial','lobbyLink','disclaimer'];
+simple.forEach(id=>set(id,t(id)));set('backClass',t('back'));set('backSkill',t('back'));renderClasses();if(page==='Skill')renderSkills();if(page==='Quest')renderQuests();if(battle&&page==='Battle'){makeParty();set('enemyName',enemies[battle.quest.list[battle.enemyIndex]].name[language]);nextQuestion();renderBattle();}
+if(page==='Lobby')renderLobby();renderSteps();
+}
+$('language').onclick=()=>{language=language==='ja'?'en':'ja';translate();};
+$('toSkill').onclick=()=>show('Skill');$('backClass').onclick=()=>show('Class');$('toQuest').onclick=()=>show('Quest');$('backSkill').onclick=()=>show('Skill');$('toBattle').onclick=startQuest;
+$('nextEnemy').onclick=nextStage;$('pass').onclick=()=>{if(battle?.phase==='battle')nextQuestion();};$('restart').onclick=startQuest;
+$('playAgain').onclick=()=>show('Class');$('toLobby').onclick=()=>show('Lobby');$('newTutorial').onclick=()=>show('Class');$('claim').onclick=claimBonus;
+translate();show('Class');
+</script></body></html>
