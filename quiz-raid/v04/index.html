@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#151b23"><title>Quiz Raid | Lobby Lab v0.4</title>
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#12171f;color:#eef2f5;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 6% 0,#233d43 0,transparent 42%),radial-gradient(ellipse at 98% 100%,#3c3027 0,transparent 43%),#12171f;min-height:100vh}
+button,input,select{font:inherit}button{cursor:pointer;transition:background .12s}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #edd08b;outline-offset:3px}
+button{border:1px solid #526476;border-radius:9px;color:#eef2f5;background:#2c3e50;padding:10px 13px;font-weight:650}button:disabled{cursor:not-allowed;opacity:.55}
+a{color:#efd391}.wrap{max-width:1050px;margin:auto;padding:15px 16px 42px}
+header.top{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:4px 0 13px}
+.eyebrow{color:#c0a674;font-size:11px;letter-spacing:.19em;font-weight:700}.top h1{margin:3px 0 4px;font-size:clamp(22px,3vw,31px)}
+.lead{margin:0;color:#b8c3cc;font-size:13px}.tag{display:inline-block;background:#433922;color:#f6d28e;border:1px solid #78663e;border-radius:15px;padding:5px 9px;font-size:11px;font-weight:700}
+.lang{display:flex;gap:6px}.lang button{padding:7px 10px;background:#222d39}.lang button.active{background:#846b41;color:white}
+nav.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+nav.tabs button{background:#202b37;border-color:#465464;text-align:center}nav.tabs button.active{background:#e2bd76;border-color:#f1d395;color:#26251f}
+.panel{background:#1f2a35;border:1px solid #415367;border-radius:15px;padding:17px;margin:12px 0;box-shadow:0 10px 30px #0002}
+h2{font-size:19px;margin:0 0 8px}h3{font-size:15px;margin:0 0 5px}
+.muted{color:#abbac6}.mini{font-size:12px;color:#adb9c5}.sectiontitle{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.tile{background:#16212b;border:1px solid #3b4e5c;border-radius:11px;padding:13px}
+.tile.sos{border-color:#a77b4f}.row{display:flex;align-items:center;justify-content:space-between;gap:8px}.roomname{font-size:15px;font-weight:800}.roomstatus{font-size:12px;color:#abbac6;margin:9px 0}.badge{display:inline-block;font-size:10px;padding:4px 6px;background:#344352;border-radius:5px;color:#d5e0e7}
+.badge.alert{background:#643d30;color:#ffd6b4}.primary{background:#e4be74;color:#22251d;border-color:#f3d18b}.secondary{background:#273644}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.actions button{flex:1;min-width:130px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.stat{padding:10px;background:#141d27;border-radius:9px;text-align:center}.stat strong{display:block;font-size:19px;color:#ead19a}.stat span{font-size:11px;color:#bac8d4}
+.rowform{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.rowform label{font-size:13px;display:flex;align-items:center;gap:6px}.rowform input,.rowform select{background:#111b25;color:#edf2f7;border:1px solid #56697d;padding:10px;border-radius:9px;min-width:0}
+.lboard{display:grid;gap:7px}.rankline{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;background:#131f29;border-radius:9px;padding:12px}.rankline b{color:#e2c586}.rankline em{font-style:normal;font-variant-numeric:tabular-nums}
+.ranktabs{display:flex;flex-wrap:wrap;gap:7px;margin:13px 0}.ranktabs button.active,.subtabs button.active{background:#8e7547;color:white}
+.notice{border-left:3px solid #dab772;padding:10px;background:#3b3426;border-radius:6px;color:#e4d1ae;font-size:12px}
+.minigames{display:grid;grid-template-columns:1fr 1fr;gap:13px}.game{background:#14212b;border:1px solid #465a6a;border-radius:11px;padding:13px}.game h3{font-size:17px}
+.game small{display:block;color:#b7c9d4;margin-bottom:10px}
+.sudoku{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));width:min(100%,330px);aspect-ratio:1;border:3px solid #b6c5ce;background:#b6c5ce;margin:12px auto;gap:0}
+.cell{width:100%;min-width:0;min-height:0;border:1px solid #8c9aa7;border-radius:0;padding:0;background:#eff2ef;color:#25313b;text-align:center;font-weight:750;font-size:clamp(17px,2.7vw,23px);appearance:none;-webkit-appearance:none}
+.cell.given{background:#c5d7d7;color:#21343d}.cell.boxright{border-right:3px solid #536e78}.cell.boxbottom{border-bottom:3px solid #536e78}
+.cell.wrong{background:#f4c9be;color:#793626}.cell.correct{background:#d9efde}
+.gamefooter{display:flex;align-items:center;justify-content:space-between;gap:7px;font-size:12px;color:#c2d3dc;flex-wrap:wrap}
+.bigquestion{font-size:clamp(27px,4.5vw,38px);font-weight:750;text-align:center;margin:24px 0;color:#f0dda6}
+.answers{display:grid;grid-template-columns:1fr 1fr;gap:8px}.answers button{min-height:55px;font-size:20px}
+.outcome{min-height:27px;margin:10px 0;color:#f0d08a;font-size:13px}
+details.panel summary{cursor:pointer;font-weight:700} [hidden]{display:none!important}
+@media(max-width:740px){.cards,.minigames{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.panel{padding:12px}.wrap{padding:12px}.rowform{align-items:stretch}.rowform label{flex:1;justify-content:space-between}.rowform input,.rowform select{width:140px}.cell{font-size:22px}.top h1{font-size:23px}}
+</style></head><body><main class="wrap">
+<header class="top"><div><div class="eyebrow">KUFU HIVE / QUIZ RAID</div><h1>ADVENTURERS' LOBBY <span class="tag">v0.4 DEMO</span></h1><p class="lead" id="lead"></p></div><div class="lang"><button type="button" id="en">EN</button><button type="button" id="ja">日本語</button></div></header>
+<nav class="tabs"><button id="navbattle" class="active" type="button"></button><button id="navrank" type="button"></button><button id="navgames" type="button"></button></nav>
+<section id="viewbattle">
+<div class="panel"><div class="sectiontitle"><h2 id="titletrain"></h2><span class="badge" id="noreg"></span></div><p class="muted" id="trainingdesc"></p>
+<div class="cards" id="training"></div></div>
+<div class="panel"><div class="sectiontitle"><h2 id="roomtitle"></h2><span class="badge alert">SAMPLE / OFFLINE</span></div><p class="muted" id="roomdesc"></p><div class="cards" id="rooms"></div>
+<div class="rowform" style="margin-top:15px"><label><span id="monsterlabel"></span><select id="monster"><option>Zombie</option><option>Wolf</option><option>Jelly</option></select></label><label><span id="roompasslabel"></span><input id="roompass" type="text" autocomplete="off" maxlength="24" placeholder="Optional"></label><button class="primary" id="makeroom"></button></div>
+<p class="mini" id="roomnotice" aria-live="polite"></p></div>
+<div class="panel"><h2 id="sostitle"></h2><p class="muted" id="sosdesc"></p><div class="stats"><div class="stat"><strong>4</strong><span>FIXED CLASS SLOTS</span></div><div class="stat"><strong>1–4</strong><span>HUMANS / PARTY</span></div><div class="stat"><strong>3</strong><span>BOT ALLIES (SOLO)</span></div><div class="stat"><strong>v0.3</strong><span>COMBAT BASELINE</span></div></div></div>
+</section>
+<section id="viewrank" hidden>
+<div class="panel"><div class="sectiontitle"><h2 id="ranktitle"></h2><span class="badge alert">SAMPLE DATA ONLY</span></div><p class="muted" id="rankdesc"></p><div class="ranktabs" id="ranktabs"></div><p class="mini" id="rankdetail"></p><div class="lboard" id="leaderboard"></div></div>
+<div class="panel"><h2 id="futuretitle"></h2><p class="muted" id="futuredesc"></p></div>
+</section>
+<section id="viewgames" hidden>
+<div class="panel"><div class="sectiontitle"><h2 id="gametitle"></h2><span class="badge">LOCAL GAMES</span></div><p class="muted" id="gamedesc"></p>
+<div class="minigames">
+<div class="game"><h3>6×6 SUDOKU</h3><small id="sudokudesc"></small><div class="gamefooter"><span id="sudokutime">00:00</span><span id="sudokubest"></span></div><div class="sudoku" id="sudokugrid" aria-label="Six by six Sudoku"></div><div class="gamefooter"><button type="button" id="newpuzzle"></button><button type="button" id="checkpuzzle"></button></div><p class="outcome" id="sudokumsg" aria-live="polite"></p></div>
+<div class="game"><h3 id="mathname"></h3><small id="mathdesc"></small><div class="gamefooter"><span id="mathprogress">0 / 10</span><span id="mathclock">00:00</span><span id="mathbest"></span></div><div class="bigquestion" id="mathquestion">? + ?</div><div class="answers" id="mathanswers"></div><p class="outcome" id="mathmsg" aria-live="polite"></p><div class="gamefooter"><button class="primary" id="mathstart"></button><span class="mini" id="mathhint"></span></div></div>
+</div></div>
+</section>
+<details class="panel"><summary id="abouttitle"></summary><p id="aboutbody" class="muted"></p><a href="https://github.com/anmi2/quiz-raid/blob/main/docs/lobby-sos-onboarding.md">GitHub — Lobby Specification</a></details>
+</main><script>
+'use strict';
+const $=id=>document.getElementById(id);
+const text={
+en:{lead:'Battle alone, answer an SOS, or play a puzzle between fights.',navbattle:'BATTLES',navrank:'RANKINGS',navgames:'MINI GAMES',
+titletrain:'TRAINING — PLAY BEFORE SIGNUP',noreg:'NO ID REQUIRED',trainingdesc:'Try different classes against easy enemies. Completing several tutorials will lead to ID/password registration later. For this v0.4 demo, only Zombie combat is connected.',
+roomtitle:'ACTIVE ROOMS',roomdesc:'These rooms are EXAMPLES, not live players. You can create a local simulated room. No server, accounts, or real-time join yet.',
+monsterlabel:'Enemy',roompasslabel:'Room password',makeroom:'CREATE LOCAL ROOM',roomcreated:'Local demo room created (not online).',roomempty:'Select a training battle below to test combat.',
+sostitle:'SOS RESCUE — PLANNED',sosdesc:'In the future, a player will signal for help from an active room. Strangers can replace NPC seats and earn rescue achievements. Rescue alerts here are simulated only.',
+ranktitle:'LOBBY LEADERBOARDS',rankdesc:'Representative layout with invented entries. No live leaderboard is available. Scores are not associated with real accounts.',
+futuretitle:'FAIR RANKING RULES',futuredesc:'Damage, kills, speed and rescues will be verified by the server. Different enemies, difficulties, party sizes and NPC contributions need careful scoring rules.',
+gametitle:'MINI GAMES',gamedesc:'Playable in the lobby without signup. Best personal times are saved only in this browser. These games do not award Paragon PT or affect the sample leaderboards.',
+sudokudesc:'Fill 1–6 in each row, column and 2×3 box.',newpuzzle:'NEW PUZZLE',checkpuzzle:'CHECK GRID',mathname:'ARITHMETIC SPRINT',
+mathdesc:'Answer 10 arithmetic questions. Wrong choices count as errors, but you can keep playing.',mathstart:'START 10 QUESTIONS',mathhint:'Fast, simple mental calculations',
+abouttitle:'WHAT IS LIVE AND WHAT IS DEMO?',aboutbody:'6×6 Sudoku and Arithmetic Sprint work in your browser. Combat opens the separate playable v0.3 page. Room lists, SOS indicators, rankings and registration progression are currently visual/local simulations only.',
+play:'PLAY ZOMBIE TEST',planned:'PLANNED',join:'TRY LOCAL BATTLE',localroom:'LOCAL DEMO ROOM',sos:'SOS SIGNAL',locked:'PASSWORD ROOM',open:'OPEN ROOM',
+checkgood:'Solved! Excellent.',checkbad:'Not quite — check the highlighted entries.',checkmissing:'Keep going. Some cells are empty.',localbest:'Best',time:'Time',mathready:'Press Start to begin.',mathgood:'Correct',mathbad:'Wrong',mathdone:'Completed',mathscore:'Score',newmath:'RESTART 10 QUESTIONS',puzzlestart:'Puzzle ready — timer starts on first entry.'},
+ja:{lead:'ソロ戦・救援参加・ミニゲームを楽しむ冒険者ロビー',navbattle:'バトル',navrank:'ランキング',navgames:'ミニゲーム',
+titletrain:'チュートリアル — 登録せずに遊ぶ',noreg:'ID登録不要',trainingdesc:'簡単な敵との戦闘で職業を試そう。数戦クリア後にID・パスワード登録を案内する予定。現時点で起動できるのはゾンビ戦のデモのみ。',
+roomtitle:'戦闘中のルーム',roomdesc:'一覧は架空のサンプルで、実際のプレイヤーではありません。ローカルの模擬ルームを作れますが、オンライン接続は未実装です。',
+monsterlabel:'敵',roompasslabel:'ルームパス',makeroom:'模擬ルーム作成',roomcreated:'模擬ルームを作成しました（オンラインには公開されません）。',roomempty:'戦闘デモはチュートリアルから起動できます。',
+sostitle:'救援信号 — 今後実装',sosdesc:'将来は戦闘中に救援信号を出して、野良プレイヤーがNPC枠と交代して参戦できる予定。救援勲章・救援ランキングも構想中。表示中のSOSは模擬データです。',
+ranktitle:'ロビーランキング',rankdesc:'レイアウト検証用の架空データです。実際のプレイヤー記録やランキングではありません。',
+futuretitle:'公平なランキングに向けて',futuredesc:'ダメージ・討伐・速度・救援は将来サーバー側で検証する。敵の種類・難度・人間の参加人数・NPC与ダメージを分けて集計する予定。',
+gametitle:'ミニゲーム',gamedesc:'登録なしでプレイ可能。自己ベストはこのブラウザだけに保存されます。パラゴンPTやランキングにはまだ反映されません。',
+sudokudesc:'各行・列・2×3ブロックに1〜6を一度ずつ入れる。',newpuzzle:'新しい問題',checkpuzzle:'答えを確認',mathname:'計算スプリント',
+mathdesc:'計算問題10問。間違っても続行でき、正解数とタイムを計測。',mathstart:'10問スタート',mathhint:'暗算の練習',
+abouttitle:'実装済みと未実装の区別',aboutbody:'6×6数独と計算ゲームはブラウザ上で遊べます。戦闘は別のv0.3ページに移動します。ルーム・救援・ランキング・登録導線はデモ表示のみで、実際の接続はありません。',
+play:'ゾンビ戦へ',planned:'開発予定',join:'ローカル戦闘デモへ',localroom:'模擬ルーム',sos:'救援中',locked:'パスあり',open:'公開',
+checkgood:'クリア！',checkbad:'間違ったマスがあるので確認してみよう。',checkmissing:'未入力のマスがあります。',localbest:'自己ベスト',time:'経過時間',mathready:'スタートで出題します。',mathgood:'正解',mathbad:'不正解',mathdone:'終了',mathscore:'正解数',newmath:'もう一度10問',puzzlestart:'問題生成完了。最初の入力から計測。'}
+};
+let lang=(localStorage.getItem('quizraid_lang')||((navigator.language||'').startsWith('ja')?'ja':'en'));
+function t(k){return text[lang][k]||k}
+const ranks={
+damage:{en:'DAMAGE',ja:'与ダメージ',note_en:'Individual battle damage (NPC contribution requires separate attribution).',note_ja:'個人の与ダメージ。NPCの攻撃分は区別が必要。',unit:'DMG',players:[['FOX',18920],['BEE',16840],['OWL',15080],['CAT',12760],['RIN',11040]]},
+kills:{en:'DEFEATS',ja:'討伐数',note_en:'Definition of kill credit still under consideration.',note_ja:'討伐の計上条件（参加・ラストヒット等）は未確定。',unit:'KILLS',players:[['CAT',42],['FOX',39],['BEE',33],['RIN',29],['OWL',25]]},
+speed:{en:'FASTEST CLEAR',ja:'最速クリア',note_en:'Illustrative time trial (same enemy and party composition required).',note_ja:'同一の敵・PT条件で比較する想定。',unit:'',players:[['OWL','00:41.2'],['BEE','00:47.1'],['FOX','00:50.8'],['RIN','00:53.4'],['CAT','00:57.2']]},
+rescue:{en:'SOS ASSISTS',ja:'救援',note_en:'Successful rescue contribution counting is not finalized.',note_ja:'救援成功の定義・不正防止は未確定。',unit:'ASSISTS',players:[['BEE',27],['RIN',24],['CAT',21],['FOX',19],['OWL',13]]}
+};
+let tab='battle', ranktab='damage', roomCount=4;
+const samples=[{id:'001',name:'FOX',enemy:'Zombie',slots:1,sos:true,locked:false},{id:'002',name:'BEE',enemy:'Wolf',slots:2,sos:false,locked:false},{id:'003',name:'CAT',enemy:'Zombie',slots:3,sos:true,locked:true}];
+const combatUrl='https://anmi2.github.io/nextguess-site/quiz-raid/v03/';
+function swapTab(which){tab=which;['battle','rank','games'].forEach(x=>{$('view'+x).hidden=x!==which;$('nav'+x).classList.toggle('active',x===which)});}
+function renderTraining(){let names=[['Jelly',false],['Wolf',false],['Zombie',true]];$('training').replaceChildren();
+names.forEach((v,i)=>{let card=document.createElement('div');card.className='tile';let h=document.createElement('h3');h.textContent=(i+1)+'. '+v[0];let p=document.createElement('p');p.className='mini';p.textContent=v[1]?(lang==='ja'?'4職ATB・共通HPの戦闘テスト':'Four-class ATB battle test'):(lang==='ja'?'職業を変えて試すチュートリアル（準備中）':'Class training encounter (coming later)');
+let b=document.createElement('button');b.className=v[1]?'primary':'';b.textContent=v[1]?t('play'):t('planned');b.disabled=!v[1];if(v[1])b.onclick=()=>window.location.href=combatUrl;card.append(h,p,b);$('training').append(card);});
+}
+function roomCard(r){let card=document.createElement('div');card.className='tile'+(r.sos?' sos':'');let top=document.createElement('div');top.className='row';let title=document.createElement('span');title.className='roomname';title.textContent='ROOM '+r.id;let badge=document.createElement('span');badge.className='badge'+(r.sos?' alert':'');badge.textContent=r.sos?t('sos'):(r.locked?t('locked'):t('open'));top.append(title,badge);let p=document.createElement('div');p.className='roomstatus';p.textContent='ID: '+r.name+' — '+r.enemy+' | '+r.slots+'/4';let act=document.createElement('div');act.className='actions';
+let b=document.createElement('button');b.className='secondary';b.textContent=t('join');b.onclick=()=>{ $('roomnotice').textContent=(lang==='ja'?'オンライン参加は未実装のため戦闘デモを開きます。':'Online join is not implemented. Opening the local battle demo.'); window.location.href=combatUrl;};act.append(b);
+if(r.mine){let sos=document.createElement('button');sos.textContent=r.sos?(lang==='ja'?'救援を停止':'STOP LOCAL SOS'):(lang==='ja'?'救援を表示':'SHOW LOCAL SOS');sos.onclick=()=>{r.sos=!r.sos;renderRooms();};act.append(sos);}
+card.append(top,p,act);return card;}
+function renderRooms(){$('rooms').replaceChildren();samples.forEach(r=>$('rooms').append(roomCard(r)));}
+function makeRoom(){const pw=$('roompass').value.trim();samples.unshift({id:String(roomCount++).padStart(3,'0'),name:'YOU',enemy:$('monster').value,slots:1,sos:false,locked:!!pw,mine:true});$('roompass').value='';renderRooms();$('roomnotice').textContent=t('roomcreated');}
+function renderRanks(){$('ranktabs').replaceChildren();for(const [k,v] of Object.entries(ranks)){const b=document.createElement('button');b.textContent=v[lang];b.className=k===ranktab?'active':'';b.onclick=()=>{ranktab=k;renderRanks();};$('ranktabs').append(b);}const v=ranks[ranktab];$('rankdetail').textContent=v['note_'+lang];$('leaderboard').replaceChildren();v.players.forEach((p,i)=>{let line=document.createElement('div');line.className='rankline';const n=document.createElement('b');n.textContent='#'+(i+1);const name=document.createElement('span');name.textContent=p[0];const value=document.createElement('em');value.textContent=p[1]+' '+v.unit;line.append(n,name,value);$('leaderboard').append(line);});}
+function translate(){document.documentElement.lang=lang;localStorage.setItem('quizraid_lang',lang);['en','ja'].forEach(x=>$(x).classList.toggle('active',x===lang));
+['lead','navbattle','navrank','navgames','titletrain','noreg','trainingdesc','roomtitle','roomdesc','monsterlabel','roompasslabel','makeroom','sostitle','sosdesc','ranktitle','rankdesc','futuretitle','futuredesc','gametitle','gamedesc','sudokudesc','newpuzzle','checkpuzzle','mathname','mathdesc','mathhint','abouttitle','aboutbody'].forEach(id=>$(id).textContent=t(id));
+renderTraining();renderRooms();renderRanks();$('mathstart').textContent=math.active?t('newmath'):t('mathstart');$('mathmsg').textContent=math.active?'':t('mathready');$('roomnotice').textContent='';renderBest();}
+// Sudoku: 6 rows × 6 columns, 2-row × 3-column sub-boxes; generator deletes cells while retaining a unique solution.
+let sudoku={solution:[],puzzle:[],start:null,elapsed:0,completed:false,timer:null};
+const shuffle=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+function pattern(r,c){return (Math.floor(r/2)+(r%2)*3+c)%6;}
+function generateSolution(){
+const rows=shuffle([0,1,2]).flatMap(b=>shuffle([0,1]).map(r=>2*b+r)),cols=shuffle([0,1]).flatMap(s=>shuffle([0,1,2]).map(c=>3*s+c)),nums=shuffle([1,2,3,4,5,6]);
+return rows.flatMap(r=>cols.map(c=>nums[pattern(r,c)]));
+}
+function countSolutions(a,limit=2){let pos=-1,best=null;
+for(let i=0;i<36;i++){if(a[i]!==0)continue;const r=Math.floor(i/6),c=i%6,used=new Set();
+for(let k=0;k<6;k++){used.add(a[r*6+k]);used.add(a[k*6+c]);}
+for(let rr=2*Math.floor(r/2);rr<2*Math.floor(r/2)+2;rr++)for(let cc=3*Math.floor(c/3);cc<3*Math.floor(c/3)+3;cc++)used.add(a[rr*6+cc]);
+const opts=[1,2,3,4,5,6].filter(n=>!used.has(n));if(!opts.length)return 0;if(!best||opts.length<best.length){pos=i;best=opts;if(opts.length===1)break;}}
+if(pos<0)return 1;let count=0;for(const v of best){a[pos]=v;count+=countSolutions(a,limit-count);a[pos]=0;if(count>=limit)return count;}return count;}
+function newSudoku(){clearInterval(sudoku.timer);sudoku={solution:generateSolution(),puzzle:[],start:null,elapsed:0,completed:false,timer:null};
+const a=sudoku.solution.slice();let removed=0;for(const i of shuffle(Array.from({length:36},(_,i)=>i))){if(removed>=20)break;const prev=a[i];a[i]=0;if(countSolutions(a.slice(),2)!==1){a[i]=prev;}else removed++;}
+sudoku.puzzle=a;sudokuRender();$('sudokumsg').textContent=t('puzzlestart');$('sudokutime').textContent='00:00';}
+function sudokuRender(){$('sudokugrid').replaceChildren();for(let i=0;i<36;i++){const input=document.createElement('input');input.className='cell'+(sudoku.puzzle[i]?' given':'')+(i%6===2?' boxright':'')+(Math.floor(i/6)===1||Math.floor(i/6)===3?' boxbottom':'');input.setAttribute('aria-label','row '+(Math.floor(i/6)+1)+' column '+(i%6+1));input.inputMode='numeric';input.maxLength=1;input.pattern='[1-6]';input.value=sudoku.puzzle[i]||'';input.readOnly=!!sudoku.puzzle[i];input.dataset.i=i;input.addEventListener('input',()=>{input.value=/^[1-6]$/.test(input.value)?input.value:'';input.classList.remove('wrong');if(!sudoku.start){sudoku.start=Date.now();sudoku.timer=setInterval(()=>{sudoku.elapsed=(Date.now()-sudoku.start)/1000;$('sudokutime').textContent=clock(sudoku.elapsed);},250);}if(sudoku.completed)return;const vals=[...document.querySelectorAll('.cell')].map(e=>Number(e.value)||0);if(vals.every(Boolean)&&vals.every((v,j)=>v===sudoku.solution[j]))sudokuWin();});$('sudokugrid').append(input);}}
+function clock(n){n=Math.max(0,Math.floor(n));return String(Math.floor(n/60)).padStart(2,'0')+':'+String(n%60).padStart(2,'0');}
+function sudokuWin(){if(sudoku.completed)return;sudoku.completed=true;clearInterval(sudoku.timer);$('sudokumsg').textContent=t('checkgood')+' '+clock(sudoku.elapsed);for(const c of document.querySelectorAll('.cell')){c.readOnly=true;c.classList.add('correct');}const prev=Number(localStorage.getItem('quizraid_sudoku_best'))||Infinity;if(sudoku.elapsed<prev)localStorage.setItem('quizraid_sudoku_best',String(sudoku.elapsed));renderBest();}
+function sudokuCheck(){if(sudoku.completed)return;let empty=0,wrong=0;document.querySelectorAll('.cell').forEach((e,i)=>{const v=Number(e.value)||0;e.classList.remove('wrong');if(!v)empty++;else if(v!==sudoku.solution[i]){wrong++;e.classList.add('wrong');}});if(!empty&&!wrong){sudokuWin();return;}$('sudokumsg').textContent=wrong?t('checkbad'):t('checkmissing');}
+let math={active:false,index:0,score:0,started:null,elapsed:0,answer:0};
+function mathQuestion(){const a=2+Math.floor(Math.random()*19),b=2+Math.floor(Math.random()*19);const op=['+','−','×'][Math.floor(Math.random()*3)];math.answer=op==='+'?a+b:op==='−'?a-b:a*b;const set=new Set([math.answer]);while(set.size<4){const delta=(1+Math.floor(Math.random()*12))*(Math.random()<.5?-1:1);set.add(math.answer+delta);}const choices=shuffle([...set]);$('mathquestion').textContent=a+' '+op+' '+b+' = ?';$('mathanswers').replaceChildren();choices.forEach(v=>{let btn=document.createElement('button');btn.textContent=String(v);btn.onclick=()=>mathAnswer(v);$('mathanswers').append(btn);});$('mathprogress').textContent=(math.index+1)+' / 10';}
+function mathStart(){math={active:true,index:0,score:0,started:Date.now(),elapsed:0,answer:0};$('mathstart').textContent=t('newmath');$('mathmsg').textContent='';mathQuestion();}
+function mathAnswer(v){if(!math.active)return;if(v===math.answer)math.score++;math.index++;if(math.index>=10){math.active=false;math.elapsed=(Date.now()-math.started)/1000;$('mathquestion').textContent=t('mathdone');$('mathanswers').replaceChildren();$('mathprogress').textContent='10 / 10';$('mathclock').textContent=clock(math.elapsed);$('mathmsg').textContent=t('mathscore')+': '+math.score+'/10 — '+clock(math.elapsed);
+if(math.score===10){const prev=Number(localStorage.getItem('quizraid_math_best'))||Infinity;if(math.elapsed<prev)localStorage.setItem('quizraid_math_best',String(math.elapsed));}renderBest();return;}
+$('mathmsg').textContent=v===math.answer?t('mathgood'):t('mathbad')+' ('+math.answer+')';mathQuestion();}
+function renderBest(){let s=Number(localStorage.getItem('quizraid_sudoku_best'));$('sudokubest').textContent=s?t('localbest')+': '+clock(s):'';let m=Number(localStorage.getItem('quizraid_math_best'));$('mathbest').textContent=m?t('localbest')+': '+clock(m):'';}
+['battle','rank','games'].forEach(x=>$('nav'+x).onclick=()=>swapTab(x));$('en').onclick=()=>{lang='en';translate();};$('ja').onclick=()=>{lang='ja';translate();};
+$('makeroom').onclick=makeRoom;$('newpuzzle').onclick=newSudoku;$('checkpuzzle').onclick=sudokuCheck;$('mathstart').onclick=mathStart;
+translate();newSudoku();$('mathmsg').textContent=t('mathready');swapTab('battle');setInterval(()=>{if(math.active)$('mathclock').textContent=clock((Date.now()-math.started)/1000);},300);
+</script></body></html>
