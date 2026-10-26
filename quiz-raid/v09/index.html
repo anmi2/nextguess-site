@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#111923"><title>QUIZ RAID | Training Grounds ★1 · Mobile v0.9</title>
+<style>
+:root{font:16px system-ui,-apple-system,"Segoe UI",sans-serif;color:#ecf4f1;background:#0e151e}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#294435,#101924 70%);min-height:100vh}main{max-width:760px;margin:auto;padding:16px}header{display:flex;justify-content:space-between;gap:12px;align-items:center}.brand{font-size:11px;letter-spacing:.18em;color:#d5bc85;font-weight:800}h1{font-size:24px;margin:4px 0}h2{font-size:21px;margin:8px 0}.muted,small{color:#a8bbc4}.badge{font-size:12px;color:#e9d39d;border:1px solid #77684f;padding:6px 9px;border-radius:20px}.panel{padding:18px;margin:14px 0;border:1px solid #435764;background:#1b2936;border-radius:15px}button{cursor:pointer;font:inherit;font-weight:700;border:1px solid #6a8190;color:#f1f6f4;background:#2a4252;border-radius:10px;padding:13px}button.primary{background:#e9cb8d;color:#20262c;border-color:#e9cb8d}button:disabled{opacity:.42;cursor:default}button:focus-visible{outline:3px solid #ffe5aa;outline-offset:2px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.hidden{display:none!important}.stages{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.stage{background:#263947;color:#b4cad1;text-align:center;padding:9px 3px;border:1px solid #435765;border-radius:8px;font-size:12px}.stage.active{background:#735e36;color:#fff0cc;border-color:#e6c881}.stage.done{background:#214e3f;color:#c2f4e0;border-color:#4b9270}.scene{position:relative;background:radial-gradient(ellipse at 50% 85%,#466747 0,#29413b 36%,#16282c 76%);min-height:260px;display:flex;align-items:center;justify-content:center;flex-direction:column;border-radius:13px;border:1px solid #506b5c;overflow:hidden}.scene:before{content:"";position:absolute;inset:0;background:linear-gradient(transparent 85%,#12211c);pointer-events:none}.sprite{width:170px;height:170px;filter:drop-shadow(0 18px 10px #09150dbb);transition:transform .16s,filter .16s}.sprite.hit{transform:translateX(12px) rotate(5deg);filter:brightness(2.2) drop-shadow(0 15px 10px #051108)}.sprite.attack{transform:scale(1.15)}#enemyName{position:relative;font-size:15px;letter-spacing:.06em;font-weight:800;color:#f8e3bb}.meter{height:12px;border-radius:20px;background:#101923;overflow:hidden}.meter>div{height:100%;background:#d78578;transition:width .18s}.meter.hp>div{background:#8cd0ac}.meter.timer>div{background:#e7c780;transition:width .12s linear}.question{font-weight:750;font-size:clamp(21px,4vw,27px);line-height:1.36;margin:15px 0}.answers{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.answers button{text-align:left;min-height:72px;background:#294051;font-weight:650}.answers button.correct{background:#245e47;border-color:#8fd2aa}.answers button.wrong{background:#733940;border-color:#efaaaa}.party{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.member{background:#14232f;border:1px solid #405566;border-radius:8px;padding:9px}.member b{font-size:12px}.member small{font-size:10px;display:block}.notice{min-height:35px;color:#e9d2a6;font-size:13px;margin-top:12px;font-weight:700}.right{color:#95d4ad}.wrongText{color:#ffadb2}.actions{display:flex;gap:9px;flex-wrap:wrap}.actions button{flex:1}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{padding:18px;background:#132431;border-radius:12px}.stat b{display:block;font-size:26px;color:#e9cb8d}.stat span{font-size:12px;color:#bbccd2}.eyebrow{font-size:12px;letter-spacing:.08em;color:#dcc691}.topline{margin-bottom:9px}.note{color:#b2c5ce;font-size:12px;line-height:1.55}@media(max-width:560px){main{padding:10px}.panel{padding:13px}.answers button{min-height:76px;font-size:14px}.party{grid-template-columns:repeat(2,1fr)}.scene{min-height:227px}.sprite{height:142px;width:142px}.row{gap:6px}}
+
+/* v0.9: mobile-first single-viewport battle cockpit */
+@media(max-width:640px){
+ body:has(#game:not(.hidden)){overflow-x:hidden}
+ main:has(#game:not(.hidden)){padding:5px 8px 9px}
+ body:has(#game:not(.hidden)) header{height:34px;margin:0 0 2px}
+ body:has(#game:not(.hidden)) header .brand{font-size:8px;letter-spacing:.09em}
+ body:has(#game:not(.hidden)) h1{font-size:15px;margin:0}
+ body:has(#game:not(.hidden)) header .badge{font-size:9px;padding:4px 7px}
+ #game .stages{margin:3px 0 5px;gap:5px}
+ #game .stage{padding:4px 2px;font-size:10px}
+ #game .panel{margin:5px 0;padding:8px;border-radius:10px}
+ #game .topline{margin-bottom:3px;font-size:11px}
+ #score{font-size:10px;color:#beced0}
+ #game .scene{min-height:104px;height:104px;flex-direction:row;gap:11px}
+ #game .sprite{width:89px;height:89px}
+ #game #enemyName{font-size:13px}
+ #game .row.topline[style]{margin-top:5px!important}
+ #game .meter{height:7px}
+ #game .party{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+ #game .member{padding:4px 3px;text-align:center;min-width:0;border-radius:6px}
+ #game .member b{display:block;font-size:10px;white-space:nowrap}
+ #game .member small{font-size:9px;white-space:nowrap}
+ #game .row[style*="15px 0 5px"]{margin:7px 0 3px!important}
+ #game .question{font-size:clamp(15px,4.3vw,18px);line-height:1.22;margin:7px 0 9px;min-height:36px}
+ #game .answers{gap:5px}
+ #game .answers button{font-size:13px;padding:7px 9px;min-height:47px;border-radius:7px;line-height:1.2}
+ #game .notice{min-height:18px;margin-top:5px;font-size:11px;line-height:1.3}
+ #game .actions{gap:5px}
+ #game .actions button{min-height:35px;padding:7px 6px;font-size:11px}
+ main:has(#game:not(.hidden))>p.note{display:none}
+}
+@media(max-width:640px) and (max-height:720px){
+ #game .scene{height:86px;min-height:86px}
+ #game .sprite{height:72px;width:72px}
+ #game .panel{padding:6px;margin:3px 0}
+ #game .question{margin:5px 0;min-height:29px;font-size:14px}
+ #game .answers button{min-height:43px}
+ #game .member{padding:3px 2px}
+ #game .notice{min-height:15px;margin:3px 0}
+ #game .actions button{min-height:31px}
+}
+@media(max-width:360px){
+ #game .member b{font-size:9px}
+ #game .member small{font-size:8px}
+ #game .answers button{font-size:12px}
+}
+
+</style></head><body><main><header><div><div class="brand">KUFU HIVE / QUIZ RAID</div><h1>Training Grounds</h1></div><span class="badge">★1 · PLAYABLE TEST</span></header>
+<div id="intro" class="panel"><p class="eyebrow">QUEST 01 · FOREST</p><h2>Defend the training road</h2><p>Defeat three monsters by answering trivia. Choose a role, then fight with three NPC companions. Every correct answer damages the enemy. Wrong answers and timeouts cost party HP.</p><p class="note">This is a solo browser test. NPCs and rewards are simulated locally; no online room, account, or persistent Paragon Points yet. Monster art uses original vector placeholders until the approved illustrations are exported.</p><div class="row" style="margin:17px 0"><label for="role">Class</label><select id="role" style="font:inherit;background:#182c39;color:white;border:1px solid #617788;padding:10px;border-radius:8px"><option value="0">Warrior · Power Strike</option><option value="1">Mage · Frost Shield</option><option value="2">Cleric · Heal</option><option value="3">Bard · Inspiration</option></select></div><button class="primary" id="start">Start ★1 Quest</button></div>
+<div id="game" class="hidden"><div class="stages"><div class="stage" id="step0">STAGE 1</div><div class="stage" id="step1">STAGE 2</div><div class="stage" id="step2">STAGE 3</div></div><div class="panel"><div class="row topline"><b id="label">Stage 1 / 3</b><span id="score">0 damage · 0 correct</span></div><div class="scene"><div id="monster" aria-label="Monster artwork"></div><div id="enemyName"></div></div><div class="row topline" style="margin-top:12px"><small>MONSTER HP</small><b id="enemyHp"></b></div><div class="meter"><div id="enemyBar"></div></div><div class="row topline" style="margin-top:12px"><small>PARTY HP</small><b id="partyHp"></b></div><div class="meter hp"><div id="partyBar"></div></div></div>
+<div class="panel"><div class="party" id="party"></div><div class="row" style="margin:15px 0 5px"><span class="eyebrow">QUESTION <b id="qnum"></b></span><small id="seconds"></small></div><div class="meter timer"><div id="timeBar"></div></div><div class="question" id="question"></div><div class="answers" id="answers"></div><div class="notice" id="feedback" aria-live="polite"></div><div class="actions"><button id="pass">Pass / New question</button><button id="skill" class="primary">Class skill</button></div></div></div>
+<div id="between" class="panel hidden"><h2 id="betweenTitle">Stage clear!</h2><p id="betweenBody"></p><button class="primary" id="advance">Next stage</button></div>
+<div id="result" class="panel hidden"><p class="eyebrow" id="outcomeLabel"></p><h2 id="outcome"></h2><div class="stats"><div class="stat"><b id="endDmg"></b><span>Damage dealt</span></div><div class="stat"><b id="endCorrect"></b><span>Correct answers</span></div><div class="stat"><b id="endTime"></b><span>Elapsed time</span></div><div class="stat"><b id="endPt"></b><span>Demo Paragon PT</span></div></div><p class="note">Demo points are not saved to a server and may reset.</p><button class="primary" id="again">Play again</button></div>
+<p class="note">English-first test · three stages · no account required · mobile friendly · © KUFU HIVE (prototype)</p></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), ENEMIES=[
+{name:'Halo Wisp',hp:95,kind:'slime',color:'#e9eac7',accent:'#ffd57c',attack:5},
+{name:'Fang Wolf',hp:145,kind:'wolf',color:'#789b69',accent:'#e4c98f',attack:7},
+{name:'Ice Imp',hp:185,kind:'imp',color:'#83c6df',accent:'#c0efff',attack:8}
+];
+const bank=[
+['Which planet is known as the Red Planet?',['Venus','Mars','Mercury','Neptune'],1],
+['What is the largest ocean on Earth?',['Atlantic','Indian','Pacific','Arctic'],2],
+['What do bees collect from flowers to make honey?',['Sand','Nectar','Salt','Bark'],1],
+['Which animal is a mammal?',['Shark','Frog','Dolphin','Trout'],2],
+['How many sides does a hexagon have?',['5','6','7','8'],1],
+['Which country is home to Mount Fuji?',['China','Japan','South Korea','Thailand'],1],
+['Which gas do plants absorb during photosynthesis?',['Oxygen','Hydrogen','Carbon dioxide','Helium'],2],
+['Which month has an extra day in a leap year?',['January','February','March','April'],1],
+['What is the boiling point of water at sea level in Celsius?',['50','75','100','125'],2],
+['Which of these is a primary color of light?',['Green','Black','Brown','Pink'],0],
+['Which continent contains Egypt?',['Asia','Africa','Europe','South America'],1],
+['What is the freezing point of pure water in Celsius at standard pressure?',['-10','0','10','32'],1],
+['What part of the plant usually absorbs water from soil?',['Flower','Roots','Fruit','Seeds'],1],
+['How many players are on the field for one standard soccer team?',['9','10','11','12'],2],
+['Which metal has the chemical symbol Fe?',['Gold','Iron','Silver','Copper'],1],
+['What is the capital of France?',['Berlin','Paris','Madrid','Rome'],1],
+['Which creature is an insect?',['Spider','Earthworm','Ant','Snail'],2],
+['What does a thermometer measure?',['Speed','Distance','Temperature','Weight'],2],
+['Which star is closest to Earth?',['Sirius','The Sun','Polaris','Vega'],1],
+['Which instrument normally has six strings?',['Violin','Guitar','Flute','Trumpet'],1]
+];
+let state=null,timer=null,lock=false,lastQ=-1;
+function monsterSvg(e){let core='';
+if(e.kind==='slime')core='<ellipse cx="100" cy="170" rx="65" ry="10" fill="#000" opacity=".18"/><path d="M38 132 Q33 82 82 52 Q97 30 118 53 Q167 76 165 133 Q167 173 102 174 Q38 171 38 132" fill="'+e.color+'" stroke="#b3c5c6" stroke-width="5"/><ellipse cx="75" cy="115" rx="9" ry="12" fill="#21343a"/><ellipse cx="125" cy="115" rx="9" ry="12" fill="#21343a"/><path d="M88 141 Q101 150 114 141" fill="none" stroke="#21343a" stroke-width="5" stroke-linecap="round"/><ellipse cx="67" cy="82" rx="18" ry="9" fill="white" opacity=".35" transform="rotate(-30 67 82)"/><ellipse cx="100" cy="33" rx="32" ry="10" fill="none" stroke="'+e.accent+'" stroke-width="9"/>';
+if(e.kind==='wolf')core='<ellipse cx="104" cy="178" rx="73" ry="9" fill="#000" opacity=".2"/><path d="M47 113 Q38 79 57 57 L78 76 L104 54 L124 73 L143 62 L153 101 L168 133 L149 166 L121 166 L113 143 L87 144 L72 164 L51 163 L63 130Z" fill="'+e.color+'" stroke="#293a34" stroke-width="5"/><path d="M46 113 L26 79 L39 69 L70 102" fill="'+e.color+'" stroke="#293a34" stroke-width="5"/><path d="M71 115 L96 143 L134 118 L124 145 L98 162Z" fill="'+e.accent+'"/><path d="M57 104 L80 111 M125 102 L146 110" stroke="#edcc76" stroke-width="8" stroke-linecap="round"/><circle cx="77" cy="107" r="4" fill="#172326"/><circle cx="131" cy="105" r="4" fill="#172326"/><path d="M93 128 L108 130 L100 140 Z" fill="#263037"/>';
+if(e.kind==='imp')core='<ellipse cx="103" cy="178" rx="60" ry="8" fill="#000" opacity=".2"/><path d="M68 63 L43 23 L47 83 M132 63 L161 24 L153 91" fill="'+e.accent+'" stroke="#356078" stroke-width="7" stroke-linejoin="round"/><path d="M62 72 Q101 39 145 78 L157 139 Q140 171 105 167 Q58 168 47 127Z" fill="'+e.color+'" stroke="#315f72" stroke-width="5"/><path d="M47 115 L22 99 L40 134 M153 116 L179 97 L161 141" fill="'+e.color+'" stroke="#315f72" stroke-width="6"/><path d="M65 151 L59 178 M138 150 L146 177" stroke="#315f72" stroke-width="12" stroke-linecap="round"/><path d="M68 110 L88 119 M117 118 L137 108" stroke="#1b3547" stroke-width="8" stroke-linecap="round"/><path d="M77 146 Q103 164 130 144" stroke="#1b3547" stroke-width="5" fill="none"/><path d="M91 148 L96 154 L100 146 L106 154 L111 146" stroke="white" stroke-width="3" fill="none"/>';
+return '<svg class="sprite" id="sprite" viewBox="0 0 200 200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">'+core+'</svg>'}
+function setView(ids){['intro','game','between','result'].forEach(x=>$(x).classList.toggle('hidden',!ids.includes(x)))}
+function start(){clearInterval(timer);state={stage:0,hp:100,enemy:ENEMIES[0].hp,correct:0,damage:0,start:Date.now(),used:0,question:0,remaining:19,role:+$('role').value,freeze:0,qUsed:new Set()};lock=false;setView(['game']);stageStart()}
+function stageStart(){let e=ENEMIES[state.stage];state.enemy=e.hp;state.used=0;state.freeze=0;for(let i=0;i<3;i++)$('step'+i).className='stage'+(i<state.stage?' done':i===state.stage?' active':'');$('monster').innerHTML=monsterSvg(e);$('enemyName').textContent=e.name;$('label').textContent='Stage '+(state.stage+1)+' / 3';$('party').innerHTML=['Warrior','Mage','Cleric','Bard'].map((x,i)=>'<div class="member"><b>'+x+'</b><small>'+(i===state.role?'YOU':'NPC · SUPPORT')+'</small></div>').join('');$('skill').textContent=['Power Strike','Frost Shield','Heal','Inspiration'][state.role]+' · 1 use';$('skill').disabled=false;newQuestion();render()}
+function render(){$('enemyHp').textContent=Math.max(0,state.enemy)+' / '+ENEMIES[state.stage].hp;$('enemyBar').style.width=(100*Math.max(0,state.enemy)/ENEMIES[state.stage].hp)+'%';$('partyHp').textContent=Math.max(0,state.hp)+' / 100';$('partyBar').style.width=Math.max(0,state.hp)+'%';$('score').textContent=state.damage+' damage · '+state.correct+' correct';$('seconds').textContent=Math.ceil(state.remaining)+'s';$('timeBar').style.width=(100*state.remaining/19)+'%'}
+function chooseQ(){let options=bank.map((_,i)=>i).filter(i=>!state.qUsed.has(i));if(!options.length){state.qUsed.clear();options=bank.map((_,i)=>i)}let id=options[Math.floor(Math.random()*options.length)];state.qUsed.add(id);return id}
+function newQuestion(){if(!state||state.hp<=0)return;clearInterval(timer);lock=false;state.qid=chooseQ();state.question++;state.remaining=19;let q=bank[state.qid];$('qnum').textContent=state.question;$('question').textContent=q[0];$('feedback').textContent='';$('answers').replaceChildren();q[1].forEach((choice,i)=>{let b=document.createElement('button');b.textContent=String.fromCharCode(65+i)+'. '+choice;b.onclick=()=>answer(i);$('answers').append(b)});$('pass').disabled=false;timer=setInterval(()=>{if(!state||lock)return;state.remaining=Math.max(0,state.remaining-.1);if(state.remaining<=0){state.hp-=6;flash('Time out! -6 party HP',false);afterAction()}else render()},100)}
+function flash(text,good){$('feedback').textContent=text;$('feedback').className='notice '+(good?'right':'wrongText');let s=$('sprite');if(s){s.classList.add(good?'hit':'attack');setTimeout(()=>s.classList.remove('hit','attack'),230)}}
+function answer(i){if(lock||!state)return;lock=true;clearInterval(timer);let ok=i===bank[state.qid][2];Array.from($('answers').children).forEach((b,j)=>{b.disabled=true;if(j===bank[state.qid][2])b.classList.add('correct');if(i===j&&!ok)b.classList.add('wrong')});if(ok){let dmg=28+(state.role===0?6:0);state.enemy-=dmg;state.damage+=Math.min(dmg,Math.max(0,state.enemy+dmg));state.correct++;flash('Correct! '+dmg+' damage',true)}else{let penalty=state.freeze?3:10;state.hp-=penalty;flash('Incorrect. -'+penalty+' party HP',false)}render();afterAction()}
+function afterAction(){if(lock===false)lock=true;clearInterval(timer);$('pass').disabled=true;if(state.enemy<=0){setTimeout(()=>{if(state.stage===2){finish(true)}else{setView(['between']);$('betweenTitle').textContent='Stage '+(state.stage+1)+' cleared!';$('betweenBody').textContent='Next opponent: '+ENEMIES[state.stage+1].name+'. Party HP is carried over.'}},650)}else if(state.hp<=0){setTimeout(()=>finish(false),650)}else setTimeout(newQuestion,750)}
+function finish(win){clearInterval(timer);setView(['result']);$('outcomeLabel').textContent=win?'QUEST COMPLETE':'QUEST FAILED';$('outcome').textContent=win?'The training road is safe!':'Your party was defeated';$('endDmg').textContent=state.damage;$('endCorrect').textContent=state.correct;$('endTime').textContent=Math.floor((Date.now()-state.start)/1000)+'s';$('endPt').textContent=win?30+state.correct*2:0}
+$('start').onclick=start;$('again').onclick=()=>{setView(['intro'])};$('advance').onclick=()=>{state.stage++;setView(['game']);stageStart()};$('pass').onclick=()=>{if(lock)return;lock=true;clearInterval(timer);flash('Passed. New question.',true);setTimeout(newQuestion,250)};
+$('skill').onclick=()=>{if(!state||lock||state.used)return;state.used=1;$('skill').disabled=true;let r=state.role;if(r===0){state.enemy-=17;state.damage+=Math.min(17,Math.max(0,state.enemy+17));flash('Power Strike! +17 damage',true)}else if(r===1){state.freeze=1;flash('Frost Shield! Wrong-answer penalty reduced this stage.',true)}else if(r===2){state.hp=Math.min(100,state.hp+24);flash('Heal! Party HP restored.',true)}else{state.remaining=Math.min(19,state.remaining+8);flash('Inspiration! +8 seconds.',true)}render();if(state.enemy<=0){lock=true;afterAction()}};
+</script></body></html>
