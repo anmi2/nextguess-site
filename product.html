@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="NextGuessのプロダクト紹介。イベント情報、MAP、My Area、勤務管理、NextGuess Businessの取り組みを紹介します。">
+  <meta name="theme-color" content="#f3f8f5">
+  <title>NextGuess | プロダクト紹介</title>
+  <style>
+    :root{--ink:#22372e;--green:#168267;--green-dark:#0d604b;--muted:#657a70;--line:#d9e9df;--pale:#edf7f1;--white:#fff}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f3f8f5;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+    a{color:inherit}button{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid #65caa2;outline-offset:3px}
+    .wrap{width:min(1100px,calc(100% - 36px));margin:auto}
+    header{background:rgba(255,255,255,.97);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;gap:16px;justify-content:space-between;min-height:72px}.brand{font-weight:800;font-size:25px;letter-spacing:-.05em;text-decoration:none}.brand span{color:var(--green)}.menu{display:flex;gap:20px;font-size:13px;font-weight:700}.menu a{text-decoration:none}.menu a:hover{color:var(--green)}
+    .eyebrow{font-size:11px;letter-spacing:.14em;color:var(--green);font-weight:800;text-transform:uppercase}
+    .intro{padding:45px 0 22px}.intro h1{margin:7px 0;font-size:clamp(29px,4.5vw,43px);letter-spacing:-.04em;line-height:1.35}.intro p{color:var(--muted);max-width:760px;font-size:15px}
+    .region{background:var(--white);border:1px solid var(--line);border-radius:23px;box-shadow:0 12px 35px rgba(30,79,51,.035);overflow:hidden}
+    .region-header{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:29px 32px 12px}.region-header h2{font-size:23px;margin:5px 0 0;letter-spacing:-.035em}.region-header p{font-size:12px;color:var(--muted);margin:0}
+    /* A: large slideshow block from the supplied storyboard. */
+    .stage{padding:16px 32px 32px}.slides{position:relative;border:1px solid var(--line);background:linear-gradient(125deg,#e6f3eb,#f7fbf8);border-radius:19px;overflow:hidden;min-height:345px}
+    .slide{display:none;grid-template-columns:1fr minmax(240px,43%);align-items:center;min-height:345px}.slide.active{display:grid}.slide-copy{padding:35px 30px 35px 42px}.slide-copy h3{font-size:clamp(25px,3.2vw,37px);letter-spacing:-.04em;line-height:1.35;margin:9px 0 17px}.slide-copy p{color:#536f60;font-size:14px;max-width:430px}.slide-tag{font-size:11px;font-weight:800;color:var(--green);letter-spacing:.1em}
+    .slide-media{height:345px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:#deeee3}.slide-media img{height:100%;width:100%;object-fit:contain}.slide-placeholder{font-size:13px;color:#507362;text-align:center;padding:35px;max-width:290px}
+    .slideshow-controls{display:flex;align-items:center;gap:10px;margin-top:13px;justify-content:flex-end}.slideshow-controls button{border:1px solid var(--line);background:#fff;border-radius:10px;padding:7px 13px;color:var(--ink);cursor:pointer}.slideshow-controls button:hover{background:var(--pale)}.counter{font-size:12px;color:var(--muted);min-width:46px;text-align:center}
+    /* B+C: two blocks directly below A. */
+    .lower{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:20px 0 50px}.module{background:var(--white);border:1px solid var(--line);border-radius:21px;padding:27px 28px}.module h2{font-size:19px;margin:5px 0 16px;letter-spacing:-.02em}.module .lead{font-size:12px;color:var(--muted);margin:0 0 18px}
+    .updates{display:grid;gap:15px}.update{padding-bottom:14px;border-bottom:1px solid var(--line)}.update:last-child{border:0;padding:0}.update time{font-size:11px;font-weight:750;color:var(--green)}.update strong{font-size:13px;display:block;margin-top:3px}.update p{font-size:12px;color:var(--muted);margin:3px 0 0}
+    .link-grid{display:grid;gap:11px}.link-card{border:1px solid var(--line);border-radius:13px;padding:15px 17px;text-decoration:none;display:flex;align-items:center;justify-content:space-between;gap:15px}.link-card:hover{background:var(--pale);border-color:#a4d5b7}.link-card strong{font-size:14px;display:block}.link-card small{font-size:11px;display:block;color:var(--muted);margin-top:3px}.link-card .arrow{color:var(--green);font-size:17px}
+    .link-card.unavailable{background:#f7faf8;color:#64786e}.link-card.unavailable small{color:#718178}.link-card.unavailable .arrow{font-size:11px;color:#76857c}
+    .note{border-top:1px solid var(--line);font-size:12px;color:var(--muted);padding:23px 0 32px}footer{border-top:1px solid var(--line);background:#fff;font-size:12px;color:var(--muted)}footer .wrap{display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;padding:22px 0}footer a{color:var(--green)}
+    @media(max-width:760px){.menu{gap:10px;font-size:11px}.intro{padding:33px 0 17px}.region-header{padding:22px 20px 10px;align-items:start;flex-direction:column}.stage{padding:11px 16px 22px}.slides,.slide{min-height:auto}.slide.active{display:flex;flex-direction:column-reverse}.slide-media{width:100%;height:245px}.slide-copy{padding:22px}.slide-copy h3{font-size:27px}.lower{grid-template-columns:1fr;gap:15px;margin:16px 0 32px}.module{padding:22px}.slideshow-controls{justify-content:center}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  </style>
+</head>
+<body>
+<header><div class="wrap nav"><a class="brand" href="product.html" aria-label="NextGuess プロダクト紹介">Next<span>Guess</span></a><nav class="menu" aria-label="ページナビゲーション"><a href="#product">機能</a><a href="#updates">更新情報</a><a href="#links">関連ページ</a></nav></div></header>
+<main class="wrap">
+  <section class="intro" aria-labelledby="page-title"><div class="eyebrow">NEXTGUESS / PRODUCT</div><h1 id="page-title">現場の判断に、情報という選択肢を。</h1><p>イベントと地図、個人の記録、そして蓄積された乗車データ。NextGuessは、次の行動を自分で判断するための情報を整理するプロダクトです。</p></section>
+  <section id="product" class="region" aria-labelledby="product-title">
+    <div class="region-header"><div><span class="eyebrow">A / PRODUCT STORIES</span><h2 id="product-title">NextGuessでできること</h2></div><p>機能と画面をスライドで紹介</p></div>
+    <div class="stage">
+      <div class="slides" id="slides" role="region" aria-label="プロダクト紹介スライド" aria-live="polite">
+        <article class="slide active" aria-hidden="false">
+          <div class="slide-copy"><span class="slide-tag">01 / EVENT & MAP</span><h3>情報を、地図の上で<br>ひと目に。</h3><p>施設のイベント情報を、日付や開催状況と合わせて確認。現場で使う地図上の情報として整理します。</p></div>
+          <div class="slide-media"><img src="assets/map-light.webp" alt="NextGuessのイベント・施設を確認するMAP画面"></div>
+        </article>
+        <article class="slide" aria-hidden="true">
+          <div class="slide-copy"><span class="slide-tag">02 / MY AREA</span><h3>自分だけの地点を、<br>自分の手元に。</h3><p>気になる場所や予定をMy Areaに登録。必要なときに地図と一覧を行き来して確認できます。</p></div>
+          <div class="slide-media"><img src="assets/myarea.webp" alt="NextGuessのMy Area一覧画面" loading="lazy"></div>
+        </article>
+        <article class="slide" aria-hidden="true">
+          <div class="slide-copy"><span class="slide-tag">03 / BUSINESS & HEX</span><h3>過去の乗車実績を、<br>次の探索の参考に。</h3><p>会社がCSVを登録・管理し、ドライバー向けにデータを配信。HEX探索は仮CSVを使ったプロトタイプで実演します。</p></div>
+          <div class="slide-media"><div class="slide-placeholder"><strong>HEXデモの実機画面</strong><p>スクリーンショットを受領後、ここに差し替えます。</p></div></div>
+        </article>
+      </div>
+      <div class="slideshow-controls"><button type="button" id="prev" aria-label="前のスライド">前へ</button><span class="counter" id="counter">1 / 3</span><button type="button" id="next" aria-label="次のスライド">次へ</button></div>
+    </div>
+  </section>
+  <div class="lower">
+    <section class="module" id="updates" aria-labelledby="updates-title"><span class="eyebrow">B / UPDATES</span><h2 id="updates-title">更新情報・開発履歴</h2><p class="lead">開発状況を短いテキストで掲載し、詳細はロードマップへ。</p>
+      <div class="updates">
+        <article class="update"><time datetime="2026-11-08">2026.11.08</time><strong>BusinessのCSV管理・配信機能をローカルで検証</strong><p>CSV取込と会社・指定IDへの公開制御をテストしました。公開サービスへの反映は別工程です。</p></article>
+        <article class="update"><time datetime="2026-11-03">2026.11.03</time><strong>地図表示・施設クリスタルなどの表示確認</strong><p>テスト版で表示状況を確認し、改善を継続しています。</p></article>
+      </div>
+      <p style="margin:19px 0 0;font-size:12px"><a href="index.html#history">開発ロードマップを見る →</a></p>
+    </section>
+    <section class="module" id="links" aria-labelledby="links-title"><span class="eyebrow">C / LINKS</span><h2 id="links-title">関連ページ</h2><p class="lead">プロダクト、開発状況、法人向けデモへの入口。</p>
+      <div class="link-grid">
+        <a class="link-card" href="about.html"><span><strong>アプリ紹介・開発参加案内</strong><small>NextGuessの現行機能と取り組み</small></span><span class="arrow" aria-hidden="true">↗</span></a>
+        <a class="link-card" href="index.html"><span><strong>開発ロードマップ</strong><small>進捗・更新履歴・残タスク</small></span><span class="arrow" aria-hidden="true">↗</span></a>
+        <div class="link-card unavailable"><span><strong>NextGuess Business</strong><small>会社用CSV管理画面／面談用ローカルデモ</small></span><span class="arrow">準備中</span></div>
+      </div>
+    </section>
+  </div>
+  <div class="note">このページはプロダクト紹介の制作途中のプレビューです。Businessの操作画面・HEX探索はデモ環境による説明を想定しており、本番機能との違いがあります。</div>
+</main>
+<footer><div class="wrap"><span>© NextGuess</span><span><a href="privacy.html">プライバシーポリシー</a> ・ <a href="delete-account.html">アカウント削除</a></span></div></footer>
+<script>
+(function(){
+  const slides=[...document.querySelectorAll(".slide")],counter=document.getElementById("counter");
+  let index=0;
+  function show(next){
+    index=(next+slides.length)%slides.length;
+    slides.forEach((slide,i)=>{const active=i===index;slide.classList.toggle("active",active);slide.setAttribute("aria-hidden",String(!active));});
+    counter.textContent=(index+1)+" / "+slides.length;
+  }
+  document.getElementById("prev").addEventListener("click",()=>show(index-1));
+  document.getElementById("next").addEventListener("click",()=>show(index+1));
+  document.addEventListener("keydown",event=>{if(document.activeElement?.tagName==="INPUT")return;if(event.key==="ArrowLeft")show(index-1);if(event.key==="ArrowRight")show(index+1);});
+})();
+</script>
+</body>
+</html>
