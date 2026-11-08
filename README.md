@@ -20,3 +20,11 @@
 ## 未接続
 利用規約・プライバシーポリシー正式リンク、独立ドメイン。LINEオープンチャット招待リンクは参加案内に設置済み。GitHub Pagesはmainから公開中。
 旧ツールは変更・終了していません。
+
+## 絵コンテ①：プロダクトページ（開発ブランチ）
+- `product.html`: 手描きレイアウトの A（大きな説明・機能スライド）／B（更新情報）／C（関連ページリンク）を再現した独立ページ。
+- AのMAP・My Area画像は既存の `assets/` を再利用。HEX実機画像は未収集のためプレースホルダー表示。
+- NextGuess Businessはローカル管理画面なので、一般公開URLが確定するまでリンクを設置しない。
+- 公開中の `index.html`（開発ロードマップ）や `about.html` を変更しない。
+- ブランチ `feature/product-landing-storyboard` を取得後、`python3 -m http.server 8002` で `http://localhost:8002/product.html` を確認できる。
+- 差し替え候補：①iPhone HEX探索画面（5km/10km） ②会社CSV管理画面の一覧と配信設定。画像に実際の顧客データ・認証情報が写らないよう注意する。
