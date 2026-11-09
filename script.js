@@ -1,0 +1,11 @@
+(()=>{
+ const menu=document.querySelector('.menu-btn'),nav=document.querySelector('.nav');
+ if(menu&&nav){menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く');});nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');}));}
+ const range={'hex-1km':['1 km','1km範囲のHEX探索と乗車点描'],'hex-2-5km':['2.5 km','2.5km範囲のHEX探索と乗車点描'],'hex-5km':['5 km','5km範囲のHEX探索と乗車点描']};
+ document.querySelectorAll('.hex-switch').forEach(b=>b.addEventListener('click',()=>{const img=document.querySelector('#hex-demo-image');if(!img)return;const key=b.dataset.hex;img.src=`assets/screens/${key}.webp`;img.alt=range[key][1];document.querySelector('#hex-label').textContent=range[key][0];document.querySelectorAll('.hex-switch').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});}));
+ document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>{const choice=b.dataset.filter;document.querySelectorAll('.filter').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b));});document.querySelectorAll('.gallery-card').forEach(card=>{card.hidden=choice!=='all'&&card.dataset.category!==choice;});}));
+ const lightbox=document.querySelector('#lightbox'),photo=document.querySelector('#lightbox-image'),caption=document.querySelector('#lightbox-caption');let prior=null;
+ const close=()=>{if(!lightbox)return;lightbox.classList.remove('open');lightbox.setAttribute('aria-hidden','true');document.body.style.overflow='';if(prior)prior.focus();};
+ document.querySelectorAll('.gallery-card').forEach(b=>b.addEventListener('click',()=>{prior=b;photo.src=`assets/screens/${b.dataset.img}.webp`;photo.alt=b.dataset.title;caption.textContent=b.dataset.title;lightbox.classList.add('open');lightbox.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';lightbox.querySelector('.lightbox-close').focus();}));
+ lightbox?.querySelector('.lightbox-close')?.addEventListener('click',close);lightbox?.addEventListener('click',e=>{if(e.target===lightbox)close();});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&lightbox?.classList.contains('open'))close();});
+})();
