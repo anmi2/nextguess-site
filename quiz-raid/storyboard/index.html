@@ -111,7 +111,35 @@ h1{font-size:clamp(44px,9vw,98px);margin:0;line-height:1.15;letter-spacing:.1em;
 .skillselect b{color:#e4c99d;font-weight:400}.skillselect small{display:block;color:#a9a0aa;margin-top:3px;font-size:11px}
 .prep-confirm{display:flex;gap:9px;justify-content:flex-end;margin-top:17px}
 @media(max-width:760px){.party-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.party-slot{min-height:250px}.party-slot .slotportrait{height:95px}.prep-layout{grid-template-columns:1fr}.prep-art{min-height:210px}}
-</style></head><body><main class="shell"><header class="topline"><div class="brand">KUFU HIVE <span style="color:#777">/</span> QUIZ RAID</div><span class="small">STORYBOARD UI · STATIC CONCEPT</span></header>
+
+/* Desktop-first browser game: no portrait/mobile-specific reflow. Narrow screens scroll horizontally. */
+html{min-width:1024px}
+body{min-width:1024px}
+.shell{min-width:1024px;max-width:1440px}
+.lobby{grid-template-columns:1.3fr 160px 1fr}
+.party-slots{grid-template-columns:repeat(4,minmax(0,1fr))}
+.questgrid{grid-template-columns:repeat(3,1fr)}
+.prep-layout{grid-template-columns:minmax(210px,1fr) minmax(270px,1.35fr)}
+.battlegrid{grid-template-columns:1.05fr 1.25fr .82fr;grid-template-rows:minmax(205px,auto) minmax(265px,auto)}
+@media(max-width:760px){
+ .lobby{grid-template-columns:1.3fr 160px 1fr}
+ .navstack{grid-column:auto;grid-row:auto;flex-direction:column}
+ .navstack button{min-height:88px}
+ .rooms,.online{min-height:345px}
+ .questgrid{grid-template-columns:repeat(3,1fr)}
+ .party-slots{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .prep-layout{grid-template-columns:minmax(210px,1fr) minmax(270px,1.35fr)}
+ .battlegrid{grid-template-columns:1.05fr 1.25fr .82fr;grid-template-rows:minmax(205px,auto) minmax(265px,auto)}
+ .enemyzone,.questionzone,.enemyparams,.playerparams,.answerzone,.partyzone{grid-column:auto;grid-row:auto}
+ .resultgrid2{grid-template-columns:35% 65%}
+}
+@media(max-width:420px){
+ .lobby{grid-template-columns:1.3fr 160px 1fr}
+ .battlegrid{grid-template-columns:1.05fr 1.25fr .82fr}
+ .resultgrid2{grid-template-columns:35% 65%}
+ .resultleft{border-right:1px solid #5b4e45;border-bottom:0}
+}
+</style></head><body><main class="shell"><header class="topline"><div class="brand">KUFU HIVE <span style="color:#777">/</span> QUIZ RAID</div><span class="small">DESKTOP BROWSER · UI CONCEPT</span></header>
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
 <p class="small">登録しなくても冒険を始められます。</p></section>
