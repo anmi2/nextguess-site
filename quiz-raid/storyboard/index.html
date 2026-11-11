@@ -139,7 +139,7 @@ body{min-width:1024px}
  .resultgrid2{grid-template-columns:35% 65%}
  .resultleft{border-right:1px solid #5b4e45;border-bottom:0}
 }
-</style></head><body><main class="shell"><header class="topline"><div class="brand">KUFU HIVE <span style="color:#777">/</span> QUIZ RAID</div><span class="small">DESKTOP BROWSER · UI CONCEPT</span></header>
+</style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
 <p class="small">登録しなくても冒険を始められます。</p></section>
@@ -193,7 +193,7 @@ body{min-width:1024px}
 <div class="prep-layout"><div class="frame"><h3>CHARACTER ART / キャラ立ち絵</h3><div class="prep-art"><div class="placeholder-symbol" id="prepSymbol">✧</div><div id="prepCharacterName">主人公 — 魔導士</div><p class="small">採用済み立ち絵を配置する領域<br>正式素材は別途接続</p></div></div>
 <div class="frame"><h3>STATUS / SKILLS</h3><div class="prep-stats"><div><span class="small">戦闘用ドット絵</span><strong>準備中</strong></div><div><span class="small">HP</span><strong id="prepHp">100 / 100（仮）</strong></div><div><span class="small">パラゴンPT</span><strong>未接続</strong></div><div><span class="small">装備</span><strong>なし</strong></div></div>
 <h3 style="margin-top:24px">使用スキル（1枠）</h3><div id="prepSkills" class="skillselect"></div><div class="prep-confirm"><button class="back" data-go="lobby">キャンセル</button><button class="action" id="savePrep" type="button">この設定で決定</button></div><p id="prepMessage" class="small" role="status">キャラクター選択時に設定スキルを適用する想定。</p></div></div></section>
-<footer class="foot">QUIZ RAID — storyboard concept · 2026-11-11 · 本ページは静的UIモックです。実際のオンライン状況、アカウント、報酬、クエスト進行を表示していません。</footer></main>
+</main>
 <script>document.querySelectorAll('.answerchoice').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.answerchoice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));
 (function(){
 'use strict';
