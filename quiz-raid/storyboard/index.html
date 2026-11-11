@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>QUIZ RAID | Storyboard UI</title>
+<style>
+:root{color-scheme:dark;--bg:#090a0d;--panel:#141418;--panel2:#1b1b21;--line:#5b5149;--gold:#c6a76e;--silver:#c8c8d3;--muted:#98939c;--purple:#a68ce6;--blue:#7baade;--orange:#e3a05a}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse 90% 40% at 50% -10%,#292334 0,transparent 80%),var(--bg);font-family:Georgia,"Yu Mincho","Hiragino Mincho ProN",serif;color:#eeeae5;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;background:repeating-linear-gradient(0deg,transparent,transparent 3px,#08080b 4px);z-index:9}
+button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}button:disabled{cursor:not-allowed;opacity:.45}
+.shell{max-width:1120px;margin:auto;padding:20px 20px 48px}.topline{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #4a423e;padding-bottom:12px;color:var(--gold);letter-spacing:.12em;font-size:12px}
+.brand{font-size:16px;font-weight:700}.small{font-size:12px;color:var(--muted);line-height:1.7}.view{display:none}.view.active{display:block}
+.titleview{min-height:76vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center}
+.symbol{font-size:52px;color:#846d98;text-shadow:0 0 32px #87609a55;line-height:1}.eyebrow{font-size:13px;letter-spacing:.35em;color:#a79591;margin:17px 0}
+h1{font-size:clamp(44px,9vw,98px);margin:0;line-height:1.15;letter-spacing:.1em;font-weight:500;color:#e8dfd1;text-shadow:0 2px 0 #4c3746,0 0 44px #8e725266}
+.subtitle{color:var(--gold);letter-spacing:.35em;font-size:11px;margin:18px 0 44px}
+.menu{width:min(360px,100%);border-top:1px solid #665847;border-bottom:1px solid #665847;padding:18px 0;display:grid;gap:8px}
+.menu button,.action{background:linear-gradient(#252329,#151418);border:1px solid #665b54;color:#e7dfd7;padding:14px 16px;letter-spacing:.12em}
+.menu button:hover,.action:hover{border-color:var(--gold);color:#f9dca3;background:#29242b}.pagehead{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:32px 0 18px}.pagehead h2{font-size:25px;letter-spacing:.12em;font-weight:500;margin:0;color:#e4d4b9}
+.back{background:transparent;border:1px solid #5b5149;color:#bdb3a4;padding:8px 14px}.frame{border:1px solid #65594e;background:linear-gradient(140deg,#1c1a21,#101015);padding:20px;box-shadow:inset 0 0 0 4px #101014,0 16px 38px #0008}
+.frame h3{font-size:14px;color:var(--gold);letter-spacing:.13em;font-weight:500;border-bottom:1px solid #554d47;padding:0 0 12px;margin:0 0 15px}
+.lobby{display:grid;grid-template-columns:1.3fr 160px 1fr;gap:16px;align-items:stretch}.rooms,.online{min-height:345px}
+.roomline{border-bottom:1px solid #3d3939;padding:10px 0;display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:13px}
+.roomline strong{font-weight:400;color:#e0d6c6}.roomline span{font-size:11px;color:var(--muted)}
+.mini{background:#28232b;border:1px solid #675b4f;color:#d9c5a3;padding:6px 8px;font-size:11px}
+.navstack{display:flex;flex-direction:column;gap:12px;justify-content:center}
+.navstack button{border:1px solid #68584c;background:radial-gradient(circle at 50% 0,#302737,#15151a);padding:22px 4px;color:#e8ddce;min-height:88px}
+.navstack b{display:block;font-size:20px;color:var(--gold);margin-bottom:6px}.navstack span{font-size:12px}
+.online .person{display:flex;justify-content:space-between;border-bottom:1px solid #36343c;padding:13px 0;font-size:13px}
+.rank-white{color:#ededed}.rank-blue{color:#78a9f1}.rank-purple{color:#c1a0e7}.rank-gold{color:#e9bf69}.status{color:#849b87;font-size:11px}
+.chat{margin-top:16px;min-height:135px}.chatrow{font-size:13px;margin:8px 0;color:#d8d2d3}
+.progress{display:flex;align-items:center;gap:12px;margin-top:18px}.track{height:12px;border:1px solid #5b4c4e;background:#09080c;flex:1}.track i{display:block;width:63%;height:100%;background:linear-gradient(90deg,#65517d,#b18ac1,#bda77c)}
+.questgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.queststar h3{font-size:20px;color:var(--gold);text-align:center}
+.quest{display:block;width:100%;text-align:left;margin:9px 0;padding:14px;border:1px solid #514b4a;background:#201e23;color:#e3dccc}
+.quest small{display:block;margin-top:4px;color:#a59aa4}.quest strong{font-weight:normal}.quest .tag{float:right;font-size:11px;color:#b7a2d9}
+.quest.boss{border-color:#a38661;background:linear-gradient(90deg,#30241e,#17151a)}.quest.boss strong{color:#e4bb7f}
+.foot{margin-top:25px;border-top:1px solid #514a46;padding-top:13px;font-size:12px;color:#8e8580;line-height:1.8}
+.raid{margin-top:16px;border:1px solid #785d50;background:radial-gradient(ellipse at 100% 0,#34222d,#171318 65%);padding:20px}
+.raid h3{border:0;color:#e2aa78;font-size:18px;margin:0 0 7px}.rare{color:var(--purple)}.legend{color:var(--orange)}
+.note{margin:16px 0;padding:12px 14px;border-left:2px solid #a48657;background:#242024;font-size:13px;color:#d2c3ac}
+.previewbox{text-align:center;padding:48px 12px;border:1px dashed #554b50;color:#ad9b9f}.formmock{max-width:470px;margin:0 auto}.field{width:100%;display:block;background:#101015;border:1px solid #5e5353;padding:12px;margin:10px 0 18px;color:#eee;font:inherit}
+@media(max-width:760px){.shell{padding:13px}.lobby{grid-template-columns:1fr 1fr}.navstack{grid-column:1/-1;grid-row:1;flex-direction:row}.navstack button{flex:1;min-height:78px;padding:12px 2px}.navstack span{font-size:10px}.rooms,.online{min-height:300px}.questgrid{grid-template-columns:1fr}.queststar{min-height:0}.frame{padding:12px}.titleview{min-height:75vh}}
+@media(max-width:420px){.lobby{grid-template-columns:1fr}.rooms,.online{min-height:0}.topline .small{display:none}}
+</style></head><body><main class="shell"><header class="topline"><div class="brand">KUFU HIVE <span style="color:#777">/</span> QUIZ RAID</div><span class="small">STORYBOARD UI · STATIC CONCEPT</span></header>
+<section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
+<nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
+<p class="small">登録しなくても冒険を始められます。</p></section>
+<section class="view" id="register"><div class="pagehead"><h2>冒険者登録</h2><button class="back" data-go="title">戻る</button></div><div class="frame formmock"><h3>NEW ADVENTURER</h3><label>ID<input class="field" placeholder="半角英数字・記号・_"></label><label>メールアドレス<input class="field" placeholder="mail@example.com"></label><label>パスワード<input class="field" type="password" placeholder="••••••••"></label><div class="note">画面確認用。登録処理・送信・保存は未実装です。</div><button class="action" data-go="lobby">ロビーを確認する（デモ）</button></div></section>
+<section class="view" id="login"><div class="pagehead"><h2>つづきから始める</h2><button class="back" data-go="title">戻る</button></div><div class="frame formmock"><h3>RETURNING ADVENTURER</h3><label>ID<input class="field" placeholder="冒険者ID"></label><label>パスワード<input class="field" type="password" placeholder="••••••••"></label><div class="note">ログイン認証は未実装です。</div><button class="action" data-go="lobby">ロビーを確認する（デモ）</button></div></section>
+<section class="view" id="tutorial"><div class="pagehead"><h2>★1 チュートリアル</h2><button class="back" data-go="title">戻る</button></div><div class="frame"><h3>はじめての冒険</h3><div class="previewbox">戦闘画面の絵コンテ受領後に制作</div><p class="small">プレイ後に任意登録を案内し、クエストロビーへ進む予定。</p><button class="action" data-go="lobby">ロビーの画面案を見る</button></div></section>
+<section class="view" id="lobby"><div class="pagehead"><h2>クエストロビー</h2><button class="back" data-go="title">タイトルへ</button></div>
+<div class="lobby"><div class="frame rooms"><h3>ルーム一覧 <span class="small">/ 現在進行中</span></h3>
+<div class="roomline"><div><strong>★1 森の探索</strong><br><span>1 / 2 戦目 · 参加 1人</span></div><button class="mini" disabled>参加</button></div>
+<div class="roomline"><div><strong>★2 沼地の討伐</strong><br><span>2 / 3 戦目 · 参加 2人</span></div><button class="mini" disabled>観戦</button></div>
+<div class="roomline"><div><strong>★3 平地の探索</strong><br><span>1 / 3 戦目 · 参加 1人</span></div><button class="mini" disabled>参加</button></div>
+<p class="small">※ ルームはサンプル表示。オンライン同期なし。</p></div>
+<div class="navstack"><button data-go="quests"><b>Ⅰ</b><span>クエスト選択</span></button><button data-go="party"><b>Ⅱ</b><span>パーティ討伐</span></button><button data-go="prepare"><b>Ⅲ</b><span>旅支度</span></button></div>
+<div class="frame online"><h3>オンラインID</h3><div class="person"><span class="rank-white">白級 · Adventurer</span><span class="status">● ONLINE</span></div><div class="person"><span class="rank-blue">青段 · BlueKnight</span><span class="status">● ONLINE</span></div><div class="person"><span class="rank-purple">紫段 · Arcanist</span><span style="color:#b7a3a1">○ AWAY</span></div><p class="small">段位・名前・状態はデモ値。段位名称・色は未確定。</p></div></div>
+<div class="frame chat"><h3>グローバルチャット</h3><p class="chatrow"><span class="rank-blue">[BlueKnight]</span> 森のクエストに挑戦します。</p><p class="chatrow"><span class="rank-purple">[Arcanist]</span> RAIDゲージが増えてきたね。</p><p class="small">※ 発言は架空のサンプルです。送受信不可。</p></div>
+<div class="raid"><h3>WORLD RAID · 世界の脅威</h3><p class="small">世界中の冒険者の活動でゲージが蓄積。満タンになると全オンラインIDへ招集アラート。</p><div class="progress"><span class="small">RAID ENERGY</span><div class="track"><i></i></div><span style="color:var(--gold)">63%</span></div><p class="small">63%は演出用の仮数値。時間帯ボーナス、運営ブースト、ボス種別は今後決定。</p></div></section>
+<section class="view" id="quests"><div class="pagehead"><h2>クエスト選択</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="note">各星で「森・沼・平地」の3クエストをすべてクリア → セミボス討伐 → 次の星が解放されます。</div>
+<div class="questgrid">
+<div class="frame queststar"><h3>★ 1</h3><div class="quest"><strong>森 — 木陰の小道</strong><span class="tag">未クリア</span><small>通常クエスト 1/3</small></div><div class="quest"><strong>沼 — 泥濘の入り江</strong><small>通常クエスト 2/3</small></div><div class="quest"><strong>平地 — 風の草原</strong><small>通常クエスト 3/3</small></div><div class="quest boss"><strong>★1 セミボス討伐</strong><small>3地域クリアで解放</small></div></div>
+<div class="frame queststar"><h3>★ ★ 2</h3><div class="quest"><strong>森 — 深緑の迷い道</strong><small>通常クエスト 1/3</small></div><div class="quest"><strong>沼 — 毒霧の水辺</strong><small>通常クエスト 2/3</small></div><div class="quest"><strong>平地 — 荒れた街道</strong><small>通常クエスト 3/3</small></div><div class="quest boss"><strong>★2 セミボス討伐</strong><small>3地域クリアで解放</small></div></div>
+<div class="frame queststar"><h3>★ ★ ★ 3</h3><div class="quest"><strong>森 — 古樹の奥地</strong><small>通常クエスト 1/3</small></div><div class="quest"><strong>沼 — 黒い湿原</strong><small>通常クエスト 2/3</small></div><div class="quest"><strong>平地 — 忘れられた戦場</strong><small>通常クエスト 3/3</small></div><div class="quest boss"><strong>★3 セミボス討伐</strong><small>3地域クリアで解放</small></div></div>
+</div><div class="foot">クエスト名は仮称。上記は固定レイアウト案であり、達成記録・解放判定・戦闘遷移は未接続です。</div></section>
+<section class="view" id="party"><div class="pagehead"><h2>パーティ討伐</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="frame"><h3>PARTY HUNT</h3><p>ルームを作成し、リーダーがオンラインIDから仲間を招待。</p><div class="previewbox">通常クエスト / セミボス / パーティ専用クエスト<br><span class="small">画面構成のみ · 招待とマッチングは未実装</span></div></div></section>
+<section class="view" id="prepare"><div class="pagehead"><h2>旅支度</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="frame"><h3>PREPARATION</h3><div class="previewbox">後日実装予定</div></div></section>
+<footer class="foot">QUIZ RAID — storyboard concept · 2026-11-11 · 本ページは静的UIモックです。実際のオンライン状況、アカウント、報酬、クエスト進行を表示していません。</footer></main>
+<script>document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));</script>
+</body></html>
