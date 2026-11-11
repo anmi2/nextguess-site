@@ -80,6 +80,37 @@ h1{font-size:clamp(44px,9vw,98px);margin:0;line-height:1.15;letter-spacing:.1em;
 .scorepercent{font-size:32px;color:#e4dcd7}
 @media(max-width:760px){.battlegrid{grid-template-columns:1fr 1fr;grid-template-rows:auto}.questionzone{grid-column:2;grid-row:1}.enemyzone{grid-column:1;grid-row:1}.enemyparams{grid-column:1;grid-row:2}.playerparams{grid-column:2;grid-row:2}.answerzone{grid-column:1/-1;grid-row:3}.partyzone{grid-column:1/-1;grid-row:4}.resultleft,.resultmain{padding:12px}.resultportrait{height:145px}.resultstats>div{padding:9px}.scoregrade{font-size:40px}}
 @media(max-width:420px){.battlegrid{grid-template-columns:1fr 1fr}.bcell{padding:9px}.monster-silhouette{width:95%;margin:8px auto}.questionzone .questiontext{font-size:17px}.resultgrid2{grid-template-columns:1fr}.resultleft{border-right:0;border-bottom:1px solid #5b4e45}.resultportrait{height:90px}.resultstats{gap:6px}}
+
+/* Party staging and preparation UI */
+.party-controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0}
+.party-controls select,.party-controls button,.prep-controls select{background:#1d1b22;color:#eaddc9;border:1px solid #74604e;padding:10px 13px;font:inherit}
+.party-controls button.active{background:#4b354d;color:#eacaf1;border-color:#b18bbe}
+.party-slots{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.party-slot{background:linear-gradient(160deg,#24222a,#111116);border:1px solid #5b5053;padding:12px;min-height:290px;display:flex;flex-direction:column;gap:8px}
+.party-slot.leader{border-color:#bc9560}
+.party-slot .slothead{display:flex;justify-content:space-between;align-items:center;gap:3px;color:#d1b78c;font-size:12px}
+.party-slot .slotportrait{height:130px;border:1px solid #463f45;background:radial-gradient(ellipse at center,#342a3f,#17161b 73%);display:grid;place-items:center;text-align:center;color:#c9b4c9;font-size:12px}
+.party-slot .slotportrait.empty{border-style:dashed;color:#766e78;background:#111116}
+.party-slot .slotname{font-size:14px;min-height:22px}.party-slot .slotstatus{font-size:11px;color:#a6a0a2}
+.party-slot .sloticons{display:flex;gap:8px;color:#c6b3cf;font-size:12px}
+.party-slot .slotbottom{margin-top:auto}.party-slot button{font:inherit;border:1px solid #776455;color:#e6dac9;background:#2d252d;padding:7px 8px;font-size:12px;width:100%}
+.party-slot button:disabled{opacity:.5}
+.party-message{border:1px solid #584a4e;padding:13px;color:#d4c6b9;font-size:13px;min-height:51px;margin-top:12px;background:#16141a}
+.party-footer{display:flex;gap:16px;align-items:stretch;justify-content:space-between;flex-wrap:wrap}
+.party-footer .frame{flex:2;min-width:235px}.party-footer .frame:last-child{flex:1}
+.party-footer button{width:100%}
+.prep-layout{display:grid;grid-template-columns:minmax(210px,1fr) minmax(270px,1.35fr);gap:16px}
+.prep-art{min-height:340px;border:1px solid #584955;background:radial-gradient(ellipse at 50% 35%,#392a41,#17151c 66%);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:17px}
+.prep-art .placeholder-symbol{font-size:88px;color:#88609d;text-shadow:0 0 30px #9b69bc77}.prep-art p{color:#c7b9ca}
+.prep-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prep-stats>div{padding:13px;background:#211d24;border:1px solid #52454c}
+.prep-stats strong{display:block;color:#e8d6c0;font-weight:400;margin-top:5px}
+.skillselect{display:grid;gap:8px;margin-top:12px}.skillselect label{display:flex;align-items:start;gap:10px;border:1px solid #544a50;padding:10px;background:#221e26;cursor:pointer}
+.skillselect label:has(input:checked){border-color:#b99560;background:#322630}
+.skillselect input{accent-color:#b89c72;margin-top:4px}
+.skillselect b{color:#e4c99d;font-weight:400}.skillselect small{display:block;color:#a9a0aa;margin-top:3px;font-size:11px}
+.prep-confirm{display:flex;gap:9px;justify-content:flex-end;margin-top:17px}
+@media(max-width:760px){.party-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.party-slot{min-height:250px}.party-slot .slotportrait{height:95px}.prep-layout{grid-template-columns:1fr}.prep-art{min-height:210px}}
 </style></head><body><main class="shell"><header class="topline"><div class="brand">KUFU HIVE <span style="color:#777">/</span> QUIZ RAID</div><span class="small">STORYBOARD UI · STATIC CONCEPT</span></header>
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
@@ -119,8 +150,126 @@ h1{font-size:clamp(44px,9vw,98px);margin:0;line-height:1.15;letter-spacing:.1em;
 <div class="resultmain"><div class="resultcaption">QUEST COMPLETE</div><h2 style="font-weight:normal;margin:10px 0 24px">★1 森の探索</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade">A</div></div><div><div class="small">正答率</div><div class="scorepercent">80%</div><div class="newrecord">NEW BEST ACCURACY !!</div></div></div>
 <div class="resultstats"><div><span class="small">クリアタイム</span><b>02:48</b></div><div><span class="small">正答率</span><b>80%</b></div><div><span class="small">獲得 Paragon PT</span><b>+120</b></div><div><span class="small">正解数 / 出題数</span><b>8 / 10</b></div><div><span class="small">参加人数</span><b>4 人</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
 <p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。敗北はソロ・PTとも味方全滅のみ。順位は同一問題・回答方式・プレイ条件で比較する構想。画面の数値・記録はサンプルで、データ保存なし。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
-<section class="view" id="party"><div class="pagehead"><h2>パーティ討伐</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="frame"><h3>PARTY HUNT</h3><p>ルームを作成し、リーダーがオンラインIDから仲間を招待。</p><div class="previewbox">通常クエスト / セミボス / パーティ専用クエスト<br><span class="small">画面構成のみ · 招待とマッチングは未実装</span></div></div></section>
-<section class="view" id="prepare"><div class="pagehead"><h2>旅支度</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="frame"><h3>PREPARATION</h3><div class="previewbox">後日実装予定</div></div></section>
+
+<section class="view" id="party"><div class="pagehead"><h2>パーティ編成ルーム</h2><button class="back" data-go="lobby">ロビーへ</button></div>
+<div class="note">4枠は常時表示。ソロ・招待・公開募集から選べます。ここでの参加者とReadyはブラウザ内で再現するサンプルです。</div>
+<div class="party-controls"><label>公開状態 <select id="roomMode"><option value="solo">ソロ（非公開）</option><option value="invite">招待のみ</option><option value="open" selected>参加者募集中（公開）</option></select></label><button type="button" id="inviteDemo">デモ参加者を追加</button><button type="button" id="resetParty">ルームをリセット</button></div>
+<div class="party-slots" id="partySlots" aria-live="polite"></div>
+<div class="party-footer"><div class="frame"><h3>QUEST SETTINGS</h3><div class="small">出発クエスト</div><select id="partyQuest" style="background:#17151b;color:#efe4ce;border:1px solid #68594f;padding:11px;width:100%;margin-top:8px"><option>★1 森の探索</option><option>★1 沼の探索</option><option>★1 平地の探索</option><option>★1 セミボス討伐（未解放・デモ）</option></select><p class="small">リーダーは参加者のキックと出発操作が可能。Ready済みの参加者は緑表示。</p></div>
+<div class="frame"><h3>DEPARTURE</h3><p id="readySummary" class="small"></p><button class="action" type="button" id="startParty">出発準備 / START</button><p class="small">全参加者Ready後、リーダーが押すと5秒カウント開始。カウント中にReady解除・退室すると中止。</p></div></div>
+<div class="party-message" id="partyMessage" role="status">ルームを作成しました。空き枠は参加待ちです。</div>
+</section>
+<section class="view" id="prepare"><div class="pagehead"><h2>旅支度</h2><button class="back" data-go="lobby">ロビーへ</button></div>
+<div class="note">キャラクターごとにスキルを1つ保存する構想。装備なし。アイテムやタリスマンはゲームバランス検討後。</div>
+<div class="prep-controls party-controls"><label>キャラクター <select id="prepCharacter"><option value="hero">主人公（赤髪・黒猫耳の魔導士）</option><option value="yukika">雪華（銀白髪・白猫耳の魔導士）</option></select></label></div>
+<div class="prep-layout"><div class="frame"><h3>CHARACTER ART / キャラ立ち絵</h3><div class="prep-art"><div class="placeholder-symbol" id="prepSymbol">✧</div><div id="prepCharacterName">主人公 — 魔導士</div><p class="small">採用済み立ち絵を配置する領域<br>正式素材は別途接続</p></div></div>
+<div class="frame"><h3>STATUS / SKILLS</h3><div class="prep-stats"><div><span class="small">戦闘用ドット絵</span><strong>準備中</strong></div><div><span class="small">HP</span><strong id="prepHp">100 / 100（仮）</strong></div><div><span class="small">パラゴンPT</span><strong>未接続</strong></div><div><span class="small">装備</span><strong>なし</strong></div></div>
+<h3 style="margin-top:24px">使用スキル（1枠）</h3><div id="prepSkills" class="skillselect"></div><div class="prep-confirm"><button class="back" data-go="lobby">キャンセル</button><button class="action" id="savePrep" type="button">この設定で決定</button></div><p id="prepMessage" class="small" role="status">キャラクター選択時に設定スキルを適用する想定。</p></div></div></section>
 <footer class="foot">QUIZ RAID — storyboard concept · 2026-11-11 · 本ページは静的UIモックです。実際のオンライン状況、アカウント、報酬、クエスト進行を表示していません。</footer></main>
-<script>document.querySelectorAll('.answerchoice').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.answerchoice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));</script>
+<script>document.querySelectorAll('.answerchoice').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.answerchoice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const party=[
+ {name:'DEMO-LEADER',role:'リーダー',ready:true,locked:true},
+ null,null,null
+];
+const names=['FOREST-MAGE','QUIZ-KNIGHT','SNOW-CAT'];
+let countdown=null, countdownLeft=0, inactivityTimer=null;
+let lastWaitingSince=null;
+let mode='open';
+function msg(t){$('partyMessage').textContent=t;}
+function cancelCountdown(){if(countdown!==null){clearInterval(countdown);countdown=null;countdownLeft=0;}}
+function activeMembers(){return party.filter(Boolean);}
+function allReady(){return activeMembers().every(p=>p.ready);}
+function scheduleKick(){
+ if(inactivityTimer){clearTimeout(inactivityTimer);inactivityTimer=null;}
+ const pending=party.map((p,i)=>p&&!p.ready&&i>0?i:-1).filter(i=>i>=0);
+ const othersReady=activeMembers().filter(p=>p.ready).length>0 && activeMembers().filter(p=>!p.ready).length===1;
+ if(!othersReady||pending.length!==1){lastWaitingSince=null;return;}
+ const who=pending[0];
+ lastWaitingSince=Date.now();
+ inactivityTimer=setTimeout(()=>{
+   if(party[who]&&!party[who].ready&&activeMembers().filter(p=>!p.ready).length===1){
+     const name=party[who].name;party[who]=null;cancelCountdown();renderParty();
+     msg(name+' は20秒間Readyしなかったため、自動キックされました（デモ）。');
+   }
+ },20000);
+}
+function renderParty(){
+ const root=$('partySlots');
+ root.innerHTML='';
+ party.forEach((p,i)=>{
+ const card=document.createElement('div');card.className='party-slot'+(i===0?' leader':'');
+ const head=document.createElement('div');head.className='slothead';head.textContent=(i===0?'LEADER':'SLOT '+(i+1));
+ const img=document.createElement('div');img.className='slotportrait'+(!p?' empty':'');
+ img.textContent=p?(i===0?'✧':'◇'):'EMPTY / 参加待ち';
+ const name=document.createElement('div');name.className='slotname';name.textContent=p?p.name:'空き枠';
+ const status=document.createElement('div');status.className='slotstatus';status.textContent=p?(p.ready?'● READY':'○ NOT READY'):(mode==='open'?'募集中':mode==='invite'?'招待待ち':'ソロ空席');
+ if(p&&p.ready)status.style.color='#91c9a0';
+ const icon=document.createElement('div');icon.className='sloticons';icon.textContent=p?'SKILL ✦ 1枠　ITEM —':'SKILL —　ITEM —';
+ const bottom=document.createElement('div');bottom.className='slotbottom';
+ if(p&&i>0){
+   const ready=document.createElement('button');ready.type='button';ready.textContent=p.ready?'Ready解除':'Readyにする';
+   ready.onclick=()=>{p.ready=!p.ready;cancelCountdown();renderParty();msg(p.name+(p.ready?' がReadyしました。':' がReadyを解除しました。'));};
+   bottom.appendChild(ready);
+   const kick=document.createElement('button');kick.type='button';kick.textContent='リーダーがキック';kick.style.marginTop='6px';
+   kick.onclick=()=>{const n=p.name;party[i]=null;cancelCountdown();renderParty();msg(n+' をキックしました（デモ）。');};
+   bottom.appendChild(kick);
+ }
+ if(!p){const add=document.createElement('button');add.type='button';add.textContent='デモ参加';
+ add.disabled=mode==='solo';add.onclick=()=>addMember(i);bottom.appendChild(add);}
+ [head,img,name,status,icon,bottom].forEach(el=>card.appendChild(el));root.appendChild(card);
+ });
+ const count=activeMembers().length;
+ $('readySummary').textContent=count+' / 4名参加　Ready '+activeMembers().filter(p=>p.ready).length+' / '+count+'名';
+ $('startParty').disabled=!allReady()||count<1||countdown!==null;
+ $('startParty').textContent=countdown!==null?'出発まで '+countdownLeft+' 秒':'出発準備 / START';
+ scheduleKick();
+}
+function addMember(i){
+ if(mode==='solo'){msg('ソロモードでは新規参加できません。');return;}
+ const index=i===undefined?party.findIndex((x,j)=>j>0&&!x):i;
+ if(index<1||index>3||party[index]){msg('追加可能な空き枠がありません。');return;}
+ party[index]={name:names[index-1],role:'参加者',ready:false};
+ cancelCountdown();renderParty();msg(party[index].name+' が参加しました。20秒以内にReadyする必要があります。');
+}
+$('inviteDemo').onclick=()=>{if(mode==='solo'){msg('招待・募集モードに切り替えてください。');return;}addMember();};
+$('roomMode').onchange=e=>{mode=e.target.value;cancelCountdown();renderParty();msg(mode==='solo'?'ソロで出発できます。空き3枠は表示したままです。':mode==='invite'?'招待のみのルームです。':'公開募集中。ルーム一覧に掲載される想定です。');};
+$('resetParty').onclick=()=>{cancelCountdown();for(let i=1;i<4;i++)party[i]=null;renderParty();msg('リセットしました。');};
+$('startParty').onclick=()=>{
+ if(!allReady()||countdown!==null)return;
+ countdownLeft=5;
+ msg('全員Ready。5秒後に戦闘へ移動します。');
+ countdown=setInterval(()=>{
+   if(!allReady()){cancelCountdown();renderParty();msg('Ready変更により出発を中止しました。');return;}
+   countdownLeft--;
+   if(countdownLeft<=0){cancelCountdown();renderParty();document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$('battle').classList.add('active');window.scrollTo(0,0);msg('戦闘画面モックへ移動しました。');}
+   else{$('startParty').textContent='出発まで '+countdownLeft+' 秒';}
+ },1000);
+ renderParty();
+};
+const skills={
+ hero:[['fire','ファイアボルト','敵単体へ炎属性の攻撃（数値は未確定）'],['guard','魔力障壁','一定時間ダメージを軽減（効果は仮）'],['focus','集中','次回のスキル効果を強化（案）']],
+ yukika:[['ice','アイス','敵単体へ氷属性の攻撃（数値は未確定）'],['frost','霜の護り','味方を保護する支援（案）'],['slow','スロウ','敵の行動を遅らせる（案）']]
+};
+const selected={hero:'fire',yukika:'ice'};
+function showSkills(){
+ const character=$('prepCharacter').value;
+ $('prepCharacterName').textContent=character==='hero'?'主人公 — 魔導士':'雪華 — 氷魔導士';
+ $('prepSymbol').textContent=character==='hero'?'✧':'❄';
+ const root=$('prepSkills');root.innerHTML='';
+ skills[character].forEach(([id,label,desc])=>{
+ const row=document.createElement('label'),radio=document.createElement('input'),body=document.createElement('span'),title=document.createElement('b'),sub=document.createElement('small');
+ radio.type='radio';radio.name='skill';radio.value=id;radio.checked=selected[character]===id;
+ radio.onchange=()=>{selected[character]=id;$('prepMessage').textContent=label+' を選択中。決定ボタンで保存してください。';};
+ title.textContent=label;sub.textContent=desc;body.append(title,sub);row.append(radio,body);root.append(row);
+ });
+}
+$('prepCharacter').onchange=()=>{showSkills();$('prepMessage').textContent='キャラクター別スキル設定のデモ。';};
+$('savePrep').onclick=()=>{const c=$('prepCharacter').value;const skill=skills[c].find(x=>x[0]===selected[c]);$('prepMessage').textContent=skill[1]+' をスキル1枠にセットしました（ページ内デモ）。';};
+window.addEventListener('pagehide',()=>{cancelCountdown();if(inactivityTimer)clearTimeout(inactivityTimer);});
+renderParty();showSkills();
+})();
+</script>
 </body></html>
