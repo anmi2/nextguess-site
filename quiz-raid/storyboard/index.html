@@ -194,7 +194,7 @@ body{min-width:1024px}
 <div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01 / 10</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
 <div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>次の攻撃</span><strong>00:08</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">slime-splash</strong></div></div>
 <div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong>HP 83/100</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small">敵への攻撃 / プレイヤーへの攻撃方向は上下。HPとゲージは仮表示。</div></div>
-<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><button class="action" type="button" style="width:100%;margin-top:15px" id="quizNext" disabled>回答を選択してください</button><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">現在は正誤・正答率の検証のみ。HP・ダメージ・時間制限は未接続です。</p></div>
+<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">回答すると○／×を0.8秒表示し、自動で次の問題へ進みます。10問目は結果画面へ移動します。HP・ダメージ・時間制限は未接続です。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
 <section class="view" id="result"><div class="pagehead"><h2>クエストリザルト</h2><button class="back" data-go="battle">戦闘画面へ</button></div>
@@ -359,15 +359,17 @@ const bank=[
 if(bank.length!==10||bank.filter(q=>q.type==='four').length!==7||bank.filter(q=>q.type==='truefalse').length!==3)throw Error('Invalid question composition');
 const $=id=>document.getElementById(id);
 let index=0, correct=0, answered=false;
+let advanceTimer=null;
+const JUDGMENT_MS=800;
+function cancelAdvance(){if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}}
 function render(){
+ cancelAdvance();
  const q=bank[index];answered=false;
  $('questionProgress').textContent='QUESTION '+String(index+1).padStart(2,'0')+' / 10';
  $('questionText').textContent=q.q;
  $('questionFormat').textContent=q.type==='four'?'4択問題':'○×問題';
  $('quizJudgment').textContent='';
  $('quizJudgment').className='quiz-judgment';
- $('quizNext').disabled=true;
- $('quizNext').textContent='回答を選択してください';
  const choices=q.type==='four'?q.opts:['○ 正しい','× 誤り'];
  $('quizChoices').replaceChildren();
  choices.forEach((choice,i)=>{
@@ -382,8 +384,7 @@ function render(){
  [...$('quizChoices').children].forEach(b=>{b.disabled=true});
  $('quizJudgment').textContent=i===q.correct?'○':'×';
  $('quizJudgment').className='quiz-judgment '+(i===q.correct?'correct':'incorrect');
- $('quizNext').disabled=false;
- $('quizNext').textContent=index===bank.length-1?'結果を見る':'次の問題へ';
+ advanceTimer=setTimeout(()=>{advanceTimer=null;if(index===bank.length-1){finish();}else{index++;render();}},JUDGMENT_MS);
  };
  $('quizChoices').append(button);
  });
@@ -399,8 +400,8 @@ function finish(){
  $('result').classList.add('active');
  window.scrollTo(0,0);
 }
-$('quizNext').onclick=()=>{if(!answered)return;if(index===bank.length-1)finish();else{index++;render();}};
-$('quizReset').onclick=()=>{index=0;correct=0;render();};
+$('quizReset').onclick=()=>{cancelAdvance();index=0;correct=0;render();};
+window.addEventListener('pagehide',cancelAdvance);
 render();
 })();
 </script>
