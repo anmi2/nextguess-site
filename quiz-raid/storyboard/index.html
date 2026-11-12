@@ -158,6 +158,9 @@ body{min-width:1024px}
 .forest-shortcuts span{color:#b5c9ab;font-size:12px}
 .forest-shortcuts button{background:#26352b;border:1px solid #62815f;color:#e5e9d7;padding:7px;font:inherit;font-size:12px;cursor:pointer}
 .monster-silhouette{width:min(210px,90%);aspect-ratio:4/3;border-radius:8px}
+.choicegrid button.quiz-correct{border-color:#63b88a;background:#254733;color:#e1ffe5}
+.choicegrid button.quiz-wrong{border-color:#d37a76;background:#4a282b;color:#ffe2df}
+.choicegrid button:disabled{cursor:default;opacity:1}
 </style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
@@ -186,17 +189,17 @@ body{min-width:1024px}
 <div class="note">通常27体とセミボス9体から選択。画像・設定を確認する静的プレビュー（戦闘ロジックは未接続）。<label style="margin-left:15px">敵を選択：<select id="enemySelector" style="padding:8px;background:#211c25;color:#e8dace;border:1px solid #685649"></select></label><div id="forestShortcuts" class="forest-shortcuts"><span>★1 森：</span></div></div>
 <div class="battlegrid">
 <div class="bcell enemyzone"><h3>MOB / QUEST</h3><div class="monster-silhouette" id="battleMonsterImage">登録モンスターを選択</div><div class="small" id="battleMonsterArea">背景：森 / 属性：森</div></div>
-<div class="bcell questionzone"><div class="questionno">QUESTION 03 / 10</div><div class="questiontext">日本で最も面積の広い都道府県は？</div><div class="small">解答方式：4択 / ○× / キーボード（切替予定）</div></div>
+<div class="bcell questionzone"><div class="questionno" id="questionProgress">QUESTION 01 / 10</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
 <div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>次の攻撃</span><strong>00:08</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">slime-splash</strong></div></div>
 <div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong>HP 83/100</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small">敵への攻撃 / プレイヤーへの攻撃方向は上下。HPとゲージは仮表示。</div></div>
-<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid"><button class="answerchoice">A　北海道</button><button class="answerchoice">B　岩手県</button><button class="answerchoice">C　長野県</button><button class="answerchoice">D　福島県</button></div><div class="answerkeys"><span>4択</span><span>○ / ×</span><span>キーボード</span></div><div class="small" style="margin-top:10px">解答を押すと選択状態になるだけで、正誤・ダメージは計算しません。</div><button class="action" style="width:100%;margin-top:15px" data-go="result">リザルト画面を確認する →</button></div>
+<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><div id="quizFeedback" class="small" role="status" aria-live="polite" style="margin-top:10px;min-height:24px">選択肢を押すと正誤を判定します。問題は動作検証用です。</div><button class="action" type="button" style="width:100%;margin-top:15px" id="quizNext" disabled>回答を選択してください</button><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">現在は正誤・正答率の検証のみ。HP・ダメージ・時間制限は未接続です。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
 <section class="view" id="result"><div class="pagehead"><h2>クエストリザルト</h2><button class="back" data-go="battle">戦闘画面へ</button></div>
 <div class="resultgrid2"><div class="resultleft"><div class="resultcaption">ADVENTURER RECORD</div><p class="resultlabel">ID / 段位<strong class="rank-white">10級 · Adventurer</strong></p><div class="resultportrait">採用済みキャラクター画像<br>配置予定</div><p class="resultlabel">勝敗<strong>VICTORY</strong></p><p class="resultlabel">キャラクターデザイン<strong>仮配置</strong></p></div>
-<div class="resultmain"><div class="resultcaption">QUEST COMPLETE</div><h2 style="font-weight:normal;margin:10px 0 24px">★1 森の探索</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade">A</div></div><div><div class="small">正答率</div><div class="scorepercent">80%</div><div class="newrecord">NEW BEST ACCURACY !!</div></div></div>
-<div class="resultstats"><div><span class="small">クリアタイム</span><b>02:48</b></div><div><span class="small">正答率</span><b>80%</b></div><div><span class="small">獲得 Paragon PT</span><b>+120</b></div><div><span class="small">正解数 / 出題数</span><b>8 / 10</b></div><div><span class="small">参加人数</span><b>4 人</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
-<p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。敗北はソロ・PTとも味方全滅のみ。順位は同一問題・回答方式・プレイ条件で比較する構想。画面の数値・記録はサンプルで、データ保存なし。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
+<div class="resultmain"><div class="resultcaption">QUEST COMPLETE</div><h2 style="font-weight:normal;margin:10px 0 24px">★1 森の探索</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade" id="quizResultGrade">—</div></div><div><div class="small">正答率</div><div class="scorepercent" id="quizResultPercent">—</div><div class="newrecord" id="quizResultNote">動作検証用の結果</div></div></div>
+<div class="resultstats"><div><span class="small">クリアタイム</span><b>02:48</b></div><div><span class="small">正答率</span><b id="quizResultAccuracy">—</b></div><div><span class="small">獲得 Paragon PT</span><b>+120</b></div><div><span class="small">正解数 / 出題数</span><b id="quizResultCount">—</b></div><div><span class="small">参加人数</span><b>4 人</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
+<p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。正答率と正解数のみ出題テスト結果を反映します。タイム・獲得PT・勝敗表示はサンプルで、データ保存なし。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
 
 <section class="view" id="monsters"><div class="pagehead"><h2>モンスター図鑑（素材接続確認）</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="note">通常27体とセミボス9体の画像プレビュー。画像は公開サイトの専用フォルダから読み込みます。PNGのアップロード前は画像を表示できません。 透過状態は未検証です。</div><div class="monster-roster" id="monsterRoster"></div><h3 style="margin:22px 0 12px">セミボス B001〜B009</h3><div class="monster-roster" id="bossRoster"></div><p class="small">各カードから戦闘画面に画像を呼び出せます。ボスのHP・攻撃力は未設定です。</p></section>
 <section class="view" id="party"><div class="pagehead"><h2>パーティ編成ルーム</h2><button class="back" data-go="lobby">ロビーへ</button></div>
@@ -214,7 +217,7 @@ body{min-width:1024px}
 <div class="frame"><h3>STATUS / SKILLS</h3><div class="prep-stats"><div><span class="small">戦闘用ドット絵</span><img id="prepPixel" class="character-pixel" alt="ドット絵"></div><div><span class="small">HP</span><strong id="prepHp">調整中</strong></div><div><span class="small">パラゴンPT</span><strong>未接続</strong></div><div><span class="small">装備</span><strong>なし</strong></div></div>
 <h3 style="margin-top:24px">使用スキル（1枠）</h3><div id="prepSkills" class="skillselect"></div><div class="prep-confirm"><button class="back" data-go="lobby">キャンセル</button><button class="action" id="savePrep" type="button">この設定で決定</button></div><p id="prepMessage" class="small" role="status">キャラクターと共通スキルの表示確認用。保存処理は未実装です。</p></div></div></section>
 </main>
-<script>document.querySelectorAll('.answerchoice').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.answerchoice').forEach(x=>x.classList.remove('selected'));b.classList.add('selected')}));document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));
+<script>document.querySelectorAll('[data-go]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById(button.dataset.go).classList.add('active');window.scrollTo(0,0)}));
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
@@ -335,5 +338,66 @@ renderParty();showSkills();renderSelection();
 for(const mon of mons.concat(bosses)){const opt=document.createElement('option');opt.value=mon.id;opt.textContent=mon.id+' '+mon.english;selector.append(opt);const card=document.createElement('article');card.className='monster-card';const id=document.createElement('div');id.className='monster-id';id.textContent=mon.id;card.append(id);if(mon.image){const img=document.createElement('img');img.src=mon.image;img.alt=mon.name+' / '+mon.english;img.loading='lazy';img.onerror=()=>{img.replaceWith(Object.assign(document.createElement('div'),{className:'monster-art-empty',textContent:'公開サイト側に画像未配置'}));};card.append(img);}else{const absent=document.createElement('div');absent.className='monster-art-empty';absent.textContent='個別PNG未登録';card.append(absent);}const name=document.createElement('div');name.className='monster-name';name.textContent=mon.name;card.append(name);const meta=document.createElement('div');meta.className='monster-meta';meta.textContent=({forest:'森',swamp:'沼',plains:'平地'}[mon.area]||mon.area)+' · ★'+mon.difficulty+' / ステージ'+(mon.isBoss?'セミボス':('ステージ'+mon.stage))+' · HP '+(mon.hp??'調整中')+' · ATK '+(mon.attack??'調整中')+' · '+mon.skill_name;card.append(meta);const button=document.createElement('button');button.className='mini';button.style.marginTop='9px';button.textContent='戦闘画面に出す';button.onclick=()=>{choose(mon);gotoBattle();};card.append(button);(mon.isBoss?document.getElementById('bossRoster'):roster).append(card);}
 selector.onchange=()=>{const mon=mons.concat(bosses).find(x=>x.id===selector.value);if(mon)choose(mon)};
 [...mons.filter(m=>m.area==='forest'&&m.difficulty===1),...bosses.filter(b=>b.id==='B001')].forEach(mon=>{const btn=document.createElement('button');btn.type='button';btn.textContent=mon.id+' '+mon.name;btn.onclick=()=>choose(mon);document.getElementById('forestShortcuts').append(btn)});choose(mons[0]);})();
+
+(function(){
+'use strict';
+// Temporary quiz QA fixture: exactly 7 multiple-choice and 3 true/false questions per 10.
+const bank=[
+ {type:'four',q:'日本で最も面積が広い都道府県は？',opts:['北海道','岩手県','長野県','福島県'],correct:0,why:'北海道が最も広い都道府県です。'},
+ {type:'truefalse',q:'タコの心臓は3つある。',correct:0,why:'タコには心臓が3つあります。'},
+ {type:'four',q:'太陽系で最も大きい惑星は？',opts:['地球','土星','木星','海王星'],correct:2,why:'木星が最大です。'},
+ {type:'four',q:'二酸化炭素の化学式は？',opts:['CO','CO₂','O₂','H₂O'],correct:1,why:'二酸化炭素はCO₂です。'},
+ {type:'truefalse',q:'オーストラリアの首都はシドニーである。',correct:1,why:'首都はキャンベラです。'},
+ {type:'four',q:'「源氏物語」を書いた人物は？',opts:['清少納言','紫式部','樋口一葉','与謝野晶子'],correct:1,why:'作者は紫式部です。'},
+ {type:'four',q:'世界で最も深い海溝は？',opts:['日本海溝','トンガ海溝','マリアナ海溝','フィリピン海溝'],correct:2,why:'マリアナ海溝です。'},
+ {type:'truefalse',q:'ヒトの骨は成人になると通常206個になる。',correct:0,why:'成人の骨の数は通常206個です。'},
+ {type:'four',q:'光の三原色に含まれないものは？',opts:['赤','青','黄','緑'],correct:2,why:'光の三原色は赤・緑・青です。'},
+ {type:'four',q:'日本の国会を構成する2つの議院は？',opts:['衆議院と参議院','衆議院と最高裁判所','内閣と参議院','参議院と地方議会'],correct:0,why:'衆議院と参議院の二院制です。'}
+];
+if(bank.length!==10||bank.filter(q=>q.type==='four').length!==7||bank.filter(q=>q.type==='truefalse').length!==3)throw Error('Invalid question composition');
+const $=id=>document.getElementById(id);
+let index=0, correct=0, answered=false;
+function render(){
+ const q=bank[index];answered=false;
+ $('questionProgress').textContent='QUESTION '+String(index+1).padStart(2,'0')+' / 10';
+ $('questionText').textContent=q.q;
+ $('questionFormat').textContent=q.type==='four'?'4択問題':'○×問題';
+ $('quizFeedback').textContent='回答を選択してください。';
+ $('quizNext').disabled=true;
+ $('quizNext').textContent='回答を選択してください';
+ const choices=q.type==='four'?q.opts:['○ 正しい','× 誤り'];
+ $('quizChoices').replaceChildren();
+ choices.forEach((choice,i)=>{
+ const button=document.createElement('button');
+ button.className='answerchoice';
+ button.type='button';
+ button.textContent=(q.type==='four'?'ABCD'[i]+'　':'')+choice;
+ button.onclick=()=>{
+ if(answered)return;
+ answered=true;
+ if(i===q.correct)correct++;
+ [...$('quizChoices').children].forEach((b,j)=>{b.disabled=true;if(j===q.correct)b.classList.add('quiz-correct');else if(j===i)b.classList.add('quiz-wrong')});
+ $('quizFeedback').textContent=(i===q.correct?'正解。':'不正解。')+' '+q.why;
+ $('quizNext').disabled=false;
+ $('quizNext').textContent=index===bank.length-1?'結果を見る':'次の問題へ';
+ };
+ $('quizChoices').append(button);
+ });
+}
+function finish(){
+ const rate=Math.round(correct/bank.length*100);
+ $('quizResultGrade').textContent=rate===100?'S':rate>=80?'A':'B';
+ $('quizResultPercent').textContent=rate+'%';
+ $('quizResultAccuracy').textContent=rate+'%';
+ $('quizResultCount').textContent=correct+' / '+bank.length;
+ $('quizResultNote').textContent='4択7問＋○×3問・テスト結果';
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+ $('result').classList.add('active');
+ window.scrollTo(0,0);
+}
+$('quizNext').onclick=()=>{if(!answered)return;if(index===bank.length-1)finish();else{index++;render();}};
+$('quizReset').onclick=()=>{index=0;correct=0;render();};
+render();
+})();
 </script>
 </body></html>
