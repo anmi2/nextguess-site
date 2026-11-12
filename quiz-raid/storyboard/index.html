@@ -158,8 +158,10 @@ body{min-width:1024px}
 .forest-shortcuts span{color:#b5c9ab;font-size:12px}
 .forest-shortcuts button{background:#26352b;border:1px solid #62815f;color:#e5e9d7;padding:7px;font:inherit;font-size:12px;cursor:pointer}
 .monster-silhouette{width:min(210px,90%);aspect-ratio:4/3;border-radius:8px}
-.choicegrid button.quiz-correct{border-color:#63b88a;background:#254733;color:#e1ffe5}
-.choicegrid button.quiz-wrong{border-color:#d37a76;background:#4a282b;color:#ffe2df}
+.quiz-judgment{font-size:92px;line-height:1.1;min-height:0;font-weight:700;text-align:center}
+.quiz-judgment:empty{display:none}
+.quiz-judgment.correct{color:#65d68e}
+.quiz-judgment.incorrect{color:#ef7777}
 .choicegrid button:disabled{cursor:default;opacity:1}
 </style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
@@ -189,10 +191,10 @@ body{min-width:1024px}
 <div class="note">通常27体とセミボス9体から選択。画像・設定を確認する静的プレビュー（戦闘ロジックは未接続）。<label style="margin-left:15px">敵を選択：<select id="enemySelector" style="padding:8px;background:#211c25;color:#e8dace;border:1px solid #685649"></select></label><div id="forestShortcuts" class="forest-shortcuts"><span>★1 森：</span></div></div>
 <div class="battlegrid">
 <div class="bcell enemyzone"><h3>MOB / QUEST</h3><div class="monster-silhouette" id="battleMonsterImage">登録モンスターを選択</div><div class="small" id="battleMonsterArea">背景：森 / 属性：森</div></div>
-<div class="bcell questionzone"><div class="questionno" id="questionProgress">QUESTION 01 / 10</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
+<div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01 / 10</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
 <div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>次の攻撃</span><strong>00:08</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">slime-splash</strong></div></div>
 <div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong>HP 83/100</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small">敵への攻撃 / プレイヤーへの攻撃方向は上下。HPとゲージは仮表示。</div></div>
-<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><div id="quizFeedback" class="small" role="status" aria-live="polite" style="margin-top:10px;min-height:24px">選択肢を押すと正誤を判定します。問題は動作検証用です。</div><button class="action" type="button" style="width:100%;margin-top:15px" id="quizNext" disabled>回答を選択してください</button><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">現在は正誤・正答率の検証のみ。HP・ダメージ・時間制限は未接続です。</p></div>
+<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><button class="action" type="button" style="width:100%;margin-top:15px" id="quizNext" disabled>回答を選択してください</button><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">現在は正誤・正答率の検証のみ。HP・ダメージ・時間制限は未接続です。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
 <section class="view" id="result"><div class="pagehead"><h2>クエストリザルト</h2><button class="back" data-go="battle">戦闘画面へ</button></div>
@@ -343,16 +345,16 @@ selector.onchange=()=>{const mon=mons.concat(bosses).find(x=>x.id===selector.val
 'use strict';
 // Temporary quiz QA fixture: exactly 7 multiple-choice and 3 true/false questions per 10.
 const bank=[
- {type:'four',q:'日本で最も面積が広い都道府県は？',opts:['北海道','岩手県','長野県','福島県'],correct:0,why:'北海道が最も広い都道府県です。'},
- {type:'truefalse',q:'タコの心臓は3つある。',correct:0,why:'タコには心臓が3つあります。'},
- {type:'four',q:'太陽系で最も大きい惑星は？',opts:['地球','土星','木星','海王星'],correct:2,why:'木星が最大です。'},
- {type:'four',q:'二酸化炭素の化学式は？',opts:['CO','CO₂','O₂','H₂O'],correct:1,why:'二酸化炭素はCO₂です。'},
- {type:'truefalse',q:'オーストラリアの首都はシドニーである。',correct:1,why:'首都はキャンベラです。'},
- {type:'four',q:'「源氏物語」を書いた人物は？',opts:['清少納言','紫式部','樋口一葉','与謝野晶子'],correct:1,why:'作者は紫式部です。'},
- {type:'four',q:'世界で最も深い海溝は？',opts:['日本海溝','トンガ海溝','マリアナ海溝','フィリピン海溝'],correct:2,why:'マリアナ海溝です。'},
- {type:'truefalse',q:'ヒトの骨は成人になると通常206個になる。',correct:0,why:'成人の骨の数は通常206個です。'},
- {type:'four',q:'光の三原色に含まれないものは？',opts:['赤','青','黄','緑'],correct:2,why:'光の三原色は赤・緑・青です。'},
- {type:'four',q:'日本の国会を構成する2つの議院は？',opts:['衆議院と参議院','衆議院と最高裁判所','内閣と参議院','参議院と地方議会'],correct:0,why:'衆議院と参議院の二院制です。'}
+ {type:'four',q:'日本で最も面積が広い都道府県は？',opts:['北海道','岩手県','長野県','福島県'],correct:0},
+ {type:'truefalse',q:'タコの心臓は3つある。',correct:0},
+ {type:'four',q:'太陽系で最も大きい惑星は？',opts:['地球','土星','木星','海王星'],correct:2},
+ {type:'four',q:'二酸化炭素の化学式は？',opts:['CO','CO₂','O₂','H₂O'],correct:1},
+ {type:'truefalse',q:'オーストラリアの首都はシドニーである。',correct:1},
+ {type:'four',q:'「源氏物語」を書いた人物は？',opts:['清少納言','紫式部','樋口一葉','与謝野晶子'],correct:1},
+ {type:'four',q:'世界で最も深い海溝は？',opts:['日本海溝','トンガ海溝','マリアナ海溝','フィリピン海溝'],correct:2},
+ {type:'truefalse',q:'ヒトの骨は成人になると通常206個になる。',correct:0},
+ {type:'four',q:'光の三原色に含まれないものは？',opts:['赤','青','黄','緑'],correct:2},
+ {type:'four',q:'日本の国会を構成する2つの議院は？',opts:['衆議院と参議院','衆議院と最高裁判所','内閣と参議院','参議院と地方議会'],correct:0}
 ];
 if(bank.length!==10||bank.filter(q=>q.type==='four').length!==7||bank.filter(q=>q.type==='truefalse').length!==3)throw Error('Invalid question composition');
 const $=id=>document.getElementById(id);
@@ -362,7 +364,8 @@ function render(){
  $('questionProgress').textContent='QUESTION '+String(index+1).padStart(2,'0')+' / 10';
  $('questionText').textContent=q.q;
  $('questionFormat').textContent=q.type==='four'?'4択問題':'○×問題';
- $('quizFeedback').textContent='回答を選択してください。';
+ $('quizJudgment').textContent='';
+ $('quizJudgment').className='quiz-judgment';
  $('quizNext').disabled=true;
  $('quizNext').textContent='回答を選択してください';
  const choices=q.type==='four'?q.opts:['○ 正しい','× 誤り'];
@@ -376,8 +379,9 @@ function render(){
  if(answered)return;
  answered=true;
  if(i===q.correct)correct++;
- [...$('quizChoices').children].forEach((b,j)=>{b.disabled=true;if(j===q.correct)b.classList.add('quiz-correct');else if(j===i)b.classList.add('quiz-wrong')});
- $('quizFeedback').textContent=(i===q.correct?'正解。':'不正解。')+' '+q.why;
+ [...$('quizChoices').children].forEach(b=>{b.disabled=true});
+ $('quizJudgment').textContent=i===q.correct?'○':'×';
+ $('quizJudgment').className='quiz-judgment '+(i===q.correct?'correct':'incorrect');
  $('quizNext').disabled=false;
  $('quizNext').textContent=index===bank.length-1?'結果を見る':'次の問題へ';
  };
