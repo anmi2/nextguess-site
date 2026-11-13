@@ -214,21 +214,21 @@ body{min-width:1024px}
 <div class="frame queststar"><h3>★ ★ ★ 3</h3><div class="quest"><strong>森 — 古樹の奥地</strong><small>通常クエスト 1/3</small></div><div class="quest"><strong>沼 — 黒い湿原</strong><small>通常クエスト 2/3</small></div><div class="quest"><strong>平地 — 忘れられた戦場</strong><small>通常クエスト 3/3</small></div><div class="quest boss"><strong>★3 セミボス討伐</strong><small>3地域クリアで解放</small></div></div>
 </div><div class="foot">クエスト名は仮称。上記は固定レイアウト案であり、達成記録・解放判定は未接続です。<button class="mini" data-go="battle">戦闘画面プレビュー</button></div></section>
 
-<section class="view" id="battle"><div class="pagehead"><h2>★1 森の探索 — 戦闘画面</h2><button class="back" data-go="quests">クエスト選択へ</button></div>
-<div class="note">通常27体とセミボス9体から選択。画像・設定を確認する静的プレビュー（戦闘ロジックは未接続）。<label style="margin-left:15px">敵を選択：<select id="enemySelector" style="padding:8px;background:#211c25;color:#e8dace;border:1px solid #685649"></select></label><div id="forestShortcuts" class="forest-shortcuts"><span>★1 森：</span></div></div>
+<section class="view" id="battle"><div class="pagehead"><h2>モンスター戦闘テスト</h2><button class="back" data-go="quests">クエスト選択へ</button></div>
+<div class="note">既存27体のHPを使用し、★別の攻撃力と許容ミス数を検証します。セミボスの数値は仮設定です。<label style="margin-left:15px">敵を選択：<select id="enemySelector" style="padding:8px;background:#211c25;color:#e8dace;border:1px solid #685649"></select></label><div id="forestShortcuts" class="forest-shortcuts"><span>★1 森：</span></div></div>
 <div class="battlegrid">
 <div class="bcell enemyzone"><h3>MOB / QUEST</h3><div class="monster-silhouette" id="battleMonsterImage">登録モンスターを選択<div class="attack-effect-layer" id="battleAttackEffect" aria-hidden="true"></div></div><div class="small" id="battleMonsterArea">背景：森 / 属性：森</div></div>
-<div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01 / 10</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
-<div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>次の攻撃</span><strong>00:08</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">slime-splash</strong></div></div>
-<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong>HP 83/100</strong></div><div class="hpbg"><i></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small">敵への攻撃 / プレイヤーへの攻撃方向は上下。HPとゲージは仮表示。</div></div>
-<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>全10問</span></div><button class="mini" type="button" style="margin-top:8px" id="quizReset">最初から出題</button><p class="small">回答すると○／×と攻撃／被弾演出を0.5秒表示し、自動で次の問題へ進みます。10問目は結果画面へ移動します。HP・ダメージ・時間制限は未接続です。</p></div>
+<div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
+<div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="hpbg"><i id="battleEnemyHpBar"></i></div><div class="stat"><span>次の攻撃</span><strong id="battleEnemyAttackTimer">12秒</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">slime-splash</strong></div></div>
+<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong id="battlePlayerHp">HP 100 / 100</strong></div><div class="hpbg"><i id="battlePlayerHpBar"></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small" id="battleDamageInfo">HP / ダメージ計算を検証中。スキルは未接続。</div></div>
+<div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>敵HPが0で勝利</span></div><div class="small" id="battleOutcome" role="status" aria-live="polite"></div><button class="mini" type="button" style="margin-top:8px" id="quizReset">この敵と再戦</button><p class="small">回答後0.5秒で次の問題へ。勝敗はHPで判定します。検証用問題は10題のみで、問題を使い切った場合は再出題します。本番の問題プールではありません。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
 <section class="view" id="result"><div class="pagehead"><h2>クエストリザルト</h2><button class="back" data-go="battle">戦闘画面へ</button></div>
-<div class="resultgrid2"><div class="resultleft"><div class="resultcaption">ADVENTURER RECORD</div><p class="resultlabel">ID / 段位<strong class="rank-white">10級 · Adventurer</strong></p><div class="resultportrait">採用済みキャラクター画像<br>配置予定</div><p class="resultlabel">勝敗<strong>VICTORY</strong></p><p class="resultlabel">キャラクターデザイン<strong>仮配置</strong></p></div>
-<div class="resultmain"><div class="resultcaption">QUEST COMPLETE</div><h2 style="font-weight:normal;margin:10px 0 24px">★1 森の探索</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade" id="quizResultGrade">—</div></div><div><div class="small">正答率</div><div class="scorepercent" id="quizResultPercent">—</div><div class="newrecord" id="quizResultNote">動作検証用の結果</div></div></div>
-<div class="resultstats"><div><span class="small">クリアタイム</span><b>02:48</b></div><div><span class="small">正答率</span><b id="quizResultAccuracy">—</b></div><div><span class="small">獲得 Paragon PT</span><b>+120</b></div><div><span class="small">正解数 / 出題数</span><b id="quizResultCount">—</b></div><div><span class="small">参加人数</span><b>4 人</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
-<p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。正答率と正解数のみ出題テスト結果を反映します。タイム・獲得PT・勝敗表示はサンプルで、データ保存なし。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
+<div class="resultgrid2"><div class="resultleft"><div class="resultcaption">ADVENTURER RECORD</div><p class="resultlabel">ID / 段位<strong class="rank-white">10級 · Adventurer</strong></p><div class="resultportrait">採用済みキャラクター画像<br>配置予定</div><p class="resultlabel">勝敗<strong id="battleResultOutcome">未開始</strong></p><p class="resultlabel">キャラクターデザイン<strong>仮配置</strong></p></div>
+<div class="resultmain"><div class="resultcaption" id="battleResultTitle">BATTLE RESULT</div><h2 style="font-weight:normal;margin:10px 0 24px" id="battleResultEnemy">戦闘テスト</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade" id="quizResultGrade">—</div></div><div><div class="small">正答率</div><div class="scorepercent" id="quizResultPercent">—</div><div class="newrecord" id="quizResultNote">動作検証用の結果</div></div></div>
+<div class="resultstats"><div><span class="small">経過時間</span><b id="battleResultTime">—</b></div><div><span class="small">正答率</span><b id="quizResultAccuracy">—</b></div><div><span class="small">獲得 Paragon PT</span><b>未接続</b></div><div><span class="small">正解数 / 出題数</span><b id="quizResultCount">—</b></div><div><span class="small">参加人数</span><b>1人（デモ）</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
+<p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。HP・勝敗・経過時間・正答率は今回のテスト値です。経験値・PT・スキル・保存は未接続。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
 
 <section class="view" id="monsters"><div class="pagehead"><h2>モンスター図鑑（素材接続確認）</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="note">通常27体とセミボス9体の画像プレビュー。画像は公開サイトの専用フォルダから読み込みます。PNGのアップロード前は画像を表示できません。 透過状態は未検証です。</div><div class="monster-roster" id="monsterRoster"></div><h3 style="margin:22px 0 12px">セミボス B001〜B009</h3><div class="monster-roster" id="bossRoster"></div><p class="small">各カードから戦闘画面に画像を呼び出せます。ボスのHP・攻撃力は未設定です。</p></section>
 <section class="view" id="party"><div class="pagehead"><h2>パーティ編成ルーム</h2><button class="back" data-go="lobby">ロビーへ</button></div>
@@ -381,7 +381,9 @@ function renderSelection(){
  $('prepPortrait').src=c.standing;$('prepPortrait').alt=c.name+' 立ち絵';
  $('prepPixel').src=c.pixel;$('prepPixel').alt=c.name+' ドット絵';
  $('prepCharacterName').textContent=c.name+' / '+c.en;$('prepTrait').textContent=c.trait;
- $('prepHp').textContent=c.id==='C001'?'低HP（数値調整中）':c.id==='C003'?'調整中':'標準（数値調整中）';
+ $('prepHp').textContent=({C001:90,C002:100,C003:110,C004:100}[c.id]||100)+' / '+({C001:90,C002:100,C003:110,C004:100}[c.id]||100)+'（仮）';
+ window.QR_Combat?.start(window.QR_Monsters?.find(m=>m.id===document.getElementById('enemySelector')?.value));
+ window.QR_Quiz?.restart(false);
  updateBattleCharacter();renderParty();
 }
 function showSkills(){
@@ -399,11 +401,78 @@ window.addEventListener('pagehide',()=>{cancelCountdown();if(inactivityTimer)cle
 renderParty();showSkills();renderSelection();
 })();
 
-(function(){const mons=[{"id":"M001","name":"若葉を宿すスライム","english":"Sprout-Bearing Slime","area":"forest","difficulty":1,"stage":1,"image":"./assets/M001.png","hp":38,"attack":7,"defense":2,"speed":10,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M002","name":"古苔のウルフ","english":"Ancient Moss Wolf","area":"forest","difficulty":1,"stage":2,"image":"./assets/M002.png","hp":46,"attack":9,"defense":2,"speed":13,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M003","name":"木漏れ日のウィスプ","english":"Dappled Sunlight Wisp","area":"forest","difficulty":1,"stage":3,"image":"./assets/M003.png","hp":42,"attack":8,"defense":2,"speed":11,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M004","name":"澱みに潜むスライム","english":"Stagnant Depths Slime","area":"swamp","difficulty":1,"stage":1,"image":"./assets/M004.png","hp":41,"attack":7,"defense":2,"speed":10,"skill_id":"poison","skill_name":"毒"},{"id":"M005","name":"朽木渡りのコウモリ","english":"Rotwood-Roving Bat","area":"swamp","difficulty":1,"stage":2,"image":"./assets/M005.png","hp":49,"attack":9,"defense":2,"speed":13,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M006","name":"沼霧に灯るウィスプ","english":"Mist-Lit Marsh Wisp","area":"swamp","difficulty":1,"stage":3,"image":"./assets/M006.png","hp":45,"attack":8,"defense":2,"speed":11,"skill_id":"poison","skill_name":"毒"},{"id":"M007","name":"朝露まといのスライム","english":"Morning Dew Slime","area":"plains","difficulty":1,"stage":1,"image":"./assets/M007.png","hp":39,"attack":7,"defense":2,"speed":10,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M008","name":"風追いの野ウサギ","english":"Wind-Chasing Hare","area":"plains","difficulty":1,"stage":2,"image":"./assets/M008.png","hp":47,"attack":9,"defense":2,"speed":13,"skill_id":"burn","skill_name":"火傷"},{"id":"M009","name":"砂走りのネズミ","english":"Sandscurry Mouse","area":"plains","difficulty":1,"stage":3,"image":"./assets/M009.png","hp":43,"attack":8,"defense":2,"speed":11,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M010","name":"枯枝角のインプ","english":"Withered-Bough Imp","area":"forest","difficulty":2,"stage":1,"image":"./assets/M010.png","hp":105,"attack":19,"defense":8,"speed":12,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M011","name":"年輪を刻むゴーレム","english":"Ring-Carved Golem","area":"forest","difficulty":2,"stage":2,"image":"./assets/M011.png","hp":125,"attack":17,"defense":8,"speed":15,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M012","name":"樹冠狩りのコンドル","english":"Canopy-Hunting Condor","area":"forest","difficulty":2,"stage":3,"image":"./assets/M012.png","hp":112,"attack":21,"defense":8,"speed":13,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M013","name":"腐泥遊びのインプ","english":"Rotmud Frolicker Imp","area":"swamp","difficulty":2,"stage":1,"image":"./assets/M013.png","hp":108,"attack":19,"defense":8,"speed":12,"skill_id":"poison","skill_name":"毒"},{"id":"M014","name":"沈殿層のゴーレム","english":"Sediment Golem","area":"swamp","difficulty":2,"stage":2,"image":"./assets/M014.png","hp":128,"attack":17,"defense":8,"speed":15,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M015","name":"腐肉漁りのコンドル","english":"Carrion-Scavenging Condor","area":"swamp","difficulty":2,"stage":3,"image":"./assets/M015.png","hp":115,"attack":21,"defense":8,"speed":13,"skill_id":"poison","skill_name":"毒"},{"id":"M016","name":"砂煙を呼ぶインプ","english":"Dust-Summoning Imp","area":"plains","difficulty":2,"stage":1,"image":"./assets/M016.png","hp":106,"attack":19,"defense":8,"speed":12,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M017","name":"風化せし岩のゴーレム","english":"Weatherworn Stone Golem","area":"plains","difficulty":2,"stage":2,"image":"./assets/M017.png","hp":126,"attack":17,"defense":8,"speed":15,"skill_id":"burn","skill_name":"火傷"},{"id":"M018","name":"熱風乗りのコンドル","english":"Hotwind-Riding Condor","area":"plains","difficulty":2,"stage":3,"image":"./assets/M018.png","hp":113,"attack":21,"defense":8,"speed":13,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M019","name":"深緑を継ぐ幼竜","english":"Heir to the Deepgreen Wyrmling","area":"forest","difficulty":3,"stage":1,"image":"./assets/M019.png","hp":215,"attack":31,"defense":15,"speed":14,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M020","name":"千年樹に眠るミイラ","english":"Millennial Tree Mummy","area":"forest","difficulty":3,"stage":2,"image":"./assets/M020.png","hp":195,"attack":29,"defense":15,"speed":17,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M021","name":"天蓋を駆けるリザード","english":"Canopy-Racing Lizard","area":"forest","difficulty":3,"stage":3,"image":"./assets/M021.png","hp":230,"attack":33,"defense":15,"speed":15,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M022","name":"腐沼に巣食う幼竜","english":"Rotbog-Dwelling Wyrmling","area":"swamp","difficulty":3,"stage":1,"image":"./assets/M022.png","hp":218,"attack":31,"defense":15,"speed":14,"skill_id":"poison","skill_name":"毒"},{"id":"M023","name":"泥底より還るミイラ","english":"Mire-Risen Mummy","area":"swamp","difficulty":3,"stage":2,"image":"./assets/M023.png","hp":198,"attack":29,"defense":15,"speed":17,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M024","name":"猛毒を蓄えるリザード","english":"Venom-Hoarding Lizard","area":"swamp","difficulty":3,"stage":3,"image":"./assets/M024.png","hp":233,"attack":33,"defense":15,"speed":15,"skill_id":"poison","skill_name":"毒"},{"id":"M025","name":"砂嵐を従える幼竜","english":"Sandstorm-Commanding Wyrmling","area":"plains","difficulty":3,"stage":1,"image":"./assets/M025.png","hp":216,"attack":31,"defense":15,"speed":14,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M026","name":"乾いた墓所のミイラ","english":"Desiccated Tomb Mummy","area":"plains","difficulty":3,"stage":2,"image":"./assets/M026.png","hp":196,"attack":29,"defense":15,"speed":17,"skill_id":"burn","skill_name":"火傷"},{"id":"M027","name":"岩盤を砕くリザード","english":"Bedrock-Shattering Lizard","area":"plains","difficulty":3,"stage":3,"image":"./assets/M027.png","hp":231,"attack":33,"defense":15,"speed":15,"skill_id":"stun","skill_name":"スタン攻撃"}];const bosses=[{"id":"B001","name":"幻影のエルフ団長","english":"幻影のエルフ団長","area":"forest","difficulty":1,"stage":"BOSS","image":"./assets/B001.png","hp":null,"attack":null,"skill_name":"チャージショット","isBoss":true},{"id":"B002","name":"強欲なカメレオン","english":"強欲なカメレオン","area":"swamp","difficulty":1,"stage":"BOSS","image":"./assets/B002.png","hp":null,"attack":null,"skill_name":"スキル麻痺","isBoss":true},{"id":"B003","name":"雷の子、ヴォイ","english":"雷の子、ヴォイ","area":"plains","difficulty":1,"stage":"BOSS","image":"./assets/B003.png","hp":null,"attack":null,"skill_name":"落雷","isBoss":true},{"id":"B004","name":"琥珀に輝く女王蜂","english":"琥珀に輝く女王蜂","area":"forest","difficulty":2,"stage":"BOSS","image":"./assets/B004.png","hp":null,"attack":null,"skill_name":"まとわりつく蜂蜜","isBoss":true},{"id":"B005","name":"気まぐれなグレムリン","english":"気まぐれなグレムリン","area":"swamp","difficulty":2,"stage":"BOSS","image":"./assets/B005.png","hp":null,"attack":null,"skill_name":"変な踊り","isBoss":true},{"id":"B006","name":"嘲笑うラッパ吹き","english":"嘲笑うラッパ吹き","area":"plains","difficulty":2,"stage":"BOSS","image":"./assets/B006.png","hp":null,"attack":null,"skill_name":"連続攻撃","isBoss":true},{"id":"B007","name":"目覚めの悪い灰色熊","english":"目覚めの悪い灰色熊","area":"forest","difficulty":3,"stage":"BOSS","image":"./assets/B007.png","hp":null,"attack":null,"skill_name":"フルスイング","isBoss":true},{"id":"B008","name":"片翼のデーモン","english":"片翼のデーモン","area":"swamp","difficulty":3,"stage":"BOSS","image":"./assets/B008.png","hp":null,"attack":null,"skill_name":"人身掌握","isBoss":true},{"id":"B009","name":"教団の謀略","english":"教団の謀略","area":"plains","difficulty":3,"stage":"BOSS","image":"./assets/B009.png","hp":null,"attack":null,"skill_name":"未命名","isBoss":true}];const roster=document.getElementById('monsterRoster');const selector=document.getElementById('enemySelector');const gotoBattle=()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('battle').classList.add('active');window.scrollTo(0,0);};function choose(mon){document.getElementById('battleMonsterName').textContent=mon.name;document.getElementById('battleMonsterLevel').textContent='★'+mon.difficulty;document.getElementById('battleMonsterHp').textContent=mon.hp==null?'調整中':mon.hp+' / '+mon.hp;document.getElementById('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+(mon.attack==null?'調整中':mon.attack);document.getElementById('battleMonsterArea').textContent='背景：'+({forest:'森',swamp:'沼',plains:'平地'}[mon.area]||mon.area)+' / 属性：'+mon.area;const holder=document.getElementById('battleMonsterImage');holder.innerHTML='';const effectLayer=document.createElement('div');effectLayer.className='attack-effect-layer';effectLayer.id='battleAttackEffect';if(mon.image){const img=document.createElement('img');img.alt=mon.english;img.src=mon.image;const spriteWrap=document.createElement('div');spriteWrap.id='battleMonsterSpriteWrap';spriteWrap.className='monster-sprite-wrap';img.onerror=()=>{spriteWrap.textContent=mon.name+' — 公開サイト側に画像未配置';};spriteWrap.append(img);holder.append(spriteWrap);}else{holder.textContent=mon.name+' / 個別PNG未登録';}holder.append(effectLayer);selector.value=mon.id;}
+(function(){const mons=[{"id":"M001","name":"若葉を宿すスライム","english":"Sprout-Bearing Slime","area":"forest","difficulty":1,"stage":1,"image":"./assets/M001.png","hp":38,"attack":7,"defense":2,"speed":10,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M002","name":"古苔のウルフ","english":"Ancient Moss Wolf","area":"forest","difficulty":1,"stage":2,"image":"./assets/M002.png","hp":46,"attack":9,"defense":2,"speed":13,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M003","name":"木漏れ日のウィスプ","english":"Dappled Sunlight Wisp","area":"forest","difficulty":1,"stage":3,"image":"./assets/M003.png","hp":42,"attack":8,"defense":2,"speed":11,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M004","name":"澱みに潜むスライム","english":"Stagnant Depths Slime","area":"swamp","difficulty":1,"stage":1,"image":"./assets/M004.png","hp":41,"attack":7,"defense":2,"speed":10,"skill_id":"poison","skill_name":"毒"},{"id":"M005","name":"朽木渡りのコウモリ","english":"Rotwood-Roving Bat","area":"swamp","difficulty":1,"stage":2,"image":"./assets/M005.png","hp":49,"attack":9,"defense":2,"speed":13,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M006","name":"沼霧に灯るウィスプ","english":"Mist-Lit Marsh Wisp","area":"swamp","difficulty":1,"stage":3,"image":"./assets/M006.png","hp":45,"attack":8,"defense":2,"speed":11,"skill_id":"poison","skill_name":"毒"},{"id":"M007","name":"朝露まといのスライム","english":"Morning Dew Slime","area":"plains","difficulty":1,"stage":1,"image":"./assets/M007.png","hp":39,"attack":7,"defense":2,"speed":10,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M008","name":"風追いの野ウサギ","english":"Wind-Chasing Hare","area":"plains","difficulty":1,"stage":2,"image":"./assets/M008.png","hp":47,"attack":9,"defense":2,"speed":13,"skill_id":"burn","skill_name":"火傷"},{"id":"M009","name":"砂走りのネズミ","english":"Sandscurry Mouse","area":"plains","difficulty":1,"stage":3,"image":"./assets/M009.png","hp":43,"attack":8,"defense":2,"speed":11,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M010","name":"枯枝角のインプ","english":"Withered-Bough Imp","area":"forest","difficulty":2,"stage":1,"image":"./assets/M010.png","hp":105,"attack":19,"defense":8,"speed":12,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M011","name":"年輪を刻むゴーレム","english":"Ring-Carved Golem","area":"forest","difficulty":2,"stage":2,"image":"./assets/M011.png","hp":125,"attack":17,"defense":8,"speed":15,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M012","name":"樹冠狩りのコンドル","english":"Canopy-Hunting Condor","area":"forest","difficulty":2,"stage":3,"image":"./assets/M012.png","hp":112,"attack":21,"defense":8,"speed":13,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M013","name":"腐泥遊びのインプ","english":"Rotmud Frolicker Imp","area":"swamp","difficulty":2,"stage":1,"image":"./assets/M013.png","hp":108,"attack":19,"defense":8,"speed":12,"skill_id":"poison","skill_name":"毒"},{"id":"M014","name":"沈殿層のゴーレム","english":"Sediment Golem","area":"swamp","difficulty":2,"stage":2,"image":"./assets/M014.png","hp":128,"attack":17,"defense":8,"speed":15,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M015","name":"腐肉漁りのコンドル","english":"Carrion-Scavenging Condor","area":"swamp","difficulty":2,"stage":3,"image":"./assets/M015.png","hp":115,"attack":21,"defense":8,"speed":13,"skill_id":"poison","skill_name":"毒"},{"id":"M016","name":"砂煙を呼ぶインプ","english":"Dust-Summoning Imp","area":"plains","difficulty":2,"stage":1,"image":"./assets/M016.png","hp":106,"attack":19,"defense":8,"speed":12,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M017","name":"風化せし岩のゴーレム","english":"Weatherworn Stone Golem","area":"plains","difficulty":2,"stage":2,"image":"./assets/M017.png","hp":126,"attack":17,"defense":8,"speed":15,"skill_id":"burn","skill_name":"火傷"},{"id":"M018","name":"熱風乗りのコンドル","english":"Hotwind-Riding Condor","area":"plains","difficulty":2,"stage":3,"image":"./assets/M018.png","hp":113,"attack":21,"defense":8,"speed":13,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M019","name":"深緑を継ぐ幼竜","english":"Heir to the Deepgreen Wyrmling","area":"forest","difficulty":3,"stage":1,"image":"./assets/M019.png","hp":215,"attack":31,"defense":15,"speed":14,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M020","name":"千年樹に眠るミイラ","english":"Millennial Tree Mummy","area":"forest","difficulty":3,"stage":2,"image":"./assets/M020.png","hp":195,"attack":29,"defense":15,"speed":17,"skill_id":"drain","skill_name":"ドレイン"},{"id":"M021","name":"天蓋を駆けるリザード","english":"Canopy-Racing Lizard","area":"forest","difficulty":3,"stage":3,"image":"./assets/M021.png","hp":230,"attack":33,"defense":15,"speed":15,"skill_id":"self_heal","skill_name":"自己回復"},{"id":"M022","name":"腐沼に巣食う幼竜","english":"Rotbog-Dwelling Wyrmling","area":"swamp","difficulty":3,"stage":1,"image":"./assets/M022.png","hp":218,"attack":31,"defense":15,"speed":14,"skill_id":"poison","skill_name":"毒"},{"id":"M023","name":"泥底より還るミイラ","english":"Mire-Risen Mummy","area":"swamp","difficulty":3,"stage":2,"image":"./assets/M023.png","hp":198,"attack":29,"defense":15,"speed":17,"skill_id":"damage_reduction","skill_name":"ダメージ軽減"},{"id":"M024","name":"猛毒を蓄えるリザード","english":"Venom-Hoarding Lizard","area":"swamp","difficulty":3,"stage":3,"image":"./assets/M024.png","hp":233,"attack":33,"defense":15,"speed":15,"skill_id":"poison","skill_name":"毒"},{"id":"M025","name":"砂嵐を従える幼竜","english":"Sandstorm-Commanding Wyrmling","area":"plains","difficulty":3,"stage":1,"image":"./assets/M025.png","hp":216,"attack":31,"defense":15,"speed":14,"skill_id":"stun","skill_name":"スタン攻撃"},{"id":"M026","name":"乾いた墓所のミイラ","english":"Desiccated Tomb Mummy","area":"plains","difficulty":3,"stage":2,"image":"./assets/M026.png","hp":196,"attack":29,"defense":15,"speed":17,"skill_id":"burn","skill_name":"火傷"},{"id":"M027","name":"岩盤を砕くリザード","english":"Bedrock-Shattering Lizard","area":"plains","difficulty":3,"stage":3,"image":"./assets/M027.png","hp":231,"attack":33,"defense":15,"speed":15,"skill_id":"stun","skill_name":"スタン攻撃"}];const bosses=[{"id":"B001","name":"幻影のエルフ団長","english":"幻影のエルフ団長","area":"forest","difficulty":1,"stage":"BOSS","image":"./assets/B001.png","hp":null,"attack":null,"skill_name":"チャージショット","isBoss":true},{"id":"B002","name":"強欲なカメレオン","english":"強欲なカメレオン","area":"swamp","difficulty":1,"stage":"BOSS","image":"./assets/B002.png","hp":null,"attack":null,"skill_name":"スキル麻痺","isBoss":true},{"id":"B003","name":"雷の子、ヴォイ","english":"雷の子、ヴォイ","area":"plains","difficulty":1,"stage":"BOSS","image":"./assets/B003.png","hp":null,"attack":null,"skill_name":"落雷","isBoss":true},{"id":"B004","name":"琥珀に輝く女王蜂","english":"琥珀に輝く女王蜂","area":"forest","difficulty":2,"stage":"BOSS","image":"./assets/B004.png","hp":null,"attack":null,"skill_name":"まとわりつく蜂蜜","isBoss":true},{"id":"B005","name":"気まぐれなグレムリン","english":"気まぐれなグレムリン","area":"swamp","difficulty":2,"stage":"BOSS","image":"./assets/B005.png","hp":null,"attack":null,"skill_name":"変な踊り","isBoss":true},{"id":"B006","name":"嘲笑うラッパ吹き","english":"嘲笑うラッパ吹き","area":"plains","difficulty":2,"stage":"BOSS","image":"./assets/B006.png","hp":null,"attack":null,"skill_name":"連続攻撃","isBoss":true},{"id":"B007","name":"目覚めの悪い灰色熊","english":"目覚めの悪い灰色熊","area":"forest","difficulty":3,"stage":"BOSS","image":"./assets/B007.png","hp":null,"attack":null,"skill_name":"フルスイング","isBoss":true},{"id":"B008","name":"片翼のデーモン","english":"片翼のデーモン","area":"swamp","difficulty":3,"stage":"BOSS","image":"./assets/B008.png","hp":null,"attack":null,"skill_name":"人身掌握","isBoss":true},{"id":"B009","name":"教団の謀略","english":"教団の謀略","area":"plains","difficulty":3,"stage":"BOSS","image":"./assets/B009.png","hp":null,"attack":null,"skill_name":"未命名","isBoss":true}];const roster=document.getElementById('monsterRoster');const selector=document.getElementById('enemySelector');const gotoBattle=()=>{document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));document.getElementById('battle').classList.add('active');window.scrollTo(0,0);};function choose(mon){document.getElementById('battleMonsterName').textContent=mon.name;document.getElementById('battleMonsterLevel').textContent='★'+mon.difficulty;document.getElementById('battleMonsterHp').textContent=mon.hp==null?'調整中':mon.hp+' / '+mon.hp;document.getElementById('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+(mon.attack==null?'調整中':mon.attack);document.getElementById('battleMonsterArea').textContent='背景：'+({forest:'森',swamp:'沼',plains:'平地'}[mon.area]||mon.area)+' / 属性：'+mon.area;const holder=document.getElementById('battleMonsterImage');holder.innerHTML='';const effectLayer=document.createElement('div');effectLayer.className='attack-effect-layer';effectLayer.id='battleAttackEffect';if(mon.image){const img=document.createElement('img');img.alt=mon.english;img.src=mon.image;const spriteWrap=document.createElement('div');spriteWrap.id='battleMonsterSpriteWrap';spriteWrap.className='monster-sprite-wrap';img.onerror=()=>{spriteWrap.textContent=mon.name+' — 公開サイト側に画像未配置';};spriteWrap.append(img);holder.append(spriteWrap);}else{holder.textContent=mon.name+' / 個別PNG未登録';}holder.append(effectLayer);selector.value=mon.id;window.QR_Combat?.start(mon);window.QR_Quiz?.restart(false);}
 for(const mon of mons.concat(bosses)){const opt=document.createElement('option');opt.value=mon.id;opt.textContent=mon.id+' '+mon.english;selector.append(opt);const card=document.createElement('article');card.className='monster-card';const id=document.createElement('div');id.className='monster-id';id.textContent=mon.id;card.append(id);if(mon.image){const img=document.createElement('img');img.src=mon.image;img.alt=mon.name+' / '+mon.english;img.loading='lazy';img.onerror=()=>{img.replaceWith(Object.assign(document.createElement('div'),{className:'monster-art-empty',textContent:'公開サイト側に画像未配置'}));};card.append(img);}else{const absent=document.createElement('div');absent.className='monster-art-empty';absent.textContent='個別PNG未登録';card.append(absent);}const name=document.createElement('div');name.className='monster-name';name.textContent=mon.name;card.append(name);const meta=document.createElement('div');meta.className='monster-meta';meta.textContent=({forest:'森',swamp:'沼',plains:'平地'}[mon.area]||mon.area)+' · ★'+mon.difficulty+' / ステージ'+(mon.isBoss?'セミボス':('ステージ'+mon.stage))+' · HP '+(mon.hp??'調整中')+' · ATK '+(mon.attack??'調整中')+' · '+mon.skill_name;card.append(meta);const button=document.createElement('button');button.className='mini';button.style.marginTop='9px';button.textContent='戦闘画面に出す';button.onclick=()=>{choose(mon);gotoBattle();};card.append(button);(mon.isBoss?document.getElementById('bossRoster'):roster).append(card);}
 selector.onchange=()=>{const mon=mons.concat(bosses).find(x=>x.id===selector.value);if(mon)choose(mon)};
-[...mons.filter(m=>m.area==='forest'&&m.difficulty===1),...bosses.filter(b=>b.id==='B001')].forEach(mon=>{const btn=document.createElement('button');btn.type='button';btn.textContent=mon.id+' '+mon.name;btn.onclick=()=>choose(mon);document.getElementById('forestShortcuts').append(btn)});choose(mons[0]);})();
+[...mons.filter(m=>m.area==='forest'&&m.difficulty===1),...bosses.filter(b=>b.id==='B001')].forEach(mon=>{const btn=document.createElement('button');btn.type='button';btn.textContent=mon.id+' '+mon.name;btn.onclick=()=>choose(mon);document.getElementById('forestShortcuts').append(btn)});choose(mons[0]);window.QR_Monsters=mons.concat(bosses);})();
 
+
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const starRules={1:{attack:10,miss:17,interval:12,tick:3,baseAttack:8},2:{attack:28,miss:25,interval:10,tick:5,baseAttack:19},3:{attack:50,miss:50,interval:8,tick:7,baseAttack:31}};
+const characterRules={C001:{hp:90,damage:2},C002:{hp:100,damage:1},C003:{hp:110,damage:-1},C004:{hp:100,damage:0}};
+let state=null,timer=null;
+const charRule=()=>characterRules[$('prepCharacter').value]||characterRules.C001;
+function update(){
+ if(!state)return;
+ $('battleMonsterHp').textContent=state.monsterHP+' / '+state.maxMonsterHP;
+ $('battleEnemyHpBar').style.width=(100*state.monsterHP/state.maxMonsterHP)+'%';
+ $('battlePlayerHp').textContent='HP '+state.playerHP+' / '+state.maxPlayerHP;
+ $('battlePlayerHpBar').style.width=(100*state.playerHP/state.maxPlayerHP)+'%';
+ $('battleEnemyAttackTimer').textContent=state.ended?'停止':Math.ceil(Math.max(0,state.nextTick-Date.now())/1000)+'秒';
+ $('battleDamageInfo').textContent='正解：'+state.playerDamage+'DMG ／ ミス：'+state.missDamage+'DMG ／ 時間攻撃：'+state.rule.tick+'DMG（'+state.rule.interval+'秒ごと）';
+}
+function stop(){if(timer!==null){clearInterval(timer);timer=null;}}
+function end(won){
+ if(!state||state.ended)return;
+ state.ended=true;state.won=won;stop();update();
+ $('battleOutcome').textContent=won?'VICTORY — 撃破':'DEFEAT — HP 0';
+ window.QR_Quiz?.finish(won,state);
+}
+function start(mon){
+ stop();
+ if(!mon)return;
+ const rule=starRules[mon.difficulty]||starRules[1],c=charRule();
+ const mh=mon.hp??Math.round(({1:85,2:210,3:350}[mon.difficulty]||85)+(Number(mon.id.slice(-1))-1)*3);
+ const ma=mon.attack??rule.baseAttack+5;
+ const missDamage=Math.max(1,rule.miss+ma-rule.baseAttack);
+ const damage=Math.max(1,rule.attack+c.damage-Math.round((mon.defense||0)*.1));
+ state={mon,rule,maxMonsterHP:mh,monsterHP:mh,maxPlayerHP:c.hp,playerHP:c.hp,playerDamage:damage,missDamage,ended:false,won:false,started:Date.now(),nextTick:Date.now()+rule.interval*1000};
+ $('battleOutcome').textContent='';
+ $('battleMonsterHp').textContent=mh+' / '+mh;
+ $('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+ma+(mon.isBoss?'（ボス数値仮）':'');
+ $('battleMonsterLevel').textContent='★'+mon.difficulty;
+ $('battleEnemyAttackTimer').textContent=rule.interval+'秒';
+ update();
+ timer=setInterval(()=>{
+  if(!state||state.ended||!$('battle').classList.contains('active'))return;
+  const now=Date.now();
+  if(now>=state.nextTick){
+   state.nextTick=now+rule.interval*1000;
+   state.playerHP=Math.max(0,state.playerHP-rule.tick);
+   if(state.playerHP===0){end(false);return;}
+  }
+  update();
+ },200);
+}
+function answer(isCorrect){
+ if(!state||state.ended)return false;
+ if(isCorrect)state.monsterHP=Math.max(0,state.monsterHP-state.playerDamage);
+ else state.playerHP=Math.max(0,state.playerHP-state.missDamage);
+ update();
+ return true;
+}
+function resolve(){
+ if(!state||state.ended)return true;
+ if(state.monsterHP<=0){end(true);return true;}
+ if(state.playerHP<=0){end(false);return true;}
+ return false;
+}
+window.QR_Combat={start,answer,resolve,stop,getState:()=>state};
+start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
+window.addEventListener('pagehide',stop);
+})();
 (function(){
 'use strict';
 // Temporary quiz QA fixture: exactly 7 multiple-choice and 3 true/false questions per 10.
@@ -421,14 +490,14 @@ const bank=[
 ];
 if(bank.length!==10||bank.filter(q=>q.type==='four').length!==7||bank.filter(q=>q.type==='truefalse').length!==3)throw Error('Invalid question composition');
 const $=id=>document.getElementById(id);
-let index=0, correct=0, answered=false;
+let index=0, correct=0, answered=false,missed=0;
 let advanceTimer=null;
 const JUDGMENT_MS=500;
 function cancelAdvance(){if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}}
 function render(){
  cancelAdvance();
- const q=bank[index];answered=false;
- $('questionProgress').textContent='QUESTION '+String(index+1).padStart(2,'0')+' / 10';
+ const q=bank[index%bank.length];answered=false;
+ $('questionProgress').textContent='QUESTION '+String(index+1).padStart(2,'0')+(index>=bank.length?'（テスト問題再利用中）':'');
  $('questionText').textContent=q.q;
  $('questionFormat').textContent=q.type==='four'?'4択問題':'○×問題';
  $('quizJudgment').textContent='';
@@ -444,28 +513,41 @@ function render(){
  button.onclick=()=>{
  if(answered)return;
  answered=true;
- if(i===q.correct)correct++;
+ if(i===q.correct)correct++;else missed++;
+ if(!window.QR_Combat?.answer(i===q.correct))return;
  [...$('quizChoices').children].forEach(b=>{b.disabled=true});
  $('quizJudgment').textContent=i===q.correct?'○':'×';
  $('quizJudgment').className='quiz-judgment '+(i===q.correct?'correct':'incorrect');
  window.QR_Effects?.play(i===q.correct);
- advanceTimer=setTimeout(()=>{advanceTimer=null;if(index===bank.length-1){finish();}else{index++;render();}},JUDGMENT_MS);
+ advanceTimer=setTimeout(()=>{advanceTimer=null;if(!window.QR_Combat?.resolve()){index++;render();}},JUDGMENT_MS);
  };
  $('quizChoices').append(button);
  });
 }
-function finish(){
- const rate=Math.round(correct/bank.length*100);
+function finish(won,battle){
+ cancelAdvance();
+ const total=correct+missed;
+ const rate=total?Math.round(correct/total*100):0;
  $('quizResultGrade').textContent=rate===100?'S':rate>=80?'A':'B';
  $('quizResultPercent').textContent=rate+'%';
  $('quizResultAccuracy').textContent=rate+'%';
- $('quizResultCount').textContent=correct+' / '+bank.length;
- $('quizResultNote').textContent='4択7問＋○×3問・テスト結果';
+ $('quizResultCount').textContent=correct+' / '+total;
+ $('quizResultNote').textContent='戦闘HPテスト（問題10題を循環利用）';
+ $('battleResultOutcome').textContent=won?'VICTORY':'DEFEAT';
+ $('battleResultTitle').textContent=won?'QUEST COMPLETE':'QUEST FAILED';
+ $('battleResultEnemy').textContent='★'+battle.mon.difficulty+' '+battle.mon.name;
+ $('battleResultTime').textContent=Math.floor((Date.now()-battle.started)/1000)+'秒';
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  $('result').classList.add('active');
  window.scrollTo(0,0);
 }
-$('quizReset').onclick=()=>{cancelAdvance();index=0;correct=0;render();};
+function restart(restartCombat=true){
+ cancelAdvance();index=0;correct=0;missed=0;
+ if(restartCombat)window.QR_Combat?.start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
+ render();
+}
+window.QR_Quiz={restart,finish};
+$('quizReset').onclick=()=>restart(true);
 window.addEventListener('pagehide',cancelAdvance);
 render();
 })();
