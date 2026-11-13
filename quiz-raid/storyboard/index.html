@@ -170,9 +170,15 @@ body{min-width:1024px}
 .effect-frame{position:absolute;inset:0;display:grid;place-items:center;animation:qr-attack-500 500ms ease-out forwards;pointer-events:none;filter:drop-shadow(0 0 9px var(--fx-color))}
 .effect-png{width:145%;height:145%;object-fit:contain;max-width:none;mix-blend-mode:screen}
 .effect-fallback{display:block;color:var(--fx-color);font-size:clamp(90px,12vw,175px);font-weight:bold;text-shadow:0 0 14px var(--fx-color);line-height:1}
-#battlePlayerSprite.player-hit{animation:qr-hit-500 500ms ease-out forwards;filter:drop-shadow(0 0 12px #ff3939)}
+.player-sprite-wrap{position:relative;display:block;width:76px;height:84px;flex:0 0 76px;isolation:isolate}
+.player-sprite-wrap img{display:block;width:100%;height:100%;object-fit:contain}
+.player-sprite-wrap.player-hit img{animation:qr-hit-shake-500 500ms linear both}
+.player-sprite-wrap::after{content:"";position:absolute;inset:-7px;pointer-events:none;opacity:0;border-radius:14px;background:radial-gradient(ellipse at center,rgba(255,25,38,.72) 0%,rgba(255,30,30,.45) 48%,rgba(255,40,40,0) 78%);mix-blend-mode:screen;z-index:2}
+.player-sprite-wrap.player-hit::after{animation:qr-hit-red-glow-500 500ms ease-in-out both}
+@keyframes qr-hit-red-glow-500{0%{opacity:.1}12%{opacity:1}72%{opacity:.92}100%{opacity:0}}
+@keyframes qr-hit-shake-500{0%,100%{transform:translateX(0)}18%{transform:translateX(-6px)}36%{transform:translateX(6px)}54%{transform:translateX(-5px)}72%{transform:translateX(4px)}90%{transform:translateX(-2px)}}
 @keyframes qr-attack-500{0%{opacity:0;transform:translate(-16%,12%) scale(.45) rotate(-18deg)}20%{opacity:1}65%{opacity:1;transform:translate(0,0) scale(1.08) rotate(0deg)}100%{opacity:0;transform:scale(1.22)}}
-@keyframes qr-hit-500{0%{filter:brightness(1) drop-shadow(0 0 0 transparent);transform:translateX(0)}20%{filter:brightness(1.9) sepia(1) saturate(9) hue-rotate(-38deg) drop-shadow(0 0 13px #f33);transform:translateX(-6px)}40%{transform:translateX(6px);filter:brightness(2) sepia(1) saturate(9) hue-rotate(-38deg) drop-shadow(0 0 15px #f33)}65%{transform:translateX(-4px)}100%{filter:none;transform:translateX(0)}}
+
 </style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
@@ -239,7 +245,7 @@ const layer=()=>document.getElementById('battleAttackEffect');
 function reset(){
  effectToken++;
  const el=layer();if(el)el.replaceChildren();
- const sprite=document.getElementById('battlePlayerSprite');
+ const sprite=document.getElementById('battlePlayerSpriteWrap');
  if(sprite){sprite.classList.remove('player-hit');void sprite.offsetWidth;}
 }
 function play(hitEnemy){
@@ -255,7 +261,7 @@ function play(hitEnemy){
   png.onload=()=>{png.style.display='block';fallback.style.display='none';};
   frame.append(fallback,png);host.append(frame);
  }else{
-  const sprite=document.getElementById('battlePlayerSprite');
+  const sprite=document.getElementById('battlePlayerSpriteWrap');
   if(sprite){void sprite.offsetWidth;sprite.classList.add('player-hit');}
  }
 }
@@ -352,7 +358,7 @@ function updateBattleCharacter(){
  const c=activeCharacter(),el=$('battlePlayerPreview');el.replaceChildren();
  const img=document.createElement('img');img.id='battlePlayerSprite';img.src=c.pixel;img.alt=c.name+' ドット絵';img.onerror=()=>{img.alt='読込失敗'};
  const box=document.createElement('div');const name=document.createElement('div');name.textContent=c.name+' / '+c.en;
- const trait=document.createElement('div');trait.className='small';trait.textContent=c.trait;box.append(name,trait);el.append(img,box);
+ const trait=document.createElement('div');trait.className='small';trait.textContent=c.trait;box.append(name,trait);const spriteWrap=document.createElement('div');spriteWrap.id='battlePlayerSpriteWrap';spriteWrap.className='player-sprite-wrap';spriteWrap.append(img);el.append(spriteWrap,box);
  $('battleSelectedCharacter').textContent=c.name;
 }
 function renderSelection(){
