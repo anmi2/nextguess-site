@@ -177,6 +177,14 @@ body{min-width:1024px}
 .player-sprite-wrap.player-hit::after{animation:qr-hit-red-glow-500 500ms ease-in-out both}
 @keyframes qr-hit-red-glow-500{0%{opacity:.1}12%{opacity:1}72%{opacity:.92}100%{opacity:0}}
 @keyframes qr-hit-shake-500{0%,100%{transform:translateX(0)}18%{transform:translateX(-6px)}36%{transform:translateX(6px)}54%{transform:translateX(-5px)}72%{transform:translateX(4px)}90%{transform:translateX(-2px)}}
+#battleMonsterImage>img.monster-hit{animation:qr-monster-hit-500 500ms ease-out both;will-change:transform}
+@keyframes qr-monster-hit-500{
+0%,100%{transform:translateX(0)}
+22%{transform:translateX(-8px)}
+42%{transform:translateX(7px)}
+61%{transform:translateX(-5px)}
+79%{transform:translateX(3px)}
+}
 @keyframes qr-attack-500{0%{opacity:0;transform:translate(-16%,12%) scale(.45) rotate(-18deg)}20%{opacity:1}65%{opacity:1;transform:translate(0,0) scale(1.08) rotate(0deg)}100%{opacity:0;transform:scale(1.22)}}
 
 </style></head><body><main class="shell">
@@ -247,11 +255,15 @@ function reset(){
  const el=layer();if(el)el.replaceChildren();
  const sprite=document.getElementById('battlePlayerSpriteWrap');
  if(sprite){sprite.classList.remove('player-hit');void sprite.offsetWidth;}
+ const enemy=document.querySelector('#battleMonsterImage > img');
+ if(enemy){enemy.classList.remove('monster-hit');void enemy.offsetWidth;}
 }
 function play(hitEnemy){
  reset();
  const id=activeId();
  if(hitEnemy){
+  const enemy=document.querySelector('#battleMonsterImage > img');
+  if(enemy){void enemy.offsetWidth;enemy.classList.add('monster-hit');}
   const data=effectMap[id]||effectMap.C001;
   const host=layer();if(!host)return;
   const frame=document.createElement('div');frame.className='effect-frame';frame.style.setProperty('--fx-color',data.color);
