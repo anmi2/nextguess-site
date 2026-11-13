@@ -446,7 +446,8 @@ function start(mon){
  $('battleEnemyAttackTimer').textContent=rule.interval+'秒';
  update();
  timer=setInterval(()=>{
-  if(!state||state.ended||!$('battle').classList.contains('active'))return;
+  if(!state||state.ended)return;
+  if(!$('battle').classList.contains('active')){state.nextTick=Date.now()+rule.interval*1000;return;}
   const now=Date.now();
   if(now>=state.nextTick){
    state.nextTick=now+rule.interval*1000;
