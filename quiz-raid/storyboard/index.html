@@ -715,7 +715,7 @@ function start(mon){
  damage:{dealt:{normal:0,skill:0},taken:{miss:0,clock:0,skill:0},healed:0},
  skill,skillCost:skills.cost[skill.level],maxCharges:charId==='C002'?2:1,charge:0,chargeFactor:skills.factors[charId],lastChargeAt:now,enemyFrozenUntil:0,enemyDot:null,stoneShield:0,atkBuffUntil:0,dodgeUntil:0,dodgeChance:0,hasteUntil:0,enemyArmorUntil:0,empower:0,regen:null};
  $('battleOutcome').textContent='';
- $('battlePlayerSkillEvent').textContent='正解＋10PT、自然チャージ＋2PT/秒（キャラ補正あり）';
+ $('battlePlayerSkillEvent').textContent='正解＋10PT、自然チャージ＋2.5PT/秒（キャラ補正あり）';
  $('battleSkillEvent').textContent=mon.isBoss?'セミボス固有スキル未実装':'固有スキル：発動待機中';
  $('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+ma+(mon.isBoss?'（ボス数値仮）':'');
  $('battleMonsterLevel').textContent='★'+mon.difficulty;
@@ -736,7 +736,7 @@ function start(mon){
   state.lastChargeAt=now;
   if(elapsed>0){
    const haste=state.hasteUntil>now?2:1;
-   state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+elapsed*2*state.chargeFactor*haste);
+   state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+elapsed*2.5*state.chargeFactor*haste);
   }
   if(state.enemyFrozenUntil<=now&&now>=state.nextTick){
    state.nextTick=now+rule.interval*1000;
