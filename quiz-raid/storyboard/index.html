@@ -561,11 +561,14 @@ function update(){
  if(state.shieldUntil>now)effects.push('敵のダメージ軽減 '+Math.round(state.rule.reduction*100)+'%');
  if(isStunned())effects.push('スタン 回答不可 '+Math.ceil((state.stunUntil-now)/1000)+'秒');
  if(state.enemyFrozenUntil>now)effects.push('敵凍結 '+Math.ceil((state.enemyFrozenUntil-now)/1000)+'秒');
- if(state.stoneShield>0)effects.push('石の歌：敵ダメージ1回無効');
+ if(state.stoneShield>0)effects.push('石の歌：敵攻撃1回無効（ミス除外）');
  if(state.hasteUntil>now)effects.push('ヘイスト：チャージ2倍');
  if(state.atkBuffUntil>now)effects.push('ATK強化');
  if(state.dodgeUntil>now)effects.push('敵攻撃の回避率 '+Math.round(state.dodgeChance*100)+'%');
  if(state.enemyArmorUntil>now)effects.push('敵DEF低下');
+ if(state.empower>0)effects.push('次回スキル効果アップ（大豆バーガー）');
+ if(state.regen&&state.regen.until>now)effects.push('継続回復：毎秒'+state.regen.amount+'HP');
+ if(state.enemyDot&&state.enemyDot.until>now)effects.push('敵への継続ダメージ：毎秒'+state.enemyDot.damage+'DMG');
  $('battleStatusEffects').textContent=effects.length?effects.join(' ／ '):'状態異常：なし';
  const charges=Math.floor(state.charge+1e-6),need=state.skillCost;
  $('battlePlayerSkillName').textContent=state.skill.name+'（Lv.'+state.skill.level+'）';
@@ -673,9 +676,9 @@ function cast(){
   msg='ニンジンスープ：HP +'+healed+'（PTでは味方全体）';break;}
  case 'soy_burger':
   state.empower=1;
-  // A one-slot demo cannot select a different ally skill; expedite the current charge as a test surrogate.
+  // One-slot solo preview: the empowerment is retained as a pending ally buff, but no other skill can be equipped concurrently.
   state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+Math.ceil(25*power));
-  msg='大豆バーガー：次回スキル強化＋チャージ補助（PT対象選択は未実装）';break;
+  msg='大豆バーガー：次回スキル効果＋30%の仮バフ（PT対象選択は未実装）';break;
  case 'tomato':
   state.atkBuffUntil=now+Math.ceil(12000*power);
   msg='トマト祭り：ATK +30%（PTでは味方全体）';break;
@@ -715,7 +718,7 @@ function start(mon){
  damage:{dealt:{normal:0,skill:0},taken:{miss:0,clock:0,skill:0},healed:0},
  skill,skillCost:skills.cost[skill.level],maxCharges:charId==='C002'?2:1,charge:0,chargeFactor:skills.factors[charId],lastChargeAt:now,enemyFrozenUntil:0,enemyDot:null,stoneShield:0,atkBuffUntil:0,dodgeUntil:0,dodgeChance:0,hasteUntil:0,enemyArmorUntil:0,empower:0,regen:null};
  $('battleOutcome').textContent='';
- $('battlePlayerSkillEvent').textContent='正解＋10PT、自然チャージ＋2.5PT/秒（キャラ補正あり）';
+ $('battlePlayerSkillEvent').textContent='正解＋15PT、自然チャージ＋2.5PT/秒（キャラ補正あり）';
  $('battleSkillEvent').textContent=mon.isBoss?'セミボス固有スキル未実装':'固有スキル：発動待機中';
  $('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+ma+(mon.isBoss?'（ボス数値仮）':'');
  $('battleMonsterLevel').textContent='★'+mon.difficulty;
@@ -780,7 +783,7 @@ function answer(isCorrect){
   const boosted=state.atkBuffUntil>Date.now()?1.3:1;
   dealMonsterDamage(Math.ceil(state.playerDamage*boosted),'normal');
   const haste=state.hasteUntil>Date.now()?2:1;
-  state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+10*state.chargeFactor*haste);
+  state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+15*state.chargeFactor*haste);
  }else{
   const actual=ledger('miss',state.missDamage,true);
   state.playerHP=Math.max(0,state.playerHP-actual);
