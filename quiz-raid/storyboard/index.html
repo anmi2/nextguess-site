@@ -247,7 +247,7 @@ body{min-width:1024px}
 <div class="bcell enemyzone"><h3>MOB / QUEST</h3><div class="monster-silhouette" id="battleMonsterImage">登録モンスターを選択<div class="attack-effect-layer" id="battleAttackEffect" aria-hidden="true"></div></div><div class="small" id="battleMonsterArea">背景：森 / 属性：森</div></div>
 <div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
 <div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="small" id="battleEnemyHpScale">基礎HP 40 × 1.0（1人）</div><div class="small" id="battleEnemyHits">必要正答数（目安）：—</div><div class="hpbg"><i id="battleEnemyHpBar"></i></div><div class="stat"><span>次の攻撃</span><strong id="battleEnemyAttackTimer">12秒</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">—</strong></div><div class="stat"><span>スキル発動まで</span><strong id="battleSkillTimer">—</strong></div><div class="small" id="battleSkillEvent" role="status" aria-live="polite">固有スキル：待機中</div></div>
-<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong id="battlePlayerHp">HP 100 / 100</strong></div><div class="hpbg"><i id="battlePlayerHpBar"></i></div><div class="stat"><span>装備スキル</span><strong id="battlePlayerSkillName">ファイアボール</strong></div><div class="stat"><span>スキルチャージ</span><strong id="battlePlayerCharge">0 / 100 PT</strong></div><div class="hpbg"><i id="battleChargeBar" style="width:0%;background:#aa8cce"></i></div><button type="button" class="action" id="battleCastSkill" disabled style="margin:10px 0">スキル発動</button><div class="small" id="battlePlayerSkillEvent" role="status">チャージをためて発動</div><div class="small" id="battleDamageInfo">HP / ダメージ計算を検証中。</div><div class="status-effect-list" id="battleStatusEffects" aria-live="polite">状態異常：なし</div></div>
+<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong id="battlePlayerHp">HP 100 / 100</strong></div><div class="hpbg"><i id="battlePlayerHpBar"></i></div><div class="stat"><span>装備スキル</span><strong id="battlePlayerSkillName">ファイアボール</strong></div><div class="stat"><span>スキルチャージ</span><strong id="battlePlayerCharge">0 / 100 PT</strong></div><div class="hpbg"><i id="battleChargeBar" style="width:0%;background:#aa8cce"></i></div><button type="button" class="action" id="battleCastSkill" disabled style="margin:10px 0">スキル発動</button><button type="button" class="mini" id="battleDebugCharge" style="margin-left:8px">検証用 ＋100PT</button><div class="small" id="battlePlayerSkillEvent" role="status">チャージをためて発動</div><div class="small" id="battleDamageInfo">HP / ダメージ計算を検証中。</div><div class="status-effect-list" id="battleStatusEffects" aria-live="polite">状態異常：なし</div></div>
 <div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>敵HPが0で勝利</span></div><div class="small" id="battleOutcome" role="status" aria-live="polite"></div><button class="mini" type="button" style="margin-top:8px" id="quizReset">この敵と再戦</button><p class="small">回答後0.5秒で次の問題へ。勝敗はHPで判定します。検証用問題は10題のみで、問題を使い切った場合は再出題します。本番の問題プールではありません。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
@@ -607,7 +607,6 @@ function useMonsterSkill(now){
   state.monsterHP+=gained;
   msg='ドレイン：プレイヤー −'+got+' / 敵HP +'+gained;break;}
  case 'poison':case 'burn':
-  if(shieldOrDodge(0,'skill')===0&&state.stoneShield<0){} // no effect; retained for state compatibility
   if(state.stoneShield>0){state.stoneShield--;msg='石の歌：状態異常を無効化';break;}
   if(state.dodgeUntil>now&&Math.random()<state.dodgeChance){msg='敵スキルを回避';break;}
   state.dot={kind:id,amount:q.dot,end:now+q.duration*1000,next:now+1000};
@@ -807,6 +806,12 @@ function setPartyCount(value){
  if(mon){start(mon);window.QR_Quiz?.restart(false);}
 }
 $('battleCastSkill').addEventListener('click',cast);
+$('battleDebugCharge').addEventListener('click',()=>{
+ if(!state||state.ended)return;
+ state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+100);
+ $('battlePlayerSkillEvent').textContent='検証用＋100PT（実際の戦闘では獲得不可）';
+ update();
+});
 document.querySelectorAll('.party-size-pick').forEach(btn=>btn.addEventListener('click',()=>setPartyCount(btn.dataset.count)));
 window.QR_Combat={start,answer,resolve,stop,getState:()=>state,setPartyCount,isStunned,cast};
 start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
