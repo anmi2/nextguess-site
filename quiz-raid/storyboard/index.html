@@ -502,7 +502,7 @@ function useSkill(now){
   case 'drain':{
    const damage=Math.min(q.drain,state.playerHP);
    state.playerHP=Math.max(0,state.playerHP-damage);
-   const heal=Math.min(Math.ceil(damage*0.6),state.maxMonsterHP-state.monsterHP);
+   const heal=Math.min(Math.ceil(damage*0.8),state.maxMonsterHP-state.monsterHP);
    state.monsterHP+=heal;
    message='ドレイン：プレイヤー −'+damage+' / 敵HP +'+heal;
    break;
