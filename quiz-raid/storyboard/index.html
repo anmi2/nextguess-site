@@ -215,6 +215,8 @@ body{min-width:1024px}
 .result-party-card .contribution-track>i{display:block;background:#a38ad3;height:100%;width:0}
 .result-party-card .breakdown{font-size:11px;color:#bbaeb5;margin-top:7px;line-height:1.65}
 @media(max-width:500px){.result-party-grid{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}.damage-report{padding:10px}}
+#battleCastSkill:disabled{opacity:.48;cursor:not-allowed}
+#battlePlayerSkillEvent{min-height:25px;color:#d8b681}
 </style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
@@ -245,7 +247,7 @@ body{min-width:1024px}
 <div class="bcell enemyzone"><h3>MOB / QUEST</h3><div class="monster-silhouette" id="battleMonsterImage">登録モンスターを選択<div class="attack-effect-layer" id="battleAttackEffect" aria-hidden="true"></div></div><div class="small" id="battleMonsterArea">背景：森 / 属性：森</div></div>
 <div class="bcell questionzone"><div id="quizJudgment" class="quiz-judgment" role="status" aria-live="polite" aria-label="判定"></div><div class="questionno" id="questionProgress">QUESTION 01</div><div class="questiontext" id="questionText">出題準備中</div><div class="small" id="questionFormat">4択／○× 混合テスト</div></div>
 <div class="bcell enemyparams"><h3>MOB PARAMETERS</h3><div class="stat"><span id="battleMonsterName">Green Slime</span><strong id="battleMonsterLevel">★1</strong></div><div class="stat"><span>HP</span><strong id="battleMonsterHp">40 / 40</strong></div><div class="small" id="battleEnemyHpScale">基礎HP 40 × 1.0（1人）</div><div class="small" id="battleEnemyHits">必要正答数（目安）：—</div><div class="hpbg"><i id="battleEnemyHpBar"></i></div><div class="stat"><span>次の攻撃</span><strong id="battleEnemyAttackTimer">12秒</strong></div><div class="stat"><span>SKILL</span><strong id="battleMonsterSkill">—</strong></div><div class="stat"><span>スキル発動まで</span><strong id="battleSkillTimer">—</strong></div><div class="small" id="battleSkillEvent" role="status" aria-live="polite">固有スキル：待機中</div></div>
-<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong id="battlePlayerHp">HP 100 / 100</strong></div><div class="hpbg"><i id="battlePlayerHpBar"></i></div><div class="stat"><span>Paragon PT</span><strong>120</strong></div><div class="stat"><span>攻撃ゲージ</span><strong>■■■□□</strong></div><div class="small" id="battleDamageInfo">HP / ダメージ計算を検証中。</div><div class="status-effect-list" id="battleStatusEffects" aria-live="polite">状態異常：なし</div></div>
+<div class="bcell playerparams"><h3>PLAYER</h3><div class="battle-player-preview" id="battlePlayerPreview"></div><div class="stat"><span class="rank-white">10級 · ADVENTURER</span><strong id="battlePlayerHp">HP 100 / 100</strong></div><div class="hpbg"><i id="battlePlayerHpBar"></i></div><div class="stat"><span>装備スキル</span><strong id="battlePlayerSkillName">ファイアボール</strong></div><div class="stat"><span>スキルチャージ</span><strong id="battlePlayerCharge">0 / 100 PT</strong></div><div class="hpbg"><i id="battleChargeBar" style="width:0%;background:#aa8cce"></i></div><button type="button" class="action" id="battleCastSkill" disabled style="margin:10px 0">スキル発動</button><div class="small" id="battlePlayerSkillEvent" role="status">チャージをためて発動</div><div class="small" id="battleDamageInfo">HP / ダメージ計算を検証中。</div><div class="status-effect-list" id="battleStatusEffects" aria-live="polite">状態異常：なし</div></div>
 <div class="bcell answerzone"><h3>ANSWER / 解答</h3><div class="choicegrid" id="quizChoices"></div><div class="answerkeys"><span>4択：7問</span><span>○ / ×：3問</span><span>敵HPが0で勝利</span></div><div class="small" id="battleOutcome" role="status" aria-live="polite"></div><button class="mini" type="button" style="margin-top:8px" id="quizReset">この敵と再戦</button><p class="small">回答後0.5秒で次の問題へ。勝敗はHPで判定します。検証用問題は10題のみで、問題を使い切った場合は再出題します。本番の問題プールではありません。</p></div>
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
@@ -272,9 +274,23 @@ body{min-width:1024px}
 <div class="prep-controls party-controls"><label>キャラクター <select id="prepCharacter"></select></label></div>
 <div class="prep-layout"><div class="frame"><h3>CHARACTER ART / キャラ立ち絵</h3><div class="prep-art"><img id="prepPortrait" class="character-standing" alt="キャラクター立ち絵"><div id="prepCharacterName">玲 / Rei</div><p class="small" id="prepTrait">高魔力・低HP・高速チャージ</p></div></div>
 <div class="frame"><h3>STATUS / SKILLS</h3><div class="prep-stats"><div><span class="small">戦闘用ドット絵</span><img id="prepPixel" class="character-pixel" alt="ドット絵"></div><div><span class="small">HP</span><strong id="prepHp">調整中</strong></div><div><span class="small">パラゴンPT</span><strong>未接続</strong></div><div><span class="small">装備</span><strong>なし</strong></div></div>
-<h3 style="margin-top:24px">使用スキル（1枠）</h3><div id="prepSkills" class="skillselect"></div><div class="prep-confirm"><button class="back" data-go="lobby">キャンセル</button><button class="action" id="savePrep" type="button">この設定で決定</button></div><p id="prepMessage" class="small" role="status">キャラクターと共通スキルの表示確認用。保存処理は未実装です。</p></div></div></section>
+<h3 style="margin-top:24px">使用スキル（1枠）</h3><label class="small">テスト用キャラクターLv（実際のレベル・経験値は未接続）<select id="prepTestLevel" style="margin:8px 0 14px;padding:8px;background:#211c25;color:#e8dace"><option value="1">Lv.1（初期）</option><option value="20">Lv.20</option><option value="50">Lv.50</option><option value="70">Lv.70</option></select></label><div id="prepSkills" class="skillselect"></div><div class="prep-confirm"><button class="back" data-go="lobby">キャンセル</button><button class="action" id="savePrep" type="button">この設定で決定</button></div><p id="prepMessage" class="small" role="status">各キャラ固有スキルから1種類を選択。テスト用レベル切替で解放状態を確認できます（データ保存なし）。</p></div></div></section>
 </main>
 <script>
+(function(){'use strict';
+const skills=[{"character":"C001","id":"fireball","name":"ファイアボール","level":1,"description":"攻撃＋確率で火傷"},{"character":"C001","id":"burnout","name":"バーンアウト","level":20,"description":"敵の通常攻撃・スキルタイマーをリセット"},{"character":"C001","id":"ruby","name":"ルビーの共鳴","level":50,"description":"自身のATKを一時強化"},{"character":"C001","id":"meteor","name":"ミーティア","level":70,"description":"大ダメージ＋スタン"},{"character":"C002","id":"frost_slash","name":"フロストスラッシュ","level":1,"description":"攻撃＋確率で凍結"},{"character":"C002","id":"freeze_breeze","name":"フリーズブリーズ","level":20,"description":"100%凍結"},{"character":"C002","id":"ao_ai","name":"蒼と藍","level":50,"description":"敵の攻撃・スキルを遅延し、自身のチャージを短縮"},{"character":"C002","id":"whiteout","name":"ホワイトアウト","level":70,"description":"敵の攻撃回避＋凍結＋継続ダメージ"},{"character":"C003","id":"carrot_soup","name":"ニンジンスープ","level":1,"description":"味方全体のHPを回復"},{"character":"C003","id":"soy_burger","name":"大豆バーガー","level":20,"description":"味方1人の次のスキルを強化"},{"character":"C003","id":"tomato","name":"トマト祭り","level":50,"description":"味方全体のATKを強化"},{"character":"C003","id":"scoville","name":"スコヴィルボム","level":70,"description":"敵の防御を下げ、継続ダメージ"},{"character":"C004","id":"stone_song","name":"石の歌","level":1,"description":"味方全員の次の敵ダメージを1回無効化（ミス対象外）"},{"character":"C004","id":"healing_bell","name":"いやしの鈴","level":20,"description":"味方全体のHPを継続回復"},{"character":"C004","id":"waltz","name":"あやかしのワルツ","level":50,"description":"敵の命中率を長時間低下"},{"character":"C004","id":"haste","name":"ヘイスト","level":70,"description":"味方全体のスキルチャージ速度を大幅上昇"}];
+const cost={1:100,20:120,50:140,70:160};
+const factors={C001:1.2,C002:0.8,C003:1,C004:1};
+const chosen={C001:'fireball',C002:'frost_slash',C003:'carrot_soup',C004:'stone_song'};
+let testLevel=1;
+window.QR_PlayerSkills={
+ skills,cost,factors,chosen,
+ get level(){return testLevel},
+ setLevel(v){testLevel=[1,20,50,70].includes(Number(v))?Number(v):1;},
+ getSelection(charId){const set=skills.filter(x=>x.character===charId&&x.level<=testLevel);return set.find(x=>x.id===chosen[charId])||set[0]},
+ choose(charId,id){const skill=skills.find(x=>x.character===charId&&x.id===id&&x.level<=testLevel);if(skill)chosen[charId]=id;return skill}
+};
+})();
 (function(){
 'use strict';
 const effectMap={C001:{file:'C001_magic.png',color:'#fa485e',fallback:'✦'},C002:{file:'C002_slash.png',color:'#8bdafc',fallback:'╱'},C003:{file:'C003_impact.png',color:'#ffc16d',fallback:'✹'},C004:{file:'C004_music.png',color:'#72e5b6',fallback:'♫'}};
@@ -394,8 +410,7 @@ $('startParty').onclick=()=>{
  renderParty();
 };
 const characters=[{"id":"C001","name":"玲","en":"Rei","standing":"./assets/C101.png","pixel":"./assets/C102.png","trait":"高魔力・低HP・高速チャージ"},{"id":"C002","name":"絢","en":"Aya","standing":"./assets/C201.png","pixel":"./assets/C202.png","trait":"高素早さ・2回チャージ"},{"id":"C003","name":"エリン","en":"Erin","standing":"./assets/C301.png","pixel":"./assets/C302.png","trait":"料理人クレリック（能力値調整中）"},{"id":"C004","name":"フィーダ","en":"Fida","standing":"./assets/C401.png","pixel":"./assets/C402.png","trait":"標準能力・報酬ボーナス"}];
-const paragon=[['fire','ファイアボルト','炎攻撃（仮・全員共通）'],['guard','魔力障壁','ダメージ軽減（仮・全員共通）'],['focus','集中','スキル強化（仮・全員共通）']];
-let selectedSkill='fire';
+const skillSystem=window.QR_PlayerSkills;
 function activeCharacter(){return characters.find(x=>x.id===$('prepCharacter').value)||characters[0];}
 function updateBattleCharacter(){
  const c=activeCharacter(),el=$('battlePlayerPreview');el.replaceChildren();
@@ -416,15 +431,33 @@ function renderSelection(){
 }
 function showSkills(){
  const el=$('prepSkills');el.replaceChildren();
- paragon.forEach(([id,label,desc])=>{const row=document.createElement('label'),radio=document.createElement('input'),body=document.createElement('span'),title=document.createElement('b'),sub=document.createElement('small');
- radio.type='radio';radio.name='skill';radio.value=id;radio.checked=selectedSkill===id;
- radio.onchange=()=>{selectedSkill=id;$('prepMessage').textContent=label+' を選択中（プレビューのみ）。';};
- title.textContent=label;sub.textContent=desc;body.append(title,sub);row.append(radio,body);el.append(row);});
+ const cid=activeCharacter().id;
+ const current=skillSystem.getSelection(cid);
+ skillSystem.skills.filter(x=>x.character===cid).forEach(skill=>{
+  const row=document.createElement('label'),radio=document.createElement('input'),body=document.createElement('span'),title=document.createElement('b'),sub=document.createElement('small');
+  radio.type='radio';radio.name='skill';radio.value=skill.id;radio.disabled=skill.level>skillSystem.level;radio.checked=current?.id===skill.id;
+  radio.onchange=()=>{skillSystem.choose(cid,skill.id);$('prepMessage').textContent=skill.name+' を装備。次の戦闘から適用。';window.QR_Combat?.start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));window.QR_Quiz?.restart(false);};
+  title.textContent=skill.name+'（Lv.'+skill.level+'）'+(radio.disabled?' [未解放]':'');
+  sub.textContent=skill.description+' / チャージ '+skillSystem.cost[skill.level]+'PT';
+  body.append(title,sub);row.append(radio,body);el.append(row);
+ });
 }
 characters.forEach(c=>{const option=document.createElement('option');option.value=c.id;option.textContent=c.name+' / '+c.en;$('prepCharacter').append(option)});
 $('prepCharacter').value='C001';
-$('prepCharacter').onchange=()=>{renderSelection();$('prepMessage').textContent='キャラクター画像・特性を切り替えました。';};
-$('savePrep').onclick=()=>{$('prepMessage').textContent=activeCharacter().name+'：'+paragon.find(x=>x[0]===selectedSkill)[1]+'（選択プレビューのみ・未保存）';};
+$('prepTestLevel').onchange=()=>{
+ skillSystem.setLevel($('prepTestLevel').value);
+ showSkills();
+ window.QR_Combat?.start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
+ window.QR_Quiz?.restart(false);
+ $('prepMessage').textContent='テスト用 Lv.'+skillSystem.level+' に変更（本番のレベルは未実装）。';
+};
+$('prepCharacter').onchange=()=>{renderSelection();showSkills();$('prepMessage').textContent='キャラクターとスキル候補を切り替えました。';};
+$('savePrep').onclick=()=>{
+ const chosen=skillSystem.getSelection(activeCharacter().id);
+ $('prepMessage').textContent=activeCharacter().name+'：'+chosen.name+' を装備中（このページ内のデモ）。';
+ window.QR_Combat?.start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
+ window.QR_Quiz?.restart(false);
+};
 window.addEventListener('pagehide',()=>{cancelCountdown();if(inactivityTimer)clearTimeout(inactivityTimer);});
 renderParty();showSkills();renderSelection();
 })();
@@ -471,41 +504,76 @@ choose(mons[0]);})();
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
+const skills=window.QR_PlayerSkills;
 const starRules={
- 1:{attack:10,miss:17,interval:12,tick:3,baseAttack:8,skillInterval:18,heal:6,drain:5,dot:1,duration:4,stun:2,reduction:0.25},
- 2:{attack:28,miss:25,interval:10,tick:10,baseAttack:19,skillInterval:15,heal:15,drain:9,dot:2,duration:5,stun:3,reduction:0.30},
- 3:{attack:50,miss:50,interval:8,tick:15,baseAttack:31,skillInterval:12,heal:27,drain:14,dot:3,duration:6,stun:4,reduction:0.35}
+1:{attack:10,miss:17,interval:12,tick:3,baseAttack:8,skillInterval:18,heal:6,drain:5,dot:1,duration:4,stun:2,reduction:.25},
+2:{attack:28,miss:25,interval:10,tick:10,baseAttack:19,skillInterval:15,heal:15,drain:9,dot:2,duration:5,stun:3,reduction:.30},
+3:{attack:50,miss:50,interval:8,tick:15,baseAttack:31,skillInterval:12,heal:27,drain:14,dot:3,duration:6,stun:4,reduction:.35}
 };
-const partyHpMultiplier={1:1.0,2:1.7,3:2.3,4:2.8};
+const partyHpMultiplier={1:1,2:1.7,3:2.3,4:2.8};
 const characterRules={C001:{hp:90,damage:2},C002:{hp:100,damage:1},C003:{hp:110,damage:-1},C004:{hp:100,damage:0}};
 let partyCount=1,state=null,timer=null;
 const charRule=()=>characterRules[$('prepCharacter').value]||characterRules.C001;
-function registerDamage(category,amount,incoming=false){
- if(!state||!state.damage)return 0;
- const remaining=incoming?state.playerHP:state.monsterHP;
- const actual=Math.max(0,Math.min(amount,remaining));
- const ledger=incoming?state.damage.taken:state.damage.dealt;
- ledger[category]=(ledger[category]||0)+actual;
+const isStunned=()=>Boolean(state&&!state.ended&&state.stunUntil>Date.now());
+function sum(obj){return Object.values(obj).reduce((n,v)=>n+v,0);}
+function ledger(category,amount,toPlayer){
+ const target=toPlayer?state.playerHP:state.monsterHP;
+ const actual=Math.max(0,Math.min(Math.round(amount),target));
+ const branch=toPlayer?state.damage.taken:state.damage.dealt;
+ branch[category]=(branch[category]||0)+actual;
  return actual;
 }
-const isStunned=()=>Boolean(state&&!state.ended&&state.stunUntil>Date.now());
+function shieldOrDodge(amount,category){
+ if(amount<=0)return 0;
+ if(state.stoneShield>0){state.stoneShield--;return 0;}
+ const chance=state.dodgeUntil>Date.now()?state.dodgeChance:0;
+ if(Math.random()<chance)return 0;
+ return ledger(category,amount,true);
+}
+function healPlayer(amount){
+ const actual=Math.max(0,Math.min(Math.ceil(amount),state.maxPlayerHP-state.playerHP));
+ state.playerHP+=actual;state.damage.healed+=actual;return actual;
+}
+function frozenEnemy(durationMs){
+ const now=Date.now();
+ const extension=Math.max(0,durationMs);
+ // The attack timers are pushed forward so no extra attacks accumulate on thaw.
+ state.nextTick+=extension;state.nextSkill+=extension;
+ state.enemyFrozenUntil=Math.max(state.enemyFrozenUntil,now)+extension;
+}
+function playerDoT(id,damage,seconds){
+ state.enemyDot={id,damage,until:Date.now()+seconds*1000,next:Date.now()+1000};
+}
 function update(){
  if(!state)return;
  const now=Date.now();
  $('battleMonsterHp').textContent=state.monsterHP+' / '+state.maxMonsterHP;
  $('battleEnemyHpScale').textContent='基礎HP '+state.baseMonsterHP+' × '+state.multiplier.toFixed(1)+'（'+state.partyCount+'人）';
- $('battleEnemyHits').textContent='必要正答数（軽減なし・1人で攻撃）：'+Math.ceil(state.maxMonsterHP/state.playerDamage)+'回';
- $('battleEnemyHpBar').style.width=(100*state.monsterHP/state.maxMonsterHP)+'%';
+ $('battleEnemyHits').textContent='必要正答数（基本・1人）：'+Math.ceil(state.maxMonsterHP/state.playerDamage)+'回';
+ $('battleEnemyHpBar').style.width=100*state.monsterHP/state.maxMonsterHP+'%';
  $('battlePlayerHp').textContent='HP '+state.playerHP+' / '+state.maxPlayerHP;
- $('battlePlayerHpBar').style.width=(100*state.playerHP/state.maxPlayerHP)+'%';
+ $('battlePlayerHpBar').style.width=100*state.playerHP/state.maxPlayerHP+'%';
  $('battleEnemyAttackTimer').textContent=state.ended?'停止':Math.ceil(Math.max(0,state.nextTick-now)/1000)+'秒';
  $('battleSkillTimer').textContent=state.mon.isBoss?'未実装':state.ended?'停止':Math.ceil(Math.max(0,state.nextSkill-now)/1000)+'秒';
  $('battleDamageInfo').textContent='正解：'+state.playerDamage+'DMG ／ ミス：'+state.missDamage+'DMG ／ 時間攻撃：'+state.rule.tick+'DMG（'+state.rule.interval+'秒ごと）';
  const effects=[];
  if(state.dot&&state.dot.end>now)effects.push((state.dot.kind==='poison'?'毒':'火傷')+'：毎秒'+state.dot.amount+'DMG / あと'+Math.ceil((state.dot.end-now)/1000)+'秒');
- if(state.shieldUntil>now)effects.push('敵の被ダメージ'+Math.round(state.rule.reduction*100)+'%軽減 / あと'+Math.ceil((state.shieldUntil-now)/1000)+'秒');
- if(isStunned())effects.push('スタン：回答不可 / あと'+Math.ceil((state.stunUntil-now)/1000)+'秒');
+ if(state.shieldUntil>now)effects.push('敵のダメージ軽減 '+Math.round(state.rule.reduction*100)+'%');
+ if(isStunned())effects.push('スタン 回答不可 '+Math.ceil((state.stunUntil-now)/1000)+'秒');
+ if(state.enemyFrozenUntil>now)effects.push('敵凍結 '+Math.ceil((state.enemyFrozenUntil-now)/1000)+'秒');
+ if(state.stoneShield>0)effects.push('石の歌：敵ダメージ1回無効');
+ if(state.hasteUntil>now)effects.push('ヘイスト：チャージ2倍');
+ if(state.atkBuffUntil>now)effects.push('ATK強化');
+ if(state.dodgeUntil>now)effects.push('敵攻撃の回避率 '+Math.round(state.dodgeChance*100)+'%');
+ if(state.enemyArmorUntil>now)effects.push('敵DEF低下');
  $('battleStatusEffects').textContent=effects.length?effects.join(' ／ '):'状態異常：なし';
+ const charges=Math.floor(state.charge+1e-6),need=state.skillCost;
+ $('battlePlayerSkillName').textContent=state.skill.name+'（Lv.'+state.skill.level+'）';
+ $('battlePlayerCharge').textContent=charges+' / '+need+' PT'+(state.maxCharges===2?'［最大'+need*2+'］':'');
+ $('battleChargeBar').style.width=Math.min(100,state.charge/need*100)+'%';
+ const n=Math.floor(state.charge/need);
+ $('battleCastSkill').disabled=state.ended||isStunned()||state.charge+1e-6<need||!$('battle').classList.contains('active');
+ $('battleCastSkill').textContent='スキル発動：'+state.skill.name+(n>1?'（'+n+'回分）':'');
  window.QR_Quiz?.syncAvailability();
 }
 function stop(){if(timer!==null){clearInterval(timer);timer=null;}}
@@ -515,59 +583,141 @@ function end(won){
  $('battleOutcome').textContent=won?'VICTORY — 撃破':'DEFEAT — HP 0';
  window.QR_Quiz?.finish(won,state);
 }
-function useSkill(now){
- if(!state||state.ended||state.mon.isBoss)return;
+function dealMonsterDamage(amount,type='skill'){
+ const reduced=state.shieldUntil>Date.now();
+ const barrier=reduced?state.rule.reduction:0;
+ const weakened=state.enemyArmorUntil>Date.now()?Math.ceil(state.playerDamage*.25):0;
+ const inflicted=Math.max(1,Math.ceil((amount+weakened)*(1-barrier)));
+ const actual=ledger(type,inflicted,false);
+ state.monsterHP=Math.max(0,state.monsterHP-actual);
+ return actual;
+}
+function useMonsterSkill(now){
+ if(!state||state.ended||state.mon.isBoss||state.enemyFrozenUntil>now)return;
  const q=state.rule,id=state.mon.skill_id;
- let message='';
+ let msg='';
  switch(id){
-  case 'self_heal':{
-   const amount=Math.min(q.heal,state.maxMonsterHP-state.monsterHP);
-   state.monsterHP+=amount;
-   message='自己回復：敵HP +'+amount;
-   break;
-  }
-  case 'drain':{
-   const damage=Math.min(q.drain,state.playerHP);
-   const received=registerDamage('skill',damage,true);
-   state.playerHP=Math.max(0,state.playerHP-received);
-   const heal=Math.min(Math.ceil(damage*0.8),state.maxMonsterHP-state.monsterHP);
-   state.monsterHP+=heal;
-   message='ドレイン：プレイヤー −'+damage+' / 敵HP +'+heal;
-   break;
-  }
-  case 'poison':
-  case 'burn':
-   state.dot={kind:id,amount:q.dot,end:now+q.duration*1000,next:now+1000};
-   message=(id==='poison'?'毒':'火傷')+'：毎秒'+q.dot+'ダメージ、'+q.duration+'秒間';
-   break;
-  case 'damage_reduction':
-   state.shieldUntil=now+q.duration*1000;
-   message='ダメージ軽減：'+Math.round(q.reduction*100)+'%軽減、'+q.duration+'秒間';
-   break;
-  case 'stun':
-   state.stunUntil=now+q.stun*1000;
-   message='スタン：'+q.stun+'秒間、回答不可';
-   break;
-  default:
-   message='固有スキル：数値未設定';
+ case 'self_heal':{
+  const gained=Math.min(q.heal,state.maxMonsterHP-state.monsterHP);
+  state.monsterHP+=gained;msg='自己回復：敵HP +'+gained;break;}
+ case 'drain':{
+  const got=shieldOrDodge(q.drain,'skill');
+  state.playerHP=Math.max(0,state.playerHP-got);
+  const gained=Math.min(Math.ceil(got*.8),state.maxMonsterHP-state.monsterHP);
+  state.monsterHP+=gained;
+  msg='ドレイン：プレイヤー −'+got+' / 敵HP +'+gained;break;}
+ case 'poison':case 'burn':
+  if(shieldOrDodge(0,'skill')===0&&state.stoneShield<0){} // no effect; retained for state compatibility
+  if(state.stoneShield>0){state.stoneShield--;msg='石の歌：状態異常を無効化';break;}
+  if(state.dodgeUntil>now&&Math.random()<state.dodgeChance){msg='敵スキルを回避';break;}
+  state.dot={kind:id,amount:q.dot,end:now+q.duration*1000,next:now+1000};
+  msg=(id==='poison'?'毒':'火傷')+'：毎秒'+q.dot+'ダメージ、'+q.duration+'秒間';break;
+ case 'damage_reduction':
+  state.shieldUntil=now+q.duration*1000;
+  msg='ダメージ軽減：'+Math.round(q.reduction*100)+'%軽減、'+q.duration+'秒間';break;
+ case 'stun':
+  if(state.stoneShield>0){state.stoneShield--;msg='石の歌：スタンを無効化';break;}
+  if(state.dodgeUntil>now&&Math.random()<state.dodgeChance){msg='敵スキルを回避';break;}
+  state.stunUntil=now+q.stun*1000;
+  msg='スタン：'+q.stun+'秒間、回答不可';break;
+ default:msg='固有スキル：仮設定';
  }
- $('battleSkillEvent').textContent=message;
+ $('battleSkillEvent').textContent=msg;
  if(state.playerHP<=0){end(false);return;}
  update();
+}
+function cast(){
+ if(!state||state.ended||isStunned()||state.charge+1e-6<state.skillCost)return;
+ state.charge=Math.max(0,state.charge-state.skillCost);
+ const now=Date.now(),star=state.mon.difficulty,skill=state.skill.id;
+ const boost=state.empower>0;state.empower=0;
+ const power=boost?1.3:1;
+ let msg='';
+ switch(skill){
+ case 'fireball':{
+  const done=dealMonsterDamage(Math.ceil(state.playerDamage*1.25*power));
+  const chance=Math.max(.1,.32-(star-1)*.07);
+  const burn=Math.random()<chance;
+  if(burn)playerDoT('火傷',Math.max(1,Math.ceil(star*power)),4);
+  msg='ファイアボール：'+done+'DMG'+(burn?'、火傷付与':'');break;}
+ case 'burnout':
+  state.nextTick=now+state.rule.interval*1000;
+  state.nextSkill=now+state.rule.skillInterval*1000;
+  msg='バーンアウト：敵攻撃・スキルの発動タイマーをリセット';break;
+ case 'ruby':
+  state.atkBuffUntil=now+Math.ceil(12000*power);
+  msg='ルビーの共鳴：ATK +30%（'+Math.ceil(12*power)+'秒）';break;
+ case 'meteor':{
+  const done=dealMonsterDamage(Math.ceil(state.playerDamage*2.2*power));
+  frozenEnemy(3000);msg='ミーティア：'+done+'DMG＋敵スタン3秒';break;}
+ case 'frost_slash':{
+  const done=dealMonsterDamage(Math.ceil(state.playerDamage*1.1*power));
+  const chance=Math.max(.1,.32-(star-1)*.07);
+  if(Math.random()<chance){frozenEnemy(1500);msg='フロストスラッシュ：'+done+'DMG＋凍結';}
+  else msg='フロストスラッシュ：'+done+'DMG';
+  break;}
+ case 'freeze_breeze':
+  frozenEnemy(Math.max(1000,Math.round((4-star*.5)*1000*power)));
+  msg='フリーズブリーズ：確定凍結';break;
+ case 'ao_ai':
+  state.nextTick+=Math.ceil(5000*power);
+  state.nextSkill+=Math.ceil(5000*power);
+  state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+30*power);
+  msg='蒼と藍：敵の攻撃・スキル＋5秒、自身のチャージ＋'+Math.ceil(30*power);break;
+ case 'whiteout':
+  state.dodgeChance=.35;state.dodgeUntil=now+Math.ceil(9000*power);
+  frozenEnemy(2000);
+  playerDoT('冷気',Math.max(1,Math.ceil(star*power)),5);
+  msg='ホワイトアウト：回避35%＋凍結＋DoT';break;
+ case 'carrot_soup':{
+  const healed=healPlayer(Math.ceil(24*power));
+  msg='ニンジンスープ：HP +'+healed+'（PTでは味方全体）';break;}
+ case 'soy_burger':
+  state.empower=1;
+  // A one-slot demo cannot select a different ally skill; expedite the current charge as a test surrogate.
+  state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+Math.ceil(25*power));
+  msg='大豆バーガー：次回スキル強化＋チャージ補助（PT対象選択は未実装）';break;
+ case 'tomato':
+  state.atkBuffUntil=now+Math.ceil(12000*power);
+  msg='トマト祭り：ATK +30%（PTでは味方全体）';break;
+ case 'scoville':
+  state.enemyArmorUntil=now+Math.ceil(10000*power);
+  playerDoT('スコヴィル',Math.max(1,Math.ceil(star*2*power)),5);
+  msg='スコヴィルボム：敵DEF低下＋継続ダメージ';break;
+ case 'stone_song':
+  state.stoneShield=1;msg='石の歌：敵の次の攻撃・スキル被害を1回無効（不正解は対象外）';break;
+ case 'healing_bell':
+  state.regen={amount:Math.max(1,Math.ceil(3*power)),until:now+9000,next:now+1000};
+  msg='いやしの鈴：9秒間継続回復（PTでは味方全体）';break;
+ case 'waltz':
+  state.dodgeChance=.30;state.dodgeUntil=now+Math.ceil(15000*power);
+  msg='あやかしのワルツ：敵の命中率低下（15秒）';break;
+ case 'haste':
+  state.hasteUntil=now+Math.ceil(15000*power);
+  msg='ヘイスト：15秒間スキルチャージ速度2倍（通常攻撃には影響なし）';break;
+ }
+ $('battlePlayerSkillEvent').textContent=msg;
+ update();
+ // Show the outcome instantly if the skill killed the mob.
+ if(state.monsterHP<=0)end(true);
 }
 function start(mon){
  stop();
  if(!mon)return;
  const rule=starRules[mon.difficulty]||starRules[1],c=charRule();
+ const charId=$('prepCharacter').value||'C001',skill=skills.getSelection(charId);
  const baseHp=mon.hp??Math.round(({1:85,2:210,3:350}[mon.difficulty]||85)+(Number(mon.id.slice(-1))-1)*3);
  const multiplier=partyHpMultiplier[partyCount],mh=Math.ceil(baseHp*multiplier);
  const ma=mon.attack??rule.baseAttack+5;
  const missDamage=Math.max(1,rule.miss+ma-rule.baseAttack);
  const damage=Math.max(1,rule.attack+c.damage-Math.round((mon.defense||0)*.1));
  const now=Date.now();
- state={mon,rule,partyCount,multiplier,baseMonsterHP:baseHp,maxMonsterHP:mh,monsterHP:mh,maxPlayerHP:c.hp,playerHP:c.hp,playerDamage:damage,missDamage,ended:false,won:false,started:now,nextTick:now+rule.interval*1000,nextSkill:now+rule.skillInterval*1000,shieldUntil:0,stunUntil:0,dot:null,damage:{dealt:{normal:0,skill:0},taken:{miss:0,clock:0,skill:0},healed:0}};
+ state={mon,rule,partyCount,multiplier,baseMonsterHP:baseHp,maxMonsterHP:mh,monsterHP:mh,maxPlayerHP:c.hp,playerHP:c.hp,playerDamage:damage,missDamage,ended:false,won:false,started:now,nextTick:now+rule.interval*1000,nextSkill:now+rule.skillInterval*1000,shieldUntil:0,stunUntil:0,dot:null,
+ damage:{dealt:{normal:0,skill:0},taken:{miss:0,clock:0,skill:0},healed:0},
+ skill,skillCost:skills.cost[skill.level],maxCharges:charId==='C002'?2:1,charge:0,chargeFactor:skills.factors[charId],lastChargeAt:now,enemyFrozenUntil:0,enemyDot:null,stoneShield:0,atkBuffUntil:0,dodgeUntil:0,dodgeChance:0,hasteUntil:0,enemyArmorUntil:0,empower:0,regen:null};
  $('battleOutcome').textContent='';
- $('battleSkillEvent').textContent=mon.isBoss?'セミボス固有スキルは今回未接続':'固有スキル：発動待機中';
+ $('battlePlayerSkillEvent').textContent='正解＋10PT、自然チャージ＋2PT/秒（キャラ補正あり）';
+ $('battleSkillEvent').textContent=mon.isBoss?'セミボス固有スキル未実装':'固有スキル：発動待機中';
  $('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+ma+(mon.isBoss?'（ボス数値仮）':'');
  $('battleMonsterLevel').textContent='★'+mon.difficulty;
  update();
@@ -577,27 +727,50 @@ function start(mon){
   if(!$('battle').classList.contains('active')){
    state.nextTick=now+rule.interval*1000;
    state.nextSkill=now+rule.skillInterval*1000;
+   state.lastChargeAt=now;
    if(state.dot){state.dot.end=now+rule.duration*1000;state.dot.next=now+1000;}
+   if(state.enemyDot){state.enemyDot.until=now+5000;state.enemyDot.next=now+1000;}
+   if(state.regen){state.regen.until=now+9000;state.regen.next=now+1000;}
    return;
   }
-  if(now>=state.nextTick){
+  const elapsed=Math.min(1,(now-state.lastChargeAt)/1000);
+  state.lastChargeAt=now;
+  if(elapsed>0){
+   const haste=state.hasteUntil>now?2:1;
+   state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+elapsed*2*state.chargeFactor*haste);
+  }
+  if(state.enemyFrozenUntil<=now&&now>=state.nextTick){
    state.nextTick=now+rule.interval*1000;
-   const dealt=registerDamage('clock',rule.tick,true);
-   state.playerHP=Math.max(0,state.playerHP-dealt);
-   if(state.playerHP===0){end(false);return;}
+   const amount=shieldOrDodge(rule.tick,'clock');
+   state.playerHP=Math.max(0,state.playerHP-amount);
+   if(state.playerHP<=0){end(false);return;}
   }
   if(state.dot){
    while(now>=state.dot.next&&state.dot.next<=state.dot.end){
     state.dot.next+=1000;
-    const dealt=registerDamage('skill',state.dot.amount,true);
-    state.playerHP=Math.max(0,state.playerHP-dealt);
-    if(state.playerHP===0){end(false);return;}
+    const amount=shieldOrDodge(state.dot.amount,'skill');
+    state.playerHP=Math.max(0,state.playerHP-amount);
+    if(state.playerHP<=0){end(false);return;}
    }
    if(now>=state.dot.end)state.dot=null;
   }
-  if(!state.mon.isBoss&&now>=state.nextSkill){
+  if(state.enemyDot){
+   while(now>=state.enemyDot.next&&state.enemyDot.next<=state.enemyDot.until){
+    state.enemyDot.next+=1000;
+    dealMonsterDamage(state.enemyDot.damage);
+    if(state.monsterHP<=0){end(true);return;}
+   }
+   if(now>=state.enemyDot.until)state.enemyDot=null;
+  }
+  if(state.regen){
+   while(now>=state.regen.next&&state.regen.next<=state.regen.until){
+    state.regen.next+=1000;healPlayer(state.regen.amount);
+   }
+   if(now>=state.regen.until)state.regen=null;
+  }
+  if(!state.mon.isBoss&&state.enemyFrozenUntil<=now&&now>=state.nextSkill){
    state.nextSkill=now+rule.skillInterval*1000;
-   useSkill(now);
+   useMonsterSkill(now);
   }
   update();
  },200);
@@ -605,16 +778,15 @@ function start(mon){
 function answer(isCorrect){
  if(!state||state.ended||isStunned())return false;
  if(isCorrect){
-  const reduced=state.shieldUntil>Date.now();
-  const inflicted=reduced?Math.max(1,Math.ceil(state.playerDamage*(1-state.rule.reduction))):state.playerDamage;
-  const actual=registerDamage('normal',inflicted,false);
-  state.monsterHP=Math.max(0,state.monsterHP-actual);
+  const boosted=state.atkBuffUntil>Date.now()?1.3:1;
+  dealMonsterDamage(Math.ceil(state.playerDamage*boosted),'normal');
+  const haste=state.hasteUntil>Date.now()?2:1;
+  state.charge=Math.min(state.skillCost*state.maxCharges,state.charge+10*state.chargeFactor*haste);
  }else{
-  const actual=registerDamage('miss',state.missDamage,true);
+  const actual=ledger('miss',state.missDamage,true);
   state.playerHP=Math.max(0,state.playerHP-actual);
  }
- update();
- return true;
+ update();return true;
 }
 function resolve(){
  if(!state||state.ended)return true;
@@ -628,15 +800,15 @@ function setPartyCount(value){
  partyCount=count;
  document.querySelectorAll('.party-size-pick').forEach(btn=>{
   const active=Number(btn.dataset.count)===count;
-  btn.classList.toggle('active',active);
-  btn.setAttribute('aria-pressed',String(active));
+  btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active));
  });
  $('partySizeMultiplier').textContent='HP ×'+partyHpMultiplier[count].toFixed(1);
  const mon=window.QR_Monsters?.find(m=>m.id===$('enemySelector').value);
  if(mon){start(mon);window.QR_Quiz?.restart(false);}
 }
+$('battleCastSkill').addEventListener('click',cast);
 document.querySelectorAll('.party-size-pick').forEach(btn=>btn.addEventListener('click',()=>setPartyCount(btn.dataset.count)));
-window.QR_Combat={start,answer,resolve,stop,getState:()=>state,setPartyCount,isStunned};
+window.QR_Combat={start,answer,resolve,stop,getState:()=>state,setPartyCount,isStunned,cast};
 start(window.QR_Monsters?.find(m=>m.id===$('enemySelector').value));
 window.addEventListener('pagehide',stop);
 })();
