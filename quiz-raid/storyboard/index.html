@@ -199,6 +199,22 @@ body{min-width:1024px}
 .status-effect-list{margin-top:8px;color:#e4caaa;font-weight:600;min-height:20px}
 #battleSkillEvent{margin-top:7px;min-height:26px;color:#d8b681}
 #battleSkillTimer{color:#ecd49d}
+.resultportrait img{width:100%;height:100%;object-fit:contain}
+.damage-report{margin-top:20px;padding:18px;background:#1a1920;border:1px solid #65574c}
+.damage-report-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;flex-wrap:wrap;margin-bottom:12px}
+.damage-report-head h3{margin:0;color:#dbbf90;font-size:17px;letter-spacing:.08em}
+.result-party-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.result-party-card{background:#25212a;border:1px solid #61565e;padding:14px;min-width:0}
+.result-party-card.placeholder{opacity:.66;border-style:dashed}
+.result-party-card .result-card-title{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.result-party-card .pose{height:130px;display:flex;align-items:center;justify-content:center;margin:8px 0;background:radial-gradient(ellipse,#35303a,#211e28)}
+.result-party-card .pose img{height:100%;width:100%;object-fit:contain}
+.result-party-card .report-stat{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:5px 0;font-size:12px}
+.result-party-card .report-stat b{color:#eee1d3;font-size:13px}
+.result-party-card .contribution-track{height:6px;border-radius:10px;overflow:hidden;background:#3d3543;margin:8px 0}
+.result-party-card .contribution-track>i{display:block;background:#a38ad3;height:100%;width:0}
+.result-party-card .breakdown{font-size:11px;color:#bbaeb5;margin-top:7px;line-height:1.65}
+@media(max-width:500px){.result-party-grid{grid-template-columns:repeat(auto-fit,minmax(155px,1fr))}.damage-report{padding:10px}}
 </style></head><body><main class="shell">
 <section class="view active titleview" id="title"><div class="symbol">✥</div><p class="eyebrow">A FANTASY QUIZ ADVENTURE</p><h1>QUIZ RAID</h1><p class="subtitle">THE KINGDOM AWAITS</p>
 <nav class="menu"><button data-go="register">あたらしく始める</button><button data-go="login">つづきから始める</button><button data-go="tutorial">とりあえず始める</button></nav>
@@ -234,10 +250,13 @@ body{min-width:1024px}
 <div class="bcell partyzone"><h3>PARTY / INVENTORY</h3><div class="stat"><span>プレイヤー</span><strong>1 / 4</strong></div><div class="stat"><span>仲間</span><strong>NPC × 3</strong></div><div class="stat"><span>キャラ選択</span><strong id="battleSelectedCharacter">玲</strong></div><div class="stat"><span>携帯アイテム</span><strong>—</strong></div><div class="itemslot">キャラクター一覧 / アイテム枠</div><p class="small">ソロ / PTで構成が変化。仕様は後続の絵コンテで確定。</p></div>
 </div></section>
 <section class="view" id="result"><div class="pagehead"><h2>クエストリザルト</h2><button class="back" data-go="battle">戦闘画面へ</button></div>
-<div class="resultgrid2"><div class="resultleft"><div class="resultcaption">ADVENTURER RECORD</div><p class="resultlabel">ID / 段位<strong class="rank-white">10級 · Adventurer</strong></p><div class="resultportrait">採用済みキャラクター画像<br>配置予定</div><p class="resultlabel">勝敗<strong id="battleResultOutcome">未開始</strong></p><p class="resultlabel">キャラクターデザイン<strong>仮配置</strong></p></div>
-<div class="resultmain"><div class="resultcaption" id="battleResultTitle">BATTLE RESULT</div><h2 style="font-weight:normal;margin:10px 0 24px" id="battleResultEnemy">戦闘テスト</h2><div class="scorehead"><div><div class="small">正答率ランク</div><div class="scoregrade" id="quizResultGrade">—</div></div><div><div class="small">正答率</div><div class="scorepercent" id="quizResultPercent">—</div><div class="newrecord" id="quizResultNote">動作検証用の結果</div></div></div>
-<div class="resultstats"><div><span class="small">経過時間</span><b id="battleResultTime">—</b></div><div><span class="small">正答率</span><b id="quizResultAccuracy">—</b></div><div><span class="small">獲得 Paragon PT</span><b>未接続</b></div><div><span class="small">正解数 / 出題数</span><b id="quizResultCount">—</b></div><div><span class="small">参加人数</span><b>1人（デモ）</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
-<p class="small" style="margin-top:14px">判定基準：S＝100%／A＝80%以上100%未満／B＝80%未満。HP・勝敗・経過時間・正答率は今回のテスト値です。経験値・PT・スキル・保存は未接続。</p></div></div><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
+<div class="resultgrid2"><div class="resultleft"><div class="resultcaption">ADVENTURER RECORD</div><p class="resultlabel">ID / 段位<strong class="rank-white">10級 · Adventurer</strong></p><div class="resultportrait"><img id="resultHeroPose" alt="キャラクターの戦闘終了ポーズ"></div><p class="resultlabel">勝敗<strong id="battleResultOutcome">未開始</strong></p><p class="resultlabel">個人生存状態<strong id="resultHeroState">—</strong></p></div>
+<div class="resultmain"><div class="resultcaption" id="battleResultTitle">BATTLE RESULT</div><h2 style="font-weight:normal;margin:10px 0 24px" id="battleResultEnemy">戦闘テスト</h2><div class="scorehead"><div><div class="small">チーム正答率ランク</div><div class="scoregrade" id="quizResultGrade">—</div></div><div><div class="small">正答率</div><div class="scorepercent" id="quizResultPercent">—</div><div class="newrecord" id="quizResultNote">動作検証用の結果</div></div></div>
+<div class="resultstats"><div><span class="small">経過時間</span><b id="battleResultTime">—</b></div><div><span class="small">正答率</span><b id="quizResultAccuracy">—</b></div><div><span class="small">獲得 Paragon PT</span><b>未接続</b></div><div><span class="small">正解数 / 出題数</span><b id="quizResultCount">—</b></div><div><span class="small">参加人数（設定）</span><b id="battleResultPartyCount">1人</b></div><div><span class="small">同条件タイム順位</span><b>—</b></div></div>
+<p class="small" style="margin-top:14px">S＝100%／A＝80%以上／B＝80%未満。チームランクは全員の正答率で判定する仕様です。現在の戦闘デモは1人のみ回答するため、表示ランクは操作キャラの実測値です。経験値・PT・保存は未接続。</p></div></div>
+<section class="damage-report"><div class="damage-report-head"><h3>PARTY DAMAGE REPORT</h3><p class="small" id="damageReportDescription">与ダメージを貢献度の基準に集計。回復は別項目として記録します。</p></div>
+<div class="result-party-grid" id="resultPartyCards"></div>
+</section><div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="action" data-go="quests">クエスト選択へ</button><button class="action" data-go="lobby">ロビーへ戻る</button></div></section>
 
 <section class="view" id="monsters"><div class="pagehead"><h2>モンスター図鑑（素材接続確認）</h2><button class="back" data-go="lobby">ロビーへ</button></div><div class="note">通常27体とセミボス9体の画像プレビュー。画像は公開サイトの専用フォルダから読み込みます。PNGのアップロード前は画像を表示できません。 透過状態は未検証です。</div><div class="monster-roster" id="monsterRoster"></div><h3 style="margin:22px 0 12px">セミボス B001〜B009</h3><div class="monster-roster" id="bossRoster"></div><p class="small">各カードから戦闘画面に画像を呼び出せます。ボスのHP・攻撃力は未設定です。</p></section>
 <section class="view" id="party"><div class="pagehead"><h2>パーティ編成ルーム</h2><button class="back" data-go="lobby">ロビーへ</button></div>
@@ -461,6 +480,14 @@ const partyHpMultiplier={1:1.0,2:1.7,3:2.3,4:2.8};
 const characterRules={C001:{hp:90,damage:2},C002:{hp:100,damage:1},C003:{hp:110,damage:-1},C004:{hp:100,damage:0}};
 let partyCount=1,state=null,timer=null;
 const charRule=()=>characterRules[$('prepCharacter').value]||characterRules.C001;
+function registerDamage(category,amount,incoming=false){
+ if(!state||!state.damage)return 0;
+ const remaining=incoming?state.playerHP:state.monsterHP;
+ const actual=Math.max(0,Math.min(amount,remaining));
+ const ledger=incoming?state.damage.taken:state.damage.dealt;
+ ledger[category]=(ledger[category]||0)+actual;
+ return actual;
+}
 const isStunned=()=>Boolean(state&&!state.ended&&state.stunUntil>Date.now());
 function update(){
  if(!state)return;
@@ -484,7 +511,7 @@ function update(){
 function stop(){if(timer!==null){clearInterval(timer);timer=null;}}
 function end(won){
  if(!state||state.ended)return;
- state.ended=true;state.won=won;stop();update();
+ state.ended=true;state.won=won;state.finishedAt=Date.now();stop();update();
  $('battleOutcome').textContent=won?'VICTORY — 撃破':'DEFEAT — HP 0';
  window.QR_Quiz?.finish(won,state);
 }
@@ -501,7 +528,8 @@ function useSkill(now){
   }
   case 'drain':{
    const damage=Math.min(q.drain,state.playerHP);
-   state.playerHP=Math.max(0,state.playerHP-damage);
+   const received=registerDamage('skill',damage,true);
+   state.playerHP=Math.max(0,state.playerHP-received);
    const heal=Math.min(Math.ceil(damage*0.8),state.maxMonsterHP-state.monsterHP);
    state.monsterHP+=heal;
    message='ドレイン：プレイヤー −'+damage+' / 敵HP +'+heal;
@@ -537,7 +565,7 @@ function start(mon){
  const missDamage=Math.max(1,rule.miss+ma-rule.baseAttack);
  const damage=Math.max(1,rule.attack+c.damage-Math.round((mon.defense||0)*.1));
  const now=Date.now();
- state={mon,rule,partyCount,multiplier,baseMonsterHP:baseHp,maxMonsterHP:mh,monsterHP:mh,maxPlayerHP:c.hp,playerHP:c.hp,playerDamage:damage,missDamage,ended:false,won:false,started:now,nextTick:now+rule.interval*1000,nextSkill:now+rule.skillInterval*1000,shieldUntil:0,stunUntil:0,dot:null};
+ state={mon,rule,partyCount,multiplier,baseMonsterHP:baseHp,maxMonsterHP:mh,monsterHP:mh,maxPlayerHP:c.hp,playerHP:c.hp,playerDamage:damage,missDamage,ended:false,won:false,started:now,nextTick:now+rule.interval*1000,nextSkill:now+rule.skillInterval*1000,shieldUntil:0,stunUntil:0,dot:null,damage:{dealt:{normal:0,skill:0},taken:{miss:0,clock:0,skill:0},healed:0}};
  $('battleOutcome').textContent='';
  $('battleSkillEvent').textContent=mon.isBoss?'セミボス固有スキルは今回未接続':'固有スキル：発動待機中';
  $('battleMonsterSkill').textContent=mon.skill_name+' / ATK '+ma+(mon.isBoss?'（ボス数値仮）':'');
@@ -554,13 +582,15 @@ function start(mon){
   }
   if(now>=state.nextTick){
    state.nextTick=now+rule.interval*1000;
-   state.playerHP=Math.max(0,state.playerHP-rule.tick);
+   const dealt=registerDamage('clock',rule.tick,true);
+   state.playerHP=Math.max(0,state.playerHP-dealt);
    if(state.playerHP===0){end(false);return;}
   }
   if(state.dot){
    while(now>=state.dot.next&&state.dot.next<=state.dot.end){
     state.dot.next+=1000;
-    state.playerHP=Math.max(0,state.playerHP-state.dot.amount);
+    const dealt=registerDamage('skill',state.dot.amount,true);
+    state.playerHP=Math.max(0,state.playerHP-dealt);
     if(state.playerHP===0){end(false);return;}
    }
    if(now>=state.dot.end)state.dot=null;
@@ -577,8 +607,12 @@ function answer(isCorrect){
  if(isCorrect){
   const reduced=state.shieldUntil>Date.now();
   const inflicted=reduced?Math.max(1,Math.ceil(state.playerDamage*(1-state.rule.reduction))):state.playerDamage;
-  state.monsterHP=Math.max(0,state.monsterHP-inflicted);
- }else state.playerHP=Math.max(0,state.playerHP-state.missDamage);
+  const actual=registerDamage('normal',inflicted,false);
+  state.monsterHP=Math.max(0,state.monsterHP-actual);
+ }else{
+  const actual=registerDamage('miss',state.missDamage,true);
+  state.playerHP=Math.max(0,state.playerHP-actual);
+ }
  update();
  return true;
 }
@@ -661,6 +695,71 @@ function render(){
 function syncAvailability(){
  if(!answered){const blocked=Boolean(window.QR_Combat?.isStunned());[...$('quizChoices').children].forEach(button=>button.disabled=blocked);}
 }
+const resultsCharacters={
+ C001:{name:'玲',victory:'./assets/C103.png',defeat:'./assets/C104.png'},
+ C002:{name:'絢',victory:'./assets/C203.png',defeat:'./assets/C204.png'},
+ C003:{name:'エリン',victory:'./assets/C303.png',defeat:'./assets/C304.png'},
+ C004:{name:'フィーダ',victory:'./assets/C403.png',defeat:'./assets/C404.png'}
+};
+const resultRank=(correct,missed)=>{const total=correct+missed;if(!total)return 'B';const rate=100*correct/total;return rate===100?'S':rate>=80?'A':'B';};
+function renderDamageReport(won,battle,rate,correct,missed){
+ const active=$('prepCharacter').value;
+ const identity=resultsCharacters[active]||resultsCharacters.C001;
+ const alive=battle.playerHP>0;
+ const pose=alive?identity.victory:identity.defeat;
+ $('resultHeroPose').src=pose;
+ $('resultHeroPose').alt=identity.name+'：'+(alive?'勝利ポーズ（生存）':'敗北ポーズ（戦闘不能）');
+ $('resultHeroState').textContent=alive?'生存 / HP '+battle.playerHP:'戦闘不能 / HP 0';
+ const host=$('resultPartyCards');host.replaceChildren();
+ const dealt=battle.damage?.dealt||{normal:0,skill:0};
+ const taken=battle.damage?.taken||{miss:0,clock:0,skill:0};
+ const outgoing=Object.values(dealt).reduce((sum,v)=>sum+v,0);
+ const incoming=Object.values(taken).reduce((sum,v)=>sum+v,0);
+ const healing=battle.damage?.healed||0;
+ // Only one actual player is simulated. Missing party members are labeled unimplemented, not fabricated.
+ function line(parent,label,value){
+  const row=document.createElement('div');row.className='report-stat';
+  const labelNode=document.createElement('span');labelNode.textContent=label;
+  const bold=document.createElement('b');bold.textContent=value;
+  row.append(labelNode,bold);parent.append(row);
+ }
+ function card(character,real){
+  const c=document.createElement('article');c.className='result-party-card'+(real?'':' placeholder');
+  const title=document.createElement('div');title.className='result-card-title';
+  const name=document.createElement('strong');name.textContent=real?character.name:'未参加枠';
+  const tag=document.createElement('span');tag.className='small';tag.textContent=real?(alive?'生存':'戦闘不能'):'データ未接続';
+  title.append(name,tag);c.append(title);
+  const portrait=document.createElement('div');portrait.className='pose';
+  if(real){
+   const img=document.createElement('img');img.src=pose;img.alt=character.name+(alive?' 勝利ポーズ':' 敗北ポーズ');portrait.append(img);
+  }else{
+   const hint=document.createElement('span');hint.className='small';hint.textContent='協力プレイ実装後に表示';portrait.append(hint);
+  }
+  c.append(portrait);
+  if(real){
+   line(c,'個人ランク',resultRank(correct,missed));
+   line(c,'正答率',rate+'%（'+correct+'/'+(correct+missed)+'）');
+   line(c,'与ダメージ',outgoing+' DMG');
+   line(c,'被ダメージ',incoming+' DMG');
+   line(c,'回復量',healing+' HP');
+   line(c,'貢献度',outgoing>0?'100%':'0%');
+   const bar=document.createElement('div');bar.className='contribution-track';
+   const fill=document.createElement('i');fill.style.width=outgoing>0?'100%':'0%';bar.append(fill);c.append(bar);
+   const detail=document.createElement('div');detail.className='breakdown';
+   detail.textContent='与：通常 '+(dealt.normal||0)+' / スキル '+(dealt.skill||0)+'　|　被：ミス '+(taken.miss||0)+' / 時間攻撃 '+(taken.clock||0)+' / 敵スキル '+(taken.skill||0);
+   c.append(detail);
+  }else{
+   line(c,'与ダメージ','—');line(c,'被ダメージ','—');
+   line(c,'貢献度','—');line(c,'個人ランク','—');
+  }
+  return c;
+ }
+ host.append(card(identity,true));
+ for(let i=1;i<battle.partyCount;i++)host.append(card(null,false));
+ $('damageReportDescription').textContent=battle.partyCount===1
+  ?'ソロの実測値。与ダメージ・被ダメージを発生源別に集計しています。'
+  :'参加人数'+battle.partyCount+'人のHP倍率テストです。操作キャラ1人分のみ実測。残り'+(battle.partyCount-1)+'枠は協力プレイ実装待ちです。';
+}
 function finish(won,battle){
  cancelAdvance();
  const total=correct+missed;
@@ -673,7 +772,9 @@ function finish(won,battle){
  $('battleResultOutcome').textContent=won?'VICTORY':'DEFEAT';
  $('battleResultTitle').textContent=won?'QUEST COMPLETE':'QUEST FAILED';
  $('battleResultEnemy').textContent='★'+battle.mon.difficulty+' '+battle.mon.name+'（'+battle.partyCount+'人想定 / HP×'+battle.multiplier.toFixed(1)+'）';
- $('battleResultTime').textContent=Math.floor((Date.now()-battle.started)/1000)+'秒';
+ $('battleResultTime').textContent=Math.floor(((battle.finishedAt||Date.now())-battle.started)/1000)+'秒';
+ $('battleResultPartyCount').textContent=battle.partyCount+'人（実測1人）';
+ renderDamageReport(won,battle,rate,correct,missed);
  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
  $('result').classList.add('active');
  window.scrollTo(0,0);
