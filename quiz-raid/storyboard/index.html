@@ -446,7 +446,7 @@ choose(mons[0]);})();
 (function(){
 'use strict';
 const $=id=>document.getElementById(id);
-const starRules={1:{attack:10,miss:17,interval:12,tick:3,baseAttack:8},2:{attack:28,miss:25,interval:10,tick:5,baseAttack:19},3:{attack:50,miss:50,interval:8,tick:7,baseAttack:31}};
+const starRules={1:{attack:10,miss:17,interval:12,tick:3,baseAttack:8},2:{attack:28,miss:25,interval:10,tick:10,baseAttack:19},3:{attack:50,miss:50,interval:8,tick:15,baseAttack:31}};
 const characterRules={C001:{hp:90,damage:2},C002:{hp:100,damage:1},C003:{hp:110,damage:-1},C004:{hp:100,damage:0}};
 let state=null,timer=null;
 const charRule=()=>characterRules[$('prepCharacter').value]||characterRules.C001;
